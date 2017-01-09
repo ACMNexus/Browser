@@ -103,7 +103,7 @@ public class NavTabScroller extends ScrollerView {
     }
 
     protected int getScrollValue() {
-        return mHorizontal ? mScrollX : mScrollY;
+        return mHorizontal ? getScrollX() : getScrollY();
     }
 
     protected void setScrollValue(int value) {
@@ -185,7 +185,7 @@ public class NavTabScroller extends ScrollerView {
     }
 
     protected int getRelativeChildTop(int ix) {
-        return mContentView.getChildAt(ix).getTop() - mScrollY;
+        return mContentView.getChildAt(ix).getTop() - getScrollY();
     }
 
     protected void handleDataChanged() {
@@ -251,7 +251,7 @@ public class NavTabScroller extends ScrollerView {
         } else {
             sy = (v.getTop() + v.getBottom() - getHeight()) / 2;
         }
-        if ((sx != mScrollX) || (sy != mScrollY)) {
+        if ((sx != getScrollX()) || (sy != getScrollY())) {
             if (smooth) {
                 smoothScrollTo(sx,sy);
             } else {
@@ -416,8 +416,8 @@ public class NavTabScroller extends ScrollerView {
 
     @Override
     protected View findViewAt(int x, int y) {
-        x += mScrollX;
-        y += mScrollY;
+        x += getScrollX();
+        y += getScrollY();
         final int count = mContentView.getChildCount();
         for (int i = count - 1; i >= 0; i--) {
             View child = mContentView.getChildAt(i);
