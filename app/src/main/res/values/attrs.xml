@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="PopupWindow">
+        <attr name="popupBackground" format="reference|color" />
+        <attr name="popupAnimationStyle" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="ScrollView">
+        <!-- Defines whether the scrollview should stretch its content to fill the viewport. -->
+        <attr name="fillViewport" format="boolean" />
+    </declare-styleable>
+
+    <attr name="autoCompleteTextViewStyle" format="reference" />
+
+    <attr name="yesNoPreferenceStyle" format="reference" />
+
+    <attr name="scrollViewStyle" format="reference" />
+
+</resources>
