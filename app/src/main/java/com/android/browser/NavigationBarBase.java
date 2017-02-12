@@ -42,9 +42,9 @@ public class NavigationBarBase extends LinearLayout implements
     protected TitleBar mTitleBar;
     protected UiController mUiController;
     protected UrlInputView mUrlInput;
+    protected ImageView mLockIcon;
 
     private ImageView mFavicon;
-    private ImageView mLockIcon;
 
     public NavigationBarBase(Context context) {
         super(context);
@@ -62,7 +62,6 @@ public class NavigationBarBase extends LinearLayout implements
     protected void onFinishInflate() {
         super.onFinishInflate();
         mLockIcon = (ImageView) findViewById(R.id.lock);
-        mFavicon = (ImageView) findViewById(R.id.favicon);
         mUrlInput = (UrlInputView) findViewById(R.id.url);
         mUrlInput.setUrlInputListener(this);
         mUrlInput.setOnFocusChangeListener(this);
@@ -80,9 +79,8 @@ public class NavigationBarBase extends LinearLayout implements
     public void setLock(Drawable d) {
         if (mLockIcon == null) return;
         if (d == null) {
-            mLockIcon.setVisibility(View.GONE);
+            mLockIcon.setVisibility(View.VISIBLE);
         } else {
-            mLockIcon.setImageDrawable(d);
             mLockIcon.setVisibility(View.VISIBLE);
         }
     }
@@ -98,21 +96,26 @@ public class NavigationBarBase extends LinearLayout implements
 
     @Override
     public void onFocusChange(View view, boolean hasFocus) {
+        Tab currentTab = mUiController.getTabControl().getCurrentTab();
+        String title = "";
+        if(currentTab != null) {
+            title = currentTab.getUrl() == null ? "" : currentTab.getUrl();
+        }
         // if losing focus and not in touch mode, leave as is
         if (hasFocus || view.isInTouchMode() || mUrlInput.needsUpdate()) {
             setFocusState(hasFocus);
         }
         if (hasFocus) {
             mBaseUi.showTitleBar();
+            mUrlInput.setText(title);
+            mUrlInput.selectAll();
         } else if (!mUrlInput.needsUpdate()) {
             mUrlInput.dismissDropDown();
             mUrlInput.hideIME();
-            if (mUrlInput.getText().length() == 0) {
-                Tab currentTab = mUiController.getTabControl().getCurrentTab();
-                if (currentTab != null) {
-                    setDisplayTitle(currentTab.getUrl());
-                }
+            if(currentTab != null) {
+                title = currentTab.getTitle() == null ? currentTab.getUrl() : currentTab.getTitle();
             }
+            setDisplayTitle(title == null ? "" : title);
             mBaseUi.suggestHideTitleBar();
         }
         mUrlInput.clearNeedsUpdate();

@@ -2297,8 +2297,7 @@ public class Controller
                 setActive, useCurrent, parent);
     }
 
-    public Tab openTab(String url, boolean incognito, boolean setActive,
-            boolean useCurrent, Tab parent) {
+    public Tab openTab(String url, boolean incognito, boolean setActive, boolean useCurrent, Tab parent) {
         Tab tab = createNewTab(incognito, setActive, useCurrent);
         if (tab != null) {
             if (parent != null && parent != tab) {
@@ -2315,8 +2314,7 @@ public class Controller
     // incognito: private browsing tab
     // setActive: ste tab as current tab
     // useCurrent: if no new tab can be created, return current tab
-    private Tab createNewTab(boolean incognito, boolean setActive,
-            boolean useCurrent) {
+    private Tab createNewTab(boolean incognito, boolean setActive, boolean useCurrent) {
         Tab tab = null;
         if (mTabControl.canCreateNewTab()) {
             tab = mTabControl.createNewTab(incognito);

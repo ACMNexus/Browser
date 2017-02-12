@@ -26,7 +26,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
@@ -48,28 +47,24 @@ import java.util.HashMap;
 public class NavScreen extends RelativeLayout
         implements OnClickListener, OnMenuItemClickListener, OnThumbnailUpdatedListener {
 
-
     UiController mUiController;
     PhoneUi mUi;
     Tab mTab;
     Activity mActivity;
 
-    ImageButton mRefresh;
-    ImageButton mForward;
-    ImageButton mBookmarks;
-    ImageButton mMore;
-    ImageButton mNewTab;
-    FrameLayout mHolder;
+    private ImageButton mBookmarks;
+    private ImageButton mMore;
+    private ImageButton mNewTab;
+    private FrameLayout mHolder;
 
-    TextView mTitle;
-    ImageView mFavicon;
-    ImageButton mCloseTab;
+    private TextView mTitle;
+    private ImageView mFavicon;
+    private ImageButton mCloseTab;
 
     NavTabScroller mScroller;
-    TabAdapter mAdapter;
-    int mOrientation;
-    boolean mNeedsMenu;
-    HashMap<Tab, View> mTabViews;
+    private TabAdapter mAdapter;
+    private int mOrientation;
+    private HashMap<Tab, View> mTabViews;
 
     public NavScreen(Activity activity, UiController ctl, PhoneUi ui) {
         super(activity);
@@ -87,6 +82,12 @@ public class NavScreen extends RelativeLayout
         mUiController.updateMenuState(mUiController.getCurrentTab(), menu);
         popup.setOnMenuItemClickListener(this);
         popup.show();
+    }
+
+    private void showWebView() {
+        Tab currentTab = mUi.getActiveTab();
+        int pos = mUiController.getTabControl().getTabPosition(currentTab);
+        close(pos);
     }
 
     @Override
@@ -111,8 +112,7 @@ public class NavScreen extends RelativeLayout
     }
 
     public void refreshAdapter() {
-        mScroller.handleDataChanged(
-                mUiController.getTabControl().getTabPosition(mUi.getActiveTab()));
+        mScroller.handleDataChanged(mUiController.getTabControl().getTabPosition(mUi.getActiveTab()));
     }
 
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
@@ -141,10 +141,6 @@ public class NavScreen extends RelativeLayout
                 onCloseTab(tab);
             }
         });
-        mNeedsMenu = !ViewConfiguration.get(getContext()).hasPermanentMenuKey();
-        if (!mNeedsMenu) {
-            mMore.setVisibility(View.GONE);
-        }
     }
 
     @Override
@@ -154,7 +150,7 @@ public class NavScreen extends RelativeLayout
         } else if (mNewTab == v) {
             openNewTab();
         } else if (mMore == v) {
-            showMenu();
+            showWebView();
         }
     }
 
@@ -170,13 +166,11 @@ public class NavScreen extends RelativeLayout
 
     private void openNewTab() {
         // need to call openTab explicitely with setactive false
-        final Tab tab = mUiController.openTab(BrowserSettings.getInstance().getHomePage(),
-                false, false, false);
+        final Tab tab = mUiController.openTab(BrowserSettings.getInstance().getHomePage(), false, false, false);
         if (tab != null) {
             mUiController.setBlockEvents(true);
             final int tix = mUi.mTabControl.getTabPosition(tab);
             mScroller.setOnLayoutListener(new OnLayoutListener() {
-
                 @Override
                 public void onLayout(int l, int t, int r, int b) {
                     mUi.hideNavScreen(tix, true);
@@ -264,5 +258,4 @@ public class NavScreen extends RelativeLayout
             v.invalidate();
         }
     }
-
 }

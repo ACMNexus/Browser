@@ -45,8 +45,7 @@ import com.android.browser.search.SearchEngines;
  * url/search input view
  * handling suggestions
  */
-public class UrlInputView extends AutoCompleteTextView
-        implements OnEditorActionListener,
+public class UrlInputView extends AutoCompleteTextView implements OnEditorActionListener,
         CompletionListener, OnItemClickListener, TextWatcher {
 
     static final String TYPED = "browser-type";
@@ -113,11 +112,7 @@ public class UrlInputView extends AutoCompleteTextView
         super.onFocusChanged(focused, direction, prevRect);
         int state = -1;
         if (focused) {
-            if (hasSelection()) {
-                state = StateListener.STATE_HIGHLIGHTED;
-            } else {
-                state = StateListener.STATE_EDITED;
-            }
+            state = StateListener.STATE_EDITED;
         } else {
             // reset the selection state
             state = StateListener.STATE_NORMAL;

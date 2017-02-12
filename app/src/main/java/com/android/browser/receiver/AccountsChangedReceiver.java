@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.browser;
+package com.android.browser.receiver;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;

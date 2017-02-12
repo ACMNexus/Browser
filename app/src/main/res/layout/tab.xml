@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2009 The Android Open Source Project
+<?xml version="1.0" encoding="utf-8"?><!-- Copyright (C) 2009 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -19,22 +18,34 @@
      Currently, the only such element is the Geolocation permissions prompt.
 -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:fitsSystemWindows="true"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
 
     <!-- Wrapper layout for the WebView, which must be in a FrameLayout. -->
-    <FrameLayout android:id="@+id/webview_wrapper"
+    <FrameLayout
+        android:id="@+id/webview_wrapper"
         android:layout_width="match_parent"
-        android:layout_height="0dip"
-        android:layout_weight="1" />
+        android:layout_height="match_parent" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="第三届of岁" />
+
+    </FrameLayout>
 
     <!-- Geolocation permissions prompt -->
-    <ViewStub android:id="@+id/geolocation_permissions_prompt"
-        android:layout="@layout/geolocation_permissions_prompt"
+    <ViewStub
+        android:id="@+id/geolocation_permissions_prompt"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout="@layout/geolocation_permissions_prompt" />
 
-</LinearLayout>
+</FrameLayout>

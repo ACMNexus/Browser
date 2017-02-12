@@ -26,7 +26,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
-import android.view.accessibility.AccessibilityManager;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
@@ -34,7 +33,6 @@ import android.view.animation.DecelerateInterpolator;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
-
 import com.android.browser.util.ReflectUtils;
 
 
@@ -50,7 +48,6 @@ public class TitleBar extends RelativeLayout {
     private BaseUi mBaseUi;
     private FrameLayout mContentView;
     private PageProgressView mProgress;
-    private AccessibilityManager mAccessibilityManager;
 
     private AutologinBar mAutoLogin;
     private NavigationBarBase mNavBar;
@@ -63,13 +60,11 @@ public class TitleBar extends RelativeLayout {
     private Animator mTitleBarAnimator;
     private boolean mIsFixedTitleBar;
 
-    public TitleBar(Context context, UiController controller, BaseUi ui,
-            FrameLayout contentView) {
+    public TitleBar(Context context, UiController controller, BaseUi ui, FrameLayout contentView) {
         super(context, null);
         mUiController = controller;
         mBaseUi = ui;
         mContentView = contentView;
-        mAccessibilityManager = (AccessibilityManager) context.getSystemService(Context.ACCESSIBILITY_SERVICE);
         initLayout(context);
         setFixedTitleBar();
     }
@@ -111,7 +106,7 @@ public class TitleBar extends RelativeLayout {
 
     private void setFixedTitleBar() {
         // If getParent() returns null, we are initializing
-        ViewGroup parent = (ViewGroup)getParent();
+        ViewGroup parent = (ViewGroup) getParent();
         if (mIsFixedTitleBar && parent != null) return;
         mIsFixedTitleBar = true;
         setSkipTitleBarAnimations(true);
@@ -297,7 +292,7 @@ public class TitleBar extends RelativeLayout {
 
     public void updateAutoLogin(Tab tab, boolean animate) {
         if (mAutoLogin == null) {
-            if  (tab.getDeviceAccountLogin() == null) {
+            if (tab.getDeviceAccountLogin() == null) {
                 return;
             }
             inflateAutoLoginBar();
@@ -396,8 +391,7 @@ public class TitleBar extends RelativeLayout {
     @Override
     public View focusSearch(View focused, int dir) {
         WebView web = getCurrentWebView();
-        if (FOCUS_DOWN == dir && hasFocus() && web != null
-                && web.hasFocusable() && web.getParent() != null) {
+        if (FOCUS_DOWN == dir && hasFocus() && web != null && web.hasFocusable() && web.getParent() != null) {
             return web;
         }
         return super.focusSearch(focused, dir);
@@ -416,5 +410,4 @@ public class TitleBar extends RelativeLayout {
     public void onResume() {
         setFixedTitleBar();
     }
-
 }

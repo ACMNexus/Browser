@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
    Copyright 2011, The Android Open Source Project
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,113 +13,111 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
-<com.android.browser.NavigationBarPhone
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
-    android:background="@drawable/bg_urlbar">
+<com.android.browser.NavigationBarPhone xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
     <LinearLayout
         android:id="@+id/title_bg"
-        android:layout_width="0dip"
-        android:layout_weight="1.0"
-        android:layout_height="match_parent"
-        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_marginBottom="8dip"
         android:layout_marginLeft="8dip"
         android:layout_marginRight="8dip"
+        android:layout_marginTop="8dip"
+        android:layout_weight="1"
+        android:background="@drawable/title_bar_background"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
-        <ImageView
-            android:id="@+id/magnify"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="4dip"
-            android:paddingRight="8dip"
-            android:visibility="gone"
-            android:src="@drawable/ic_search_category_suggest" />
-        <ImageView
-            android:id="@+id/incognito_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="4dip"
-            android:visibility="gone"
-            android:src="@drawable/ic_incognito_holo_dark" />
+
         <FrameLayout
             android:id="@+id/iconcombo"
-            android:layout_width="44dip"
+            style="@style/HoloButton"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_gravity="center"
             android:contentDescription="@string/page_info"
-            style="@style/HoloButton">
+            android:padding="4dip">
+
             <ImageView
                 android:id="@+id/favicon"
                 android:layout_width="32dip"
                 android:layout_height="32dip"
+                android:layout_gravity="center"
                 android:paddingLeft="4dip"
                 android:paddingRight="8dip"
-                android:layout_gravity="center" />
+                android:visibility="gone" />
+
             <ImageView
                 android:id="@+id/lock"
-                android:layout_width="32dip"
-                android:layout_height="32dip"
+                android:layout_width="24dip"
+                android:layout_height="24dip"
                 android:layout_gravity="center"
-                android:visibility="gone" />
+                android:src="@drawable/common_icon_site" />
         </FrameLayout>
-        <ImageView
-            android:id="@+id/stop"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+
+        <TextView
+            android:id="@+id/web_titles"
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
-            android:paddingLeft="4dip"
-            android:contentDescription="@string/accessibility_button_stop"
-            android:src="@drawable/ic_stop_holo_dark"
-            style="@style/HoloButton" />
+            android:layout_weight="1"
+            android:background="@null"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:visibility="gone" />
+
         <com.android.browser.UrlInputView
             android:id="@+id/url"
-            android:focusable="true"
+            style="@style/Suggestions"
             android:layout_width="0dip"
-            android:layout_weight="1.0"
             android:layout_height="match_parent"
+            android:layout_weight="1.0"
+            android:background="@null"
+            android:ellipsize="end"
             android:fadingEdge="horizontal"
             android:fadingEdgeLength="24dip"
-            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:focusable="true"
             android:hint="@string/search_hint"
-            android:singleLine="true"
-            android:ellipsize="end"
+            android:imeOptions="actionGo|flagNoExtractUi|flagNoFullscreen"
+            android:inputType="textUri"
             android:lines="1"
             android:scrollHorizontally="true"
-            android:inputType="textUri"
-            android:imeOptions="actionGo|flagNoExtractUi|flagNoFullscreen"
-            style="@style/Suggestions"
-            android:background="@null" />
+            android:singleLine="true"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:visibility="visible" />
+
         <ImageView
-            android:id="@+id/voice"
+            android:id="@+id/refresh"
+            style="@style/HoloButton"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:contentDescription="@string/accessibility_button_clear"
             android:paddingRight="4dip"
-            android:contentDescription="@string/accessibility_button_voice"
-            android:src="@drawable/ic_voice_search_holo_dark"
-            style="@style/HoloButton"
-            android:visibility="gone" />
+            android:src="@drawable/common_titlebar_close_selector" />
+
         <ImageView
             android:id="@+id/clear"
+            style="@style/HoloButton"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:paddingRight="4dip"
             android:contentDescription="@string/accessibility_button_clear"
+            android:paddingRight="4dip"
             android:src="@drawable/ic_close_window_holo_dark"
-            style="@style/HoloButton"
             android:visibility="gone" />
+
     </LinearLayout>
-    <ImageButton
-        android:id="@+id/tab_switcher"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-            android:contentDescription="@string/accessibility_button_navscreen"
-        android:src="@drawable/ic_windows_holo_dark"
-        style="@style/HoloButton" />
-    <ImageButton
-        android:id="@+id/more"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        style="@style/HoloButton"
-        android:gravity="center_vertical"
-        android:contentDescription="@string/accessibility_button_more"
-        android:src="@drawable/ic_menu_overflow" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="0.5dip"
+        android:background="#E5E5E5" />
+
 </com.android.browser.NavigationBarPhone>

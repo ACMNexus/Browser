@@ -52,8 +52,7 @@ public class BrowserActivity extends Activity {
     @Override
     public void onCreate(Bundle icicle) {
         if (LOGV_ENABLED) {
-            Log.v(LOGTAG, this + " onStart, has state: "
-                    + (icicle == null ? "false" : "true"));
+            Log.v(LOGTAG, this + " onStart, has state: " + (icicle == null ? "false" : "true"));
         }
         super.onCreate(icicle);
 
@@ -296,5 +295,4 @@ public class BrowserActivity extends Activity {
         return mController.dispatchGenericMotionEvent(ev) ||
                 super.dispatchGenericMotionEvent(ev);
     }
-
 }

@@ -277,7 +277,7 @@
             android:exported="false"
             android:readPermission="com.android.browser.permission.READ_HISTORY_BOOKMARKS" />
 
-        <receiver android:name=".AccountsChangedReceiver">
+        <receiver android:name=".receiver.AccountsChangedReceiver">
             <intent-filter>
                 <action android:name="android.accounts.LOGIN_ACCOUNTS_CHANGED" />
             </intent-filter>

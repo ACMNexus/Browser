@@ -50,8 +50,11 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
 import com.android.browser.Tab.SecurityState;
+import com.android.browser.view.MenuBar;
 import com.android.internal.view.menu.MenuBuilder;
+
 import java.util.List;
 
 /**
@@ -62,15 +65,15 @@ public abstract class BaseUi implements UI {
     private static final String LOGTAG = "BaseUi";
 
     protected static final FrameLayout.LayoutParams COVER_SCREEN_PARAMS =
-        new FrameLayout.LayoutParams(
-        ViewGroup.LayoutParams.MATCH_PARENT,
-        ViewGroup.LayoutParams.MATCH_PARENT);
+            new FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT);
 
     protected static final FrameLayout.LayoutParams COVER_SCREEN_GRAVITY_CENTER =
-        new FrameLayout.LayoutParams(
-        ViewGroup.LayoutParams.MATCH_PARENT,
-        ViewGroup.LayoutParams.MATCH_PARENT,
-        Gravity.CENTER);
+            new FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    Gravity.CENTER);
 
     private static final int MSG_HIDE_TITLEBAR = 1;
     public static final int HIDE_TITLEBAR_DELAY = 1500; // in ms
@@ -85,9 +88,11 @@ public abstract class BaseUi implements UI {
     private Drawable mLockIconMixed;
     protected Drawable mGenericFavicon;
 
+    private Toast mStopToast;
     protected FrameLayout mContentView;
     protected FrameLayout mCustomViewContainer;
     protected FrameLayout mFullscreenContainer;
+    protected LinearLayout mBottomTools;
     private FrameLayout mFixedTitlebarContainer;
 
     private View mCustomView;
@@ -95,10 +100,7 @@ public abstract class BaseUi implements UI {
     private int mOriginalOrientation;
 
     private LinearLayout mErrorConsoleContainer = null;
-
     private UrlBarAutoShowManager mUrlBarAutoShowManager;
-
-    private Toast mStopToast;
 
     // the default <video> poster
     private Bitmap mDefaultVideoPoster;
@@ -108,6 +110,7 @@ public abstract class BaseUi implements UI {
     private boolean mActivityPaused;
     protected boolean mUseQuickControls;
     protected TitleBar mTitleBar;
+    protected MenuBar mMenuBar;
     private NavigationBarBase mNavigationBar;
     protected PieControl mPieControl;
     private boolean mBlockFocusAnimations;
@@ -117,27 +120,20 @@ public abstract class BaseUi implements UI {
         mUiController = controller;
         mTabControl = controller.getTabControl();
         Resources res = mActivity.getResources();
-        mInputManager = (InputMethodManager)
-                browser.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        mInputManager = (InputMethodManager) browser.getSystemService(Activity.INPUT_METHOD_SERVICE);
         mLockIconSecure = res.getDrawable(R.drawable.ic_secure_holo_dark);
         mLockIconMixed = res.getDrawable(R.drawable.ic_secure_partial_holo_dark);
-        FrameLayout frameLayout = (FrameLayout) mActivity.getWindow()
-                .getDecorView().findViewById(android.R.id.content);
-        LayoutInflater.from(mActivity)
-                .inflate(R.layout.custom_screen, frameLayout);
-        mFixedTitlebarContainer = (FrameLayout) frameLayout.findViewById(
-                R.id.fixed_titlebar_container);
-        mContentView = (FrameLayout) frameLayout.findViewById(
-                R.id.main_content);
-        mCustomViewContainer = (FrameLayout) frameLayout.findViewById(
-                R.id.fullscreen_custom_content);
-        mErrorConsoleContainer = (LinearLayout) frameLayout
-                .findViewById(R.id.error_console);
+        FrameLayout frameLayout = (FrameLayout) mActivity.getWindow().getDecorView().findViewById(android.R.id.content);
+        LayoutInflater.from(mActivity).inflate(R.layout.custom_screen, frameLayout);
+        mFixedTitlebarContainer = (FrameLayout) frameLayout.findViewById(R.id.fixed_titlebar_container);
+        mContentView = (FrameLayout) frameLayout.findViewById(R.id.main_content);
+        mCustomViewContainer = (FrameLayout) frameLayout.findViewById(R.id.fullscreen_custom_content);
+        mErrorConsoleContainer = (LinearLayout) frameLayout.findViewById(R.id.error_console);
+        mBottomTools = (LinearLayout) frameLayout.findViewById(R.id.bottom_menu);
         setFullscreen(BrowserSettings.getInstance().useFullscreen());
-        mGenericFavicon = res.getDrawable(
-                R.drawable.app_web_browser_sm);
-        mTitleBar = new TitleBar(mActivity, mUiController, this,
-                mContentView);
+        mGenericFavicon = res.getDrawable(R.drawable.app_web_browser_sm);
+        mTitleBar = new TitleBar(mActivity, mUiController, this, mContentView);
+        mMenuBar = new MenuBar(mActivity, mUiController, this, mBottomTools);
         mTitleBar.setProgress(100);
         mNavigationBar = mTitleBar.getNavigationBar();
         mUrlBarAutoShowManager = new UrlBarAutoShowManager(this);
@@ -151,7 +147,6 @@ public abstract class BaseUi implements UI {
     }
 
     // lifecycle
-
     public void onPause() {
         if (isCustomViewShowing()) {
             onHideCustomView();
@@ -183,7 +178,6 @@ public abstract class BaseUi implements UI {
     }
 
     // key handling
-
     @Override
     public boolean onBackKey() {
         if (mCustomView != null) {
@@ -245,8 +239,7 @@ public abstract class BaseUi implements UI {
     public void onPageStopped(Tab tab) {
         cancelStopToast();
         if (tab.inForeground()) {
-            mStopToast = Toast
-                    .makeText(mActivity, R.string.stopping, Toast.LENGTH_SHORT);
+            mStopToast = Toast.makeText(mActivity, R.string.stopping, Toast.LENGTH_SHORT);
             mStopToast.show();
         }
     }
@@ -307,8 +300,12 @@ public abstract class BaseUi implements UI {
         }
     }
 
-    Tab getActiveTab() {
+    public Tab getActiveTab() {
         return mActiveTab;
+    }
+
+    public WebView getActivieWebView() {
+        return mActiveTab == null ? null : mActiveTab.getWebView();
     }
 
     @Override
@@ -338,11 +335,10 @@ public abstract class BaseUi implements UI {
             return;
         }
         View container = tab.getViewContainer();
-        WebView mainView  = tab.getWebView();
+        WebView mainView = tab.getWebView();
         // Attach the WebView to the container and then attach the
         // container to the content view.
-        FrameLayout wrapper =
-                (FrameLayout) container.findViewById(R.id.webview_wrapper);
+        FrameLayout wrapper = (FrameLayout) container.findViewById(R.id.webview_wrapper);
         ViewGroup parent = (ViewGroup) mainView.getParent();
         if (parent != wrapper) {
             if (parent != null) {
@@ -371,8 +367,7 @@ public abstract class BaseUi implements UI {
         // Remove the container from the content and then remove the
         // WebView from the container. This will trigger a focus change
         // needed by WebView.
-        FrameLayout wrapper =
-                (FrameLayout) container.findViewById(R.id.webview_wrapper);
+        FrameLayout wrapper = (FrameLayout) container.findViewById(R.id.webview_wrapper);
         wrapper.removeView(mainView);
         mContentView.removeView(container);
         mUiController.endActionMode();
@@ -389,14 +384,12 @@ public abstract class BaseUi implements UI {
         if (container == null) {
             // The tab consists of a container view, which contains the main
             // WebView, as well as any other UI elements associated with the tab.
-            container = mActivity.getLayoutInflater().inflate(R.layout.tab,
-                    mContentView, false);
+            container = mActivity.getLayoutInflater().inflate(R.layout.tab, mContentView, false);
             tab.setViewContainer(container);
         }
         if (tab.getWebView() != webView) {
             // Just remove the old one.
-            FrameLayout wrapper =
-                    (FrameLayout) container.findViewById(R.id.webview_wrapper);
+            FrameLayout wrapper = (FrameLayout) container.findViewById(R.id.webview_wrapper);
             wrapper.removeView(tab.getWebView());
         }
     }
@@ -405,7 +398,8 @@ public abstract class BaseUi implements UI {
      * create a sub window container and webview for the tab
      * Note: this methods operates through side-effects for now
      * it sets both the subView and subViewContainer for the given tab
-     * @param tab tab to create the sub window for
+     *
+     * @param tab     tab to create the sub window for
      * @param subView webview to be set as a subwindow for the tab
      */
     @Override
@@ -518,7 +512,7 @@ public abstract class BaseUi implements UI {
 
     @Override
     public void showCustomView(View view, int requestedOrientation,
-            WebChromeClient.CustomViewCallback callback) {
+                               WebChromeClient.CustomViewCallback callback) {
         // if a view already exists then immediately terminate the new one
         if (mCustomView != null) {
             callback.onCustomViewHidden();
@@ -620,7 +614,7 @@ public abstract class BaseUi implements UI {
             title = url;
         }
         if (tab.inForeground()) {
-            mNavigationBar.setDisplayTitle(url);
+            mNavigationBar.setDisplayTitle(title);
         }
     }
 
@@ -764,7 +758,7 @@ public abstract class BaseUi implements UI {
         WindowManager.LayoutParams winParams = win.getAttributes();
         final int bits = WindowManager.LayoutParams.FLAG_FULLSCREEN;
         if (enabled) {
-            winParams.flags |=  bits;
+            winParams.flags |= bits;
         } else {
             winParams.flags &= ~bits;
             if (mCustomView != null) {
@@ -829,7 +823,8 @@ public abstract class BaseUi implements UI {
         }
     };
 
-    protected void handleMessage(Message msg) {}
+    protected void handleMessage(Message msg) {
+    }
 
     @Override
     public void showWeb(boolean animate) {
@@ -852,6 +847,10 @@ public abstract class BaseUi implements UI {
 
     public void addFixedTitleBar(View view) {
         mFixedTitlebarContainer.addView(view);
+    }
+
+    public void addBottomMenuTools(View view) {
+        mBottomTools.addView(view);
     }
 
     public void setContentViewMarginTop(int margin) {

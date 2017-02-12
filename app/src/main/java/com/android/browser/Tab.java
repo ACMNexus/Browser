@@ -74,7 +74,7 @@ import java.util.regex.Pattern;
 /**
  * Class for maintaining Tabs with a main WebView and a subwindow.
  */
-class Tab implements PictureListener {
+public class Tab implements PictureListener {
 
     // Log Tag
     private static final String LOGTAG = "Tab";
@@ -1050,8 +1050,7 @@ class Tab implements PictureListener {
         mContext = mWebViewController.getContext();
         mSettings = BrowserSettings.getInstance();
         mDataController = DataController.getInstance(mContext);
-        mCurrentState = new PageState(mContext, w != null
-                ? w.isPrivateBrowsingEnabled() : false);
+        mCurrentState = new PageState(mContext, w != null ? w.isPrivateBrowsingEnabled() : false);
         mInPageLoad = false;
         mInForeground = false;
 
@@ -1084,10 +1083,8 @@ class Tab implements PictureListener {
             }
         };
 
-        mCaptureWidth = mContext.getResources().getDimensionPixelSize(
-                R.dimen.tab_thumbnail_width);
-        mCaptureHeight = mContext.getResources().getDimensionPixelSize(
-                R.dimen.tab_thumbnail_height);
+        mCaptureWidth = mContext.getResources().getDimensionPixelSize(R.dimen.tab_thumbnail_width);
+        mCaptureHeight = mContext.getResources().getDimensionPixelSize(R.dimen.tab_thumbnail_height);
         updateShouldCaptureThumbnails();
         restoreState(state);
         if (getId() == -1) {
@@ -1270,7 +1267,7 @@ class Tab implements PictureListener {
     /**
      * Dismiss the subWindow for the tab.
      */
-    void dismissSubWindow() {
+    public void dismissSubWindow() {
         if (mSubView != null) {
             mWebViewController.endActionMode();
             mSubView.destroy();
@@ -1283,7 +1280,7 @@ class Tab implements PictureListener {
     /**
      * Set the parent tab of this tab.
      */
-    void setParent(Tab parent) {
+    public void setParent(Tab parent) {
         if (parent == this) {
             throw new IllegalStateException("Cannot set parent to self!");
         }
@@ -1325,7 +1322,7 @@ class Tab implements PictureListener {
      * associate the Tabs.
      * @param child the Tab that was created from this Tab
      */
-    void addChildTab(Tab child) {
+    public void addChildTab(Tab child) {
         if (mChildren == null) {
             mChildren = new Vector<Tab>();
         }
@@ -1337,7 +1334,7 @@ class Tab implements PictureListener {
         return mChildren;
     }
 
-    void resume() {
+    public void resume() {
         if (mMainView != null) {
             setupHwAcceleration(mMainView);
             mMainView.onResume();
@@ -1357,7 +1354,7 @@ class Tab implements PictureListener {
         }
     }
 
-    void pause() {
+    public void pause() {
         if (mMainView != null) {
             mMainView.onPause();
             if (mSubView != null) {
@@ -1366,7 +1363,7 @@ class Tab implements PictureListener {
         }
     }
 
-    void putInForeground() {
+    public void putInForeground() {
         if (mInForeground) {
             return;
         }
@@ -1384,7 +1381,7 @@ class Tab implements PictureListener {
         mWebViewController.bookmarkedStatusHasChanged(this);
     }
 
-    void putInBackground() {
+    public void putInBackground() {
         if (!mInForeground) {
             return;
         }
@@ -1406,7 +1403,7 @@ class Tab implements PictureListener {
      * null or the main window.
      * @return The top window of this tab.
      */
-    WebView getTopWindow() {
+    public WebView getTopWindow() {
         if (mSubView != null) {
             return mSubView;
         }
@@ -1419,15 +1416,15 @@ class Tab implements PictureListener {
      * non-null for the current tab.
      * @return The main WebView of this tab.
      */
-    WebView getWebView() {
+    public WebView getWebView() {
         return mMainView;
     }
 
-    void setViewContainer(View container) {
+    public void setViewContainer(View container) {
         mContainer = container;
     }
 
-    View getViewContainer() {
+    public View getViewContainer() {
         return mContainer;
     }
 
@@ -1465,10 +1462,8 @@ class Tab implements PictureListener {
      */
     GeolocationPermissionsPrompt getGeolocationPermissionsPrompt() {
         if (mGeolocationPermissionsPrompt == null) {
-            ViewStub stub = (ViewStub) mContainer
-                    .findViewById(R.id.geolocation_permissions_prompt);
-            mGeolocationPermissionsPrompt = (GeolocationPermissionsPrompt) stub
-                    .inflate();
+            ViewStub stub = (ViewStub) mContainer.findViewById(R.id.geolocation_permissions_prompt);
+            mGeolocationPermissionsPrompt = (GeolocationPermissionsPrompt) stub.inflate();
         }
         return mGeolocationPermissionsPrompt;
     }
