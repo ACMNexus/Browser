@@ -1,13 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
+        <com.android.browser.view.BrowserSettingItem
+            android:id="@+id/setting_search"
+            android:layout_width="fill_parent"
+            android:layout_height="70dip"
+            app:setting_icon="@drawable/ic_launcher_browser"
+            app:setting_state="2"
+            app:setting_title="@string/pref_content_search_engine" />
+
+        <com.android.browser.view.BrowserSettingItem
+            android:id="@+id/setting_font_size"
+            android:layout_width="fill_parent"
+            android:layout_height="70dip"
+            app:setting_desc="@string/pref_setting_font_size_desc"
+            app:setting_state="1"
+            app:setting_title="@string/pref_font_size_category" />
+
+        <com.android.browser.view.BrowserSettingItem
+            android:id="@+id/setting_security"
+            android:layout_width="fill_parent"
+            android:layout_height="70dip"
+            app:setting_desc="@string/pref_setting_security_desc"
+            app:setting_state="1"
+            app:setting_title="@string/pref_privacy_security_title" />
+
+        <com.android.browser.view.BrowserSettingItem
+            android:id="@+id/setting_clear_data"
+            android:layout_width="fill_parent"
+            android:layout_height="70dip"
+            app:setting_state="-1"
+            app:setting_title="@string/pref_setting_clear_data_title" />
+
+        <com.android.browser.view.BrowserSettingItem
+            android:id="@+id/setting_filter_ad"
+            android:layout_width="fill_parent"
+            android:layout_height="70dip"
+            app:setting_state="-1"
+            app:setting_title="@string/pref_setting_filter_ad_title" />
+
+        <com.android.browser.view.BrowserSettingItem
+            android:id="@+id/setting_download_dir"
+            android:layout_width="fill_parent"
+            android:layout_height="70dip"
+            app:setting_desc="@string/pref_setting_download_dir_desc"
+            app:setting_state="1"
+            app:setting_title="@string/pref_setting_download_dir_title" />
+
+        <com.android.browser.view.BrowserSettingItem
+            android:id="@+id/setting_user_agent"
+            android:layout_width="fill_parent"
+            android:layout_height="70dip"
+            app:setting_state="3"
+            app:setting_title="@string/pref_setting_user_agent_title"
+            app:setting_value="@string/pref_setting_user_agent_value" />
+
+        <com.android.browser.view.BrowserSettingItem
+            android:id="@+id/setting_text_coding"
+            android:layout_width="fill_parent"
+            android:layout_height="70dip"
+            app:setting_state="3"
+            app:setting_title="@string/pref_default_text_encoding"
+            app:setting_value="UTF-8" />
+
+        <com.android.browser.view.BrowserSettingItem
+            android:id="@+id/setting_rate_us"
+            android:layout_width="fill_parent"
+            android:layout_height="70dip"
+            app:setting_state="-1"
+            app:setting_title="@string/pref_setting_rate_us_title" />
+
+        <com.android.browser.view.BrowserSettingItem
+            android:id="@+id/setting_feedback"
+            android:layout_width="fill_parent"
+            android:layout_height="70dip"
+            app:setting_state="-1"
+            app:setting_title="@string/pref_setting_feedback_title" />
+
+        <com.android.browser.view.BrowserSettingItem
+            android:id="@+id/setting_about"
+            android:layout_width="fill_parent"
+            android:layout_height="70dip"
+            app:setting_state="-1"
+            app:setting_title="@string/pref_setting_about_title" />
 
     </LinearLayout>
 

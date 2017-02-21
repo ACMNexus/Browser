@@ -4,13 +4,13 @@ import android.os.Bundle;
 import com.android.browser.R;
 
 /**
- * Created by Luooh on 2017/2/16.
+ * Created by lenvo on 2017/2/21.
  */
-public class BrowserSettingActivity extends BaseActivity {
+public class FontSizePreviewActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.setContentView(R.layout.activity_browser_setting);
+        this.setContentView(R.layout.activity_fontsize_preview);
     }
 }

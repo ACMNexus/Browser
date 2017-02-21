@@ -69,5 +69,4 @@ public class FontSizePreview extends WebViewPreview {
         super.setupWebView(view);
         view.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
     }
-
 }

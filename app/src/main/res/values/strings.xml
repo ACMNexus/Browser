@@ -1031,4 +1031,16 @@
     <string name="menu_bottom_tools">Tools</string>
     <string name="menu_bottom_exit">Exit</string>
 
+    <string name="pref_setting_about_title">关于浏览器</string>
+    <string name="pref_setting_feedback_title">意见反馈</string>
+    <string name="pref_setting_rate_us_title">评价我们</string>
+    <string name="pref_setting_user_agent_value">默认</string>
+    <string name="pref_setting_user_agent_title">设置浏览器标识</string>
+    <string name="pref_setting_font_size_desc">调整文本缩放和文字大小</string>
+    <string name="pref_setting_security_desc">允许浏览器记住密码，保存表单等</string>
+    <string name="pref_setting_clear_data_title">清除数据</string>
+    <string name="pref_setting_filter_ad_title">广告过滤</string>
+    <string name="pref_setting_download_dir_title">选择存放的目录</string>
+    <string name="pref_setting_download_dir_desc">/storage/emulated/0/Download/</string>
+
 </resources>

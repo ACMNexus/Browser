@@ -39,10 +39,11 @@ public class BrowserSettingItem extends RelativeLayout {
     }
 
     private void init(Context context, AttributeSet attrs) {
+
         this.mContext = context;
         setBackgroundResource(R.color.white);
-        setLayoutParams(new RelativeLayout.LayoutParams(-1, DisplayUtils.dip2px(mContext, 70)));
-        View contentView = LayoutInflater.from(mContext).inflate(R.layout.layout_menu_setting, this);
+        setLayoutParams(new RelativeLayout.LayoutParams(-1, DisplayUtils.dip2px(mContext, 60)));
+        View contentView = LayoutInflater.from(mContext).inflate(R.layout.layout_browser_setting_item, this);
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.SettingItemStyle);
 
         mSettingTitle = (TextView) contentView.findViewById(R.id.setting_title);
@@ -51,14 +52,28 @@ public class BrowserSettingItem extends RelativeLayout {
         mSettingValue = (TextView) contentView.findViewById(R.id.setting_value);
 
         int state = Integer.parseInt(array.getString(R.styleable.SettingItemStyle_setting_state));
+        String str_title = array.getString(R.styleable.SettingItemStyle_setting_title);
+        mSettingTitle.setText(str_title);
+
         if(state == SETTING_ONLY_DESC) {
             String str_desc = array.getString(R.styleable.SettingItemStyle_setting_desc);
             mSettingDesc.setText(str_desc);
         }
+
         if(state == SETTING_ONLY_ICON) {
             int resId = array.getResourceId(R.styleable.SettingItemStyle_setting_icon, 0);
             mSettingIcon.setImageResource(resId);
         }
+
+        if(state == SETTING_ONLY_VALUE) {
+            String str_value = array.getString(R.styleable.SettingItemStyle_setting_value);
+            mSettingValue.setText(str_value);
+        }
+
+        if(state == SETTING_ONLY_TOGGLE) {
+        }
+
+        setItemState(state);
 
         array.recycle();
     }
