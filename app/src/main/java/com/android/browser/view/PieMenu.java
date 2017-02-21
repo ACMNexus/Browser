@@ -147,7 +147,7 @@ public class PieMenu extends FrameLayout {
         setWillNotDraw(false);
         setDrawingCacheEnabled(false);
         mCenter = new Point(0,0);
-        mBackground = res.getDrawable(R.drawable.qc_background_normal);
+        mBackground = res.getDrawable(R.drawable.ic_bookmark_on_holo_dark);
         mNormalPaint = new Paint();
         mNormalPaint.setColor(res.getColor(R.color.qc_normal));
         mNormalPaint.setAntiAlias(true);

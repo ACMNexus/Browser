@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import com.android.browser.BaseUi;
 import com.android.browser.R;
 import com.android.browser.UiController;
+import com.android.browser.activitys.BrowserSettingActivity;
 import com.android.browser.activitys.DownloadFileActivity;
 import com.android.browser.util.ActivityUtils;
 import com.android.browser.util.DisplayUtils;
@@ -110,6 +111,7 @@ public class MenuToolBar extends LinearLayout implements View.OnClickListener {
             case R.id.menu_refresh:
                 break;
             case R.id.menu_setting:
+                ActivityUtils.startNextPager(mContext, BrowserSettingActivity.class);
                 break;
             case R.id.menu_share:
                 break;

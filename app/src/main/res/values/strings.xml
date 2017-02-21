@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2007 The Android Open Source Project
+<?xml version="1.0" encoding="utf-8"?><!-- Copyright (C) 2007 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -167,11 +166,11 @@
     <string name="homepage_set">Homepage set.</string>
     <!-- Error that appears in the title of Bookmark dialog when user selects OK with empty Name field -->
     <string name="bookmark_needs_title">"Bookmark must have a name."</string>
-        <!-- Error that appears in the title of Bookmark dialog when user selects OK with empty Location field -->
+    <!-- Error that appears in the title of Bookmark dialog when user selects OK with empty Location field -->
     <string name="bookmark_needs_url">"Bookmark must have a location."</string>
-        <!-- Error that appears in the title of Bookmark dialog when user selects OK with invalid URL -->
+    <!-- Error that appears in the title of Bookmark dialog when user selects OK with invalid URL -->
     <string name="bookmark_url_not_valid">This URL isn\'t valid.</string>
-        <!-- Error that appears in the Bookmark dialog when user selects OK with a URL of a type we cannot bookmark -->
+    <!-- Error that appears in the Bookmark dialog when user selects OK with a URL of a type we cannot bookmark -->
     <string name="bookmark_cannot_save_url">This URL can\'t be bookmarked.</string>
     <!-- Menu item in the page that displays all bookmarks. It brings up a
             dialog that allows the user to bookmark the page that the browser is
@@ -265,10 +264,10 @@
     <!-- Context Menu item to show the currently selected address in the Maps
             application -->
     <string name="contextmenu_map">Map</string>
- 
-     <!-- Title of the dialog used for selecting the application that should be
-            used for sharing a link (e.g. Gmail or another app). See also
-            contextmenu_sharelink above -->
+
+    <!-- Title of the dialog used for selecting the application that should be
+           used for sharing a link (e.g. Gmail or another app). See also
+           contextmenu_sharelink above -->
     <string name="choosertitle_sharevia">Share via</string>
 
     <!-- Used as the title of dialogs in the Browser Settings confirming that
@@ -722,7 +721,7 @@
     <!-- Verb placed in front of a screenshot of a web page that, when clicked,
             will add that page to bookmarks -->
     <string name="add_bookmark_short">Add</string>
-    
+
     <!-- This string is for the browser "Go To" UI. -->
     <!-- Do not translate.  This string is not displayed in UI (no badge is selected for go to). -->
     <string name="search_label" translatable="false">Browser</string>
@@ -841,19 +840,19 @@
     <string name="webstorage_outofspace_notification_text">Touch to free up space.</string>
     <!-- Used in the Browser Settings -->
     <string name="webstorage_clear_data_title">Clear stored data</string>
-    
+
     <!-- Confirmation dialog when the user ask to clear all data for an origin -->
     <string name="webstorage_clear_data_dialog_message">Delete all data stored by this website?</string>
     <string name="webstorage_clear_data_dialog_ok_button">OK</string>
     <string name="webstorage_clear_data_dialog_cancel_button">Cancel</string>
     <!-- Strings used in the summary of origins -->
     <string name="webstorage_origin_summary_mb_stored">MB stored on your phone</string>
-        <!-- String shown in a progress view while a video is loading, before it starts playing -->
+    <!-- String shown in a progress view while a video is loading, before it starts playing -->
     <string name="loading_video">Loading video\u2026</string>
 
     <!-- Geolocation -->
     <!-- Permissions prompt -->
-    <string name="geolocation_permissions_prompt_message"><xliff:g id="website origin" example="maps.google.com">%s</xliff:g> wants to know your location</string>
+    <string name="geolocation_permissions_prompt_message"><xliff:g example="maps.google.com" id="website origin">%s</xliff:g> wants to know your location</string>
     <string name="geolocation_permissions_prompt_share">Share location</string>
     <string name="geolocation_permissions_prompt_dont_share">Decline</string>
     <string name="geolocation_permissions_prompt_remember">Remember preference</string>
@@ -912,10 +911,10 @@
     <string name="import_bookmarks_dialog_delete_select_account">Delete bookmarks currently on this device and begin syncing with Google account</string>
 
     <!-- Description confirming user's choice to delete bookmarks [CHAR-LIMIT=none] -->
-    <string name="import_bookmarks_dialog_confirm_delete">Delete bookmarks currently on this device and begin syncing bookmarks with <xliff:g id="Google account" example="account@example.com">%s</xliff:g>?</string>
+    <string name="import_bookmarks_dialog_confirm_delete">Delete bookmarks currently on this device and begin syncing bookmarks with <xliff:g example="account@example.com" id="Google account">%s</xliff:g>?</string>
 
     <!-- Description confirming user's choice to add bookmarks to an account [CHAR-LIMIT=none] -->
-    <string name="import_bookmarks_dialog_confirm_add">Add bookmarks currently on this device and begin syncing bookmarks with <xliff:g id="Google account" example="account@example.com">%s</xliff:g>?</string>
+    <string name="import_bookmarks_dialog_confirm_add">Add bookmarks currently on this device and begin syncing bookmarks with <xliff:g example="account@example.com" id="Google account">%s</xliff:g>?</string>
 
     <!-- Button allowing users to remove all of their existing bookmarks when setting up syncing with their bookmarks stored in Google Chrome [CHAR-LIMIT=64] -->
     <string name="import_bookmarks_dialog_remove">Delete bookmarks</string>
@@ -936,7 +935,7 @@
     <string name="import_bookmarks_dialog_add">Add bookmarks to Google account</string>
 
     <!-- Button allowing users to import all of their existing bookmarks into an account when setting up syncing with their bookmarks stored in Google Chrome [CHAR-LIMIT=64] -->
-    <string name="import_bookmarks_dialog_import">Add your Android bookmarks to bookmarks for <xliff:g id="Google account" example="account@example.com">%s</xliff:g></string>
+    <string name="import_bookmarks_dialog_import">Add your Android bookmarks to bookmarks for <xliff:g example="account@example.com" id="Google account">%s</xliff:g></string>
 
     <!-- Url Selection Action Mode -->
 

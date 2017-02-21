@@ -38,7 +38,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="4dip"
         android:layout_marginBottom="4dip"
-        android:src="@mipmap/ic_launcher_browser"
+        android:src="@drawable/ic_launcher_browser"
         android:background="@drawable/bookmark_widget_thumb_selector"
         android:padding="4dip" />
 </RelativeLayout>

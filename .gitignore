@@ -13,4 +13,6 @@ gradlew/
 gradle/
 gradlew.bat
 gradlew
+/support_v4/support_v4.iml
 /import-summary.txt
+/support_v4/build

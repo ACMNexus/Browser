@@ -1,7 +1,6 @@
 package com.android.browser.activitys;
 
 import android.os.Bundle;
-
 import com.android.browser.R;
 
 /**

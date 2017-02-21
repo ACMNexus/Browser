@@ -39,8 +39,8 @@ import android.view.View;
 import android.view.accessibility.AccessibilityEvent;
 import android.webkit.WebView;
 import android.widget.ImageView;
-
 import com.android.browser.UrlInputView.StateListener;
+import com.android.browser.util.DisplayUtils;
 import com.android.browser.util.ReflectUtils;
 
 /**
@@ -48,13 +48,12 @@ import com.android.browser.util.ReflectUtils;
  */
 public class PhoneUi extends BaseUi {
 
-    private static final String LOGTAG = "PhoneUi";
+    private static final String LOGTAG = PhoneUi.class.getSimpleName();
     private static final int MSG_INIT_NAVSCREEN = 100;
 
     private NavScreen mNavScreen;
     private AnimScreen mAnimScreen;
     private NavigationBarPhone mNavigationBar;
-    private int mActionBarHeight;
 
     boolean mAnimating;
     boolean mShowNav = false;
@@ -67,11 +66,9 @@ public class PhoneUi extends BaseUi {
         super(browser, controller);
         setUseQuickControls(BrowserSettings.getInstance().useQuickControls());
         mNavigationBar = (NavigationBarPhone) mTitleBar.getNavigationBar();
-        TypedValue heightValue = new TypedValue();
-        browser.getTheme().resolveAttribute(
-                R.attr.actionBarSize, heightValue, true);
-        mActionBarHeight = TypedValue.complexToDimensionPixelSize(heightValue.data,
-                browser.getResources().getDisplayMetrics());
+//        TypedValue heightValue = new TypedValue();
+//        browser.getTheme().resolveAttribute(R.attr.actionBarSize, heightValue, true);
+//        mActionBarHeight = TypedValue.complexToDimensionPixelSize(heightValue.data, browser.getResources().getDisplayMetrics());
     }
 
     @Override
@@ -233,19 +230,18 @@ public class PhoneUi extends BaseUi {
     }
 
     // action mode callbacks
-
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
     @Override
     public void onActionModeStarted(ActionMode mode) {
         if (!isEditingUrl()) {
             hideTitleBar();
         } else {
-            mTitleBar.animate().translationY(mActionBarHeight);
+            mTitleBar.animate().translationY(DisplayUtils.dip2px(mActivity, 48) /*mActionBarHeight*/);
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
     @Override
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
     public void onActionModeFinished(boolean inLoad) {
         mTitleBar.animate().translationY(0);
         if (inLoad) {

@@ -655,7 +655,8 @@ public class BrowserProvider2 extends SQLiteContentProvider {
             final CharSequence[] bookmarks = res.getTextArray(
                     R.array.bookmarks);
             int size = bookmarks.length;
-            TypedArray preloads = res.obtainTypedArray(R.array.bookmark_preloads);
+            TypedArray preloads = null/*res.obtainTypedArray(R.array.bookmark_preloads)*/;
+            if(preloads == null) return;
             try {
                 String parent = Long.toString(parentId);
                 String now = Long.toString(System.currentTimeMillis());

@@ -107,7 +107,7 @@ public class RequestHandler extends Thread {
     private static final String SELECTION = History.URL
             + " NOT LIKE 'content:%' AND " + History.THUMBNAIL + " IS NOT NULL";
     void writeTemplatedIndex() throws IOException {
-        Template t = Template.getCachedTemplate(mContext, R.raw.most_visited);
+        Template t = Template.getCachedTemplate(mContext, R.drawable.ic_launcher_browser/*R.raw.most_visited*/);
         Cursor historyResults = mContext.getContentResolver().query(
                 History.CONTENT_URI, PROJECTION, SELECTION,
                 null, History.VISITS + " DESC LIMIT 12");
@@ -159,7 +159,7 @@ public class RequestHandler extends Thread {
         File f = new File(mUri.getPath());
         final File[] files = f.listFiles();
         Arrays.sort(files, sFileComparator);
-        Template t = Template.getCachedTemplate(mContext, R.raw.folder_view);
+        Template t = Template.getCachedTemplate(mContext, /*R.raw.folder_view*/R.drawable.ic_bookmark_on_holo_dark);
         t.assign("path", mUri.getPath());
         t.assign("parent_url", f.getParent() != null ? f.getParent() : f.getPath());
         t.assignLoop("files", new ListEntityIterator() {

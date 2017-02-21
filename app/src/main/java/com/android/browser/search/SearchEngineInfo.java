@@ -74,8 +74,7 @@ public class SearchEngineInfo {
             throw new IllegalArgumentException("No data found for " + name);
         }
         if (mSearchEngineData.length != NUM_FIELDS) {
-                throw new IllegalArgumentException(
-                        name + " has invalid number of fields - " + mSearchEngineData.length);
+            throw new IllegalArgumentException(name + " has invalid number of fields - " + mSearchEngineData.length);
         }
         if (TextUtils.isEmpty(mSearchEngineData[FIELD_SEARCH_URI])) {
             throw new IllegalArgumentException(name + " has an empty search URI");

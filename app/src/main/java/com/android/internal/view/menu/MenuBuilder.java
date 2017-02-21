@@ -46,10 +46,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import static android.support.v4.internal.view.SupportMenu.CATEGORY_MASK;
-import static android.support.v4.internal.view.SupportMenu.CATEGORY_SHIFT;
-import static android.support.v4.internal.view.SupportMenu.USER_MASK;
-
 /**
  * Implementation of the {@link Menu} interface for creating a
  * standard menu UI.
@@ -57,6 +53,9 @@ import static android.support.v4.internal.view.SupportMenu.USER_MASK;
 public class MenuBuilder implements Menu {
     private static final String TAG = "MenuBuilder";
 
+    private static final int CATEGORY_SHIFT = 16;
+    private static final int USER_MASK = 0x0000ffff;
+    private static final int CATEGORY_MASK = 0xffff0000;
     private static final String PRESENTER_KEY = "android:menu:presenters";
     private static final String ACTION_VIEW_STATES_KEY = "android:menu:actionviewstates";
     private static final String EXPANDED_ACTION_VIEW_ID = "android:menu:expandedactionview";

@@ -53,7 +53,7 @@
         android:name="Browser"
         android:backupAgent=".BrowserBackupAgent"
         android:hardwareAccelerated="true"
-        android:icon="@mipmap/ic_launcher_browser"
+        android:icon="@drawable/ic_launcher_browser"
         android:label="@string/application_name"
         android:taskAffinity="android.task.browser">
 
@@ -182,10 +182,15 @@
             android:label="@string/menu_bottom_exit"
             android:launchMode="singleTop"
             android:theme="@style/ShortcutTheme" />
+        <activity
+            android:name=".activitys.BrowserSettingActivity"
+            android:label="@string/menu_bottom_exit"
+            android:launchMode="singleTop"
+            android:theme="@style/ShortcutTheme" />
 
         <activity
             android:name="ShortcutActivity"
-            android:icon="@mipmap/ic_launcher_shortcut_browser_bookmark"
+            android:icon="@drawable/ic_launcher_shortcut_browser_bookmark"
             android:label="@string/shortcut_bookmark"
             android:theme="@style/ShortcutTheme">
 

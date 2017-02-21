@@ -141,7 +141,7 @@ public class BookmarkUtils {
             // Want to create a shortcut icon on the homescreen, so the icon
             // background is the red bookmark.
             Drawable drawable = context.getResources().getDrawableForDensity(
-                    R.mipmap.ic_launcher_shortcut_browser_bookmark, density);
+                    R.drawable.ic_launcher_shortcut_browser_bookmark, density);
             if (drawable instanceof BitmapDrawable) {
                 BitmapDrawable bd = (BitmapDrawable) drawable;
                 return bd.getBitmap();
@@ -150,7 +150,7 @@ public class BookmarkUtils {
             // Use the web browser icon as the background for the icon for an installable
             // web app.
             Drawable drawable = context.getResources().getDrawableForDensity(
-                    R.mipmap.ic_launcher_browser, density);
+                    R.drawable.ic_launcher_browser, density);
             if (drawable instanceof BitmapDrawable) {
                 BitmapDrawable bd = (BitmapDrawable) drawable;
                 return bd.getBitmap();
