@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:layout_marginBottom="48dip"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dip"
+        android:layout_marginTop="25dip"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/menu_night_type"
+            android:layout_width="0dip"
+            android:layout_height="41dip"
+            android:layout_weight="1"
+            android:src="@drawable/menu_night_mode_normal" />
+
+        <ImageView
+            android:id="@+id/menu_pic_type"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/menu_no_pic_normal" />
+
+        <ImageView
+            android:id="@+id/menu_fullscreen_type"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/menu_full_screen_normal" />
+
+        <ImageView
+            android:id="@+id/menu_trace_type"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/menu_no_history_normal" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="0.5dip"
+        android:layout_marginBottom="15dip"
+        android:background="@color/content_divider" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dip"
+        android:orientation="horizontal">
+
+        <com.android.browser.view.MenuItem
+            android:id="@+id/menu_addbookmark"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:menu_icon="@drawable/menu_tool_addbookmark"
+            app:menu_name="@string/menu_bottom_add_bookmark" />
+
+        <com.android.browser.view.MenuItem
+            android:id="@+id/menu_history"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:menu_icon="@drawable/menu_tool_history"
+            app:menu_name="@string/menu_bottom_history" />
+
+        <com.android.browser.view.MenuItem
+            android:id="@+id/menu_download"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:menu_icon="@drawable/menu_tool_download"
+            app:menu_name="@string/menu_bottom_download" />
+
+        <com.android.browser.view.MenuItem
+            android:id="@+id/menu_refresh"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:menu_icon="@drawable/menu_tool_refresh"
+            app:menu_name="@string/menu_bottom_refresh" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.android.browser.view.MenuItem
+            android:id="@+id/menu_setting"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:menu_icon="@drawable/menu_tool_setting"
+            app:menu_name="@string/menu_bottom_setting" />
+
+        <com.android.browser.view.MenuItem
+            android:id="@+id/menu_share"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:menu_icon="@drawable/menu_tool_share"
+            app:menu_name="@string/menu_bottom_share" />
+
+        <com.android.browser.view.MenuItem
+            android:id="@+id/menu_tools"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:menu_icon="@drawable/menu_tool_tools"
+            app:menu_name="@string/menu_bottom_tools" />
+
+        <com.android.browser.view.MenuItem
+            android:id="@+id/menu_exit"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:menu_icon="@drawable/menu_tool_exit"
+            app:menu_name="@string/menu_bottom_exit" />
+
+    </LinearLayout>
+
+</merge>

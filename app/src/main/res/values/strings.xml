@@ -1023,5 +1023,13 @@
     <string name="menu_enter_shortcut_label">enter</string>
     <!-- Displayed in place of the regular shortcut letter when a menu item has Menu+delete for the shortcut. -->
     <string name="menu_delete_shortcut_label">delete</string>
+    <string name="menu_bottom_refresh">Refresh</string>
+    <string name="menu_bottom_add_bookmark">addBookMark</string>
+    <string name="menu_bottom_history">BookMark</string>
+    <string name="menu_bottom_download">Download</string>
+    <string name="menu_bottom_setting">Settings</string>
+    <string name="menu_bottom_share">Share</string>
+    <string name="menu_bottom_tools">Tools</string>
+    <string name="menu_bottom_exit">Exit</string>
 
 </resources>

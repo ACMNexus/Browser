@@ -53,6 +53,7 @@ import android.widget.Toast;
 
 import com.android.browser.Tab.SecurityState;
 import com.android.browser.view.MenuBar;
+import com.android.browser.view.MenuToolBar;
 import com.android.internal.view.menu.MenuBuilder;
 
 import java.util.List;
@@ -93,6 +94,7 @@ public abstract class BaseUi implements UI {
     protected FrameLayout mCustomViewContainer;
     protected FrameLayout mFullscreenContainer;
     protected LinearLayout mBottomTools;
+    protected MenuToolBar mBottomMenuPopup;
     private FrameLayout mFixedTitlebarContainer;
 
     private View mCustomView;
@@ -113,6 +115,7 @@ public abstract class BaseUi implements UI {
     protected MenuBar mMenuBar;
     private NavigationBarBase mNavigationBar;
     protected PieControl mPieControl;
+    protected View mMenuBarParentView;
     private boolean mBlockFocusAnimations;
 
     public BaseUi(Activity browser, UiController controller) {
@@ -125,11 +128,14 @@ public abstract class BaseUi implements UI {
         mLockIconMixed = res.getDrawable(R.drawable.ic_secure_partial_holo_dark);
         FrameLayout frameLayout = (FrameLayout) mActivity.getWindow().getDecorView().findViewById(android.R.id.content);
         LayoutInflater.from(mActivity).inflate(R.layout.custom_screen, frameLayout);
+        mMenuBarParentView = frameLayout.findViewById(R.id.menu_settings);
         mFixedTitlebarContainer = (FrameLayout) frameLayout.findViewById(R.id.fixed_titlebar_container);
         mContentView = (FrameLayout) frameLayout.findViewById(R.id.main_content);
         mCustomViewContainer = (FrameLayout) frameLayout.findViewById(R.id.fullscreen_custom_content);
         mErrorConsoleContainer = (LinearLayout) frameLayout.findViewById(R.id.error_console);
         mBottomTools = (LinearLayout) frameLayout.findViewById(R.id.bottom_menu);
+        mBottomMenuPopup = (MenuToolBar) frameLayout.findViewById(R.id.bottom_pop_tool);
+
         setFullscreen(BrowserSettings.getInstance().useFullscreen());
         mGenericFavicon = res.getDrawable(R.drawable.app_web_browser_sm);
         mTitleBar = new TitleBar(mActivity, mUiController, this, mContentView);
@@ -137,6 +143,7 @@ public abstract class BaseUi implements UI {
         mTitleBar.setProgress(100);
         mNavigationBar = mTitleBar.getNavigationBar();
         mUrlBarAutoShowManager = new UrlBarAutoShowManager(this);
+        mBottomMenuPopup.init(this, mUiController);
     }
 
     private void cancelStopToast() {
@@ -173,6 +180,16 @@ public abstract class BaseUi implements UI {
     public void onConfigurationChanged(Configuration config) {
     }
 
+    public void showPopMenuTool() {
+        if(mBottomMenuPopup.getVisibility() == View.VISIBLE) {
+            mBottomMenuPopup.setVisibility(View.GONE);
+            mMenuBarParentView.setBackgroundResource(R.color.transparent);
+        }else {
+            mBottomMenuPopup.setVisibility(View.VISIBLE);
+            mMenuBarParentView.setBackgroundResource(R.color.menubar_show_background);
+        }
+    }
+
     public Activity getActivity() {
         return mActivity;
     }
@@ -182,6 +199,11 @@ public abstract class BaseUi implements UI {
     public boolean onBackKey() {
         if (mCustomView != null) {
             mUiController.hideCustomView();
+            return true;
+        }
+        if(mBottomMenuPopup.getVisibility() == View.VISIBLE) {
+            mBottomMenuPopup.setVisibility(View.GONE);
+            mMenuBarParentView.setBackgroundResource(R.color.transparent);
             return true;
         }
         return false;
@@ -553,8 +575,7 @@ public abstract class BaseUi implements UI {
 
     protected void dismissIME() {
         if (mInputManager.isActive()) {
-            mInputManager.hideSoftInputFromWindow(mContentView.getWindowToken(),
-                    0);
+            mInputManager.hideSoftInputFromWindow(mContentView.getWindowToken(), 0);
         }
     }
 

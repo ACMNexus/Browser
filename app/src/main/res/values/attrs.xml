@@ -11,10 +11,23 @@
         <attr name="fillViewport" format="boolean" />
     </declare-styleable>
 
+    <declare-styleable name="MenuItemAttrs">
+        <attr name="menu_icon" format="reference" />
+        <attr name="menu_name" format="reference" />
+    </declare-styleable>
+
     <attr name="autoCompleteTextViewStyle" format="reference" />
 
     <attr name="yesNoPreferenceStyle" format="reference" />
 
     <attr name="scrollViewStyle" format="reference" />
+
+    <declare-styleable name="SettingItemStyle">
+        <attr name="setting_state" format="string" />
+        <attr name="setting_title" format="string" />
+        <attr name="setting_desc" format="string" />
+        <attr name="setting_value" format="string" />
+        <attr name="setting_icon" format="reference" />
+    </declare-styleable>
 
 </resources>

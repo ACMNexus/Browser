@@ -74,6 +74,7 @@ public class MenuBar extends LinearLayout implements View.OnClickListener {
                 forwardPager();
                 break;
             case R.id.menu_tools:
+                showToolMenu();
                 break;
             case R.id.menu_home:
                 break;
@@ -99,5 +100,9 @@ public class MenuBar extends LinearLayout implements View.OnClickListener {
 
     private void switchTab() {
         ((PhoneUi) mBaseUi).toggleNavScreen();
+    }
+
+    private void showToolMenu() {
+        mBaseUi.showPopMenuTool();
     }
 }

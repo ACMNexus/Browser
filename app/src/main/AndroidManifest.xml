@@ -172,6 +172,18 @@
         </activity>
 
         <activity
+            android:name=".activitys.DownloadFileActivity"
+            android:label="@string/menu_bottom_exit"
+            android:launchMode="singleTop"
+            android:theme="@style/ShortcutTheme" />
+
+        <activity
+            android:name=".activitys.FileBrowserActivity"
+            android:label="@string/menu_bottom_exit"
+            android:launchMode="singleTop"
+            android:theme="@style/ShortcutTheme" />
+
+        <activity
             android:name="ShortcutActivity"
             android:icon="@mipmap/ic_launcher_shortcut_browser_bookmark"
             android:label="@string/shortcut_bookmark"

@@ -18,34 +18,33 @@
      Currently, the only such element is the Geolocation permissions prompt.
 -->
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<com.android.browser.view.CustomTabView xmlns:android="http://schemas.android.com/apk/res/android"
     android:fitsSystemWindows="true"
-    android:orientation="vertical">
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
 
     <!-- Wrapper layout for the WebView, which must be in a FrameLayout. -->
     <FrameLayout
         android:id="@+id/webview_wrapper"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_width="match_parent" />
 
     <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <android.support.v4.view.ViewPager
+            android:id="@+id/sites"
             android:layout_height="wrap_content"
-            android:text="第三届of岁" />
+            android:layout_width="match_parent" />
 
     </FrameLayout>
 
     <!-- Geolocation permissions prompt -->
     <ViewStub
         android:id="@+id/geolocation_permissions_prompt"
-        android:layout_width="match_parent"
+        android:layout="@layout/geolocation_permissions_prompt"
         android:layout_height="wrap_content"
-        android:layout="@layout/geolocation_permissions_prompt" />
+        android:layout_width="match_parent" />
 
-</FrameLayout>
+</com.android.browser.view.CustomTabView>

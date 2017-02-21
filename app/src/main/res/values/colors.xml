@@ -39,4 +39,7 @@
     <color name="tabViewTitleBackground">#D0000000</color>
     <color name="navtab_bg">#80606060</color>
     <color name="content_divider">#E5E5E5</color>
+    <color name="file_download_bg">#F0F0F0</color>
+    <color name="menubar_show_background">#99000000</color>
+    <color name="transparent">@android:color/transparent</color>
 </resources>

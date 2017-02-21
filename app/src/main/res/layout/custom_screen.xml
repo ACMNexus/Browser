@@ -22,11 +22,6 @@
         android:background="@color/black"
         android:visibility="gone" />
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
-
     <com.android.browser.view.CustomScreenLinearLayout
         android:id="@+id/vertical_layout"
         android:layout_width="match_parent"
@@ -50,17 +45,36 @@
             android:layout_height="0dip"
             android:layout_weight="1" />
 
+    </com.android.browser.view.CustomScreenLinearLayout>
+
+    <FrameLayout
+        android:id="@+id/menu_settings"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom">
+
+        <com.android.browser.view.MenuToolBar
+            android:id="@+id/bottom_pop_tool"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="48.5dip"
+            android:visibility="gone" />
+
         <View
             android:layout_width="fill_parent"
             android:layout_height="0.5dip"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="48dip"
             android:background="@color/content_divider" />
 
         <LinearLayout
             android:id="@+id/bottom_menu"
             android:layout_width="fill_parent"
             android:layout_height="48dip"
+            android:layout_gravity="bottom"
             android:orientation="horizontal" />
 
-    </com.android.browser.view.CustomScreenLinearLayout>
+    </FrameLayout>
 </merge>
 

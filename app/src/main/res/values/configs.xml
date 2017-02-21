@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="home_sites">
+        <item>网址导航</item>
+        <item>头条</item>
+        <item>小说 </item>
+        <item>视频</item>
+        <item>软件应用</item>
+        <item>百度地图</item>
+        <item>百度</item>
+        <item>百度</item>
+        <item>百度</item>
+        <item>百度</item>
+        <item>百度</item>
+        <item>百度</item>
+    </string-array>
+
+</resources>

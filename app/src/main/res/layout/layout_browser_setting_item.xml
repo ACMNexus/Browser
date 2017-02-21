@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="70dip"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="20dip"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/setting_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="选择存放目录"
+            android:textColor="@color/black"
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/setting_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="允许浏览器记住密码" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/setting_icon"
+        android:layout_width="36dip"
+        android:layout_height="36dip"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="20dip"
+        android:src="@drawable/home_feeds_simple_feeds_arrow"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/setting_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="20dip"
+        android:text="默认"
+        android:textSize="16sp"
+        android:visibility="gone" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="0.5dip"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="20dip"
+        android:layout_marginRight="20dip"
+        android:background="@color/content_divider" />
+
+</merge>
