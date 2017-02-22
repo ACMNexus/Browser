@@ -425,7 +425,7 @@ public class Controller
         return mActivity;
     }
 
-    void setUi(UI ui) {
+    public void setUi(UI ui) {
         mUi = ui;
     }
 
@@ -443,7 +443,7 @@ public class Controller
         return mUi;
     }
 
-    int getMaxTabs() {
+    public int getMaxTabs() {
         return mActivity.getResources().getInteger(R.integer.max_tabs);
     }
 

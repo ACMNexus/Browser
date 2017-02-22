@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="none">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.android.browser.view.BrowserSettingItem
+            android:layout_width="fill_parent"
+            android:layout_height="60dip"
+            app:setting_desc="@string/pref_security_accept_cookies_summary"
+            app:setting_state="5"
+            app:setting_title="@string/pref_security_accept_cookies"
+            app:setting_value="UTF-8" />
+
+        <com.android.browser.view.BrowserSettingItem
+            android:layout_width="fill_parent"
+            android:layout_height="60dip"
+            app:setting_desc="@string/pref_privacy_enable_geolocation_summary"
+            app:setting_state="5"
+            app:setting_title="@string/pref_privacy_enable_geolocation"
+            app:setting_value="UTF-8" />
+
+        <com.android.browser.view.BrowserSettingItem
+            android:layout_width="fill_parent"
+            android:layout_height="60dip"
+            app:setting_desc="@string/pref_security_save_form_data_summary"
+            app:setting_state="5"
+            app:setting_title="@string/pref_security_save_form_data"
+            app:setting_value="UTF-8" />
+
+        <com.android.browser.view.BrowserSettingItem
+            android:layout_width="fill_parent"
+            android:layout_height="60dip"
+            app:setting_desc="@string/pref_security_remember_passwords_summary"
+            app:setting_state="5"
+            app:setting_title="@string/pref_security_remember_passwords"
+            app:setting_value="UTF-8" />
+
+        <com.android.browser.view.BrowserSettingItem
+            android:layout_width="fill_parent"
+            android:layout_height="60dip"
+            app:setting_desc="@string/pref_security_show_security_warning_summary"
+            app:setting_state="5"
+            app:setting_title="@string/pref_security_show_security_warning"
+            app:setting_value="UTF-8" />
+
+    </LinearLayout>
+
+</ScrollView>

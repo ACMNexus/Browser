@@ -55,7 +55,8 @@
         android:hardwareAccelerated="true"
         android:icon="@drawable/ic_launcher_browser"
         android:label="@string/application_name"
-        android:taskAffinity="android.task.browser">
+        android:taskAffinity="android.task.browser"
+        android:theme="@style/AppTheme">
 
         <provider
             android:name=".provider.BrowserProvider2"
@@ -175,18 +176,48 @@
             android:name=".activitys.DownloadFileActivity"
             android:label="@string/menu_bottom_exit"
             android:launchMode="singleTop"
-            android:theme="@style/ShortcutTheme" />
+            android:theme="@style/swipe_style" />
 
         <activity
             android:name=".activitys.FileBrowserActivity"
             android:label="@string/menu_bottom_exit"
             android:launchMode="singleTop"
-            android:theme="@style/ShortcutTheme" />
+            android:theme="@style/swipe_style" />
         <activity
             android:name=".activitys.BrowserSettingActivity"
             android:label="@string/menu_bottom_exit"
             android:launchMode="singleTop"
-            android:theme="@style/ShortcutTheme" />
+            android:theme="@style/swipe_style" />
+        <activity
+            android:name=".activitys.SearchEngineActivity"
+            android:label="@string/menu_bottom_exit"
+            android:launchMode="singleTop"
+            android:theme="@style/swipe_style" />
+        <activity
+            android:name=".activitys.FontSizePreviewActivity"
+            android:label="@string/menu_bottom_exit"
+            android:launchMode="singleTop"
+            android:theme="@style/swipe_style" />
+        <activity
+            android:name=".activitys.SecurityActivity"
+            android:label="@string/menu_bottom_exit"
+            android:launchMode="singleTop"
+            android:theme="@style/swipe_style" />
+        <activity
+            android:name=".activitys.ClearDataActivity"
+            android:label="@string/menu_bottom_exit"
+            android:launchMode="singleTop"
+            android:theme="@style/swipe_style" />
+        <activity
+            android:name=".activitys.TextCodingActivity"
+            android:label="@string/menu_bottom_exit"
+            android:launchMode="singleTop"
+            android:theme="@style/swipe_style" />
+        <activity
+            android:name=".activitys.UserAgentActivity"
+            android:label="@string/menu_bottom_exit"
+            android:launchMode="singleTop"
+            android:theme="@style/swipe_style" />
 
         <activity
             android:name="ShortcutActivity"

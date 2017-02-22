@@ -31,9 +31,9 @@ public class BaseActivity extends Activity implements View.OnClickListener, AbsL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setWindowFeature();
+        setWindowFeature();
         this.mActivity = this;
-//        initActionBar();
+        initActionBar();
     }
 
     protected void setWindowFeature() {
@@ -44,7 +44,10 @@ public class BaseActivity extends Activity implements View.OnClickListener, AbsL
         mActionBar = getActionBar();
         if (mActionBar != null) {
             mActionBar.setDisplayShowCustomEnabled(true);
+            mActionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
             View view = View.inflate(this, R.layout.layout_title, null);
+            mActionBar.setCustomView(view);
+
             mLeftIcon = (ImageView) view.findViewById(R.id.iv_left_icon);
             mLeftTitleView = (TextView) view.findViewById(R.id.tv_title_left);
             mRightiIcon = (ImageView) view.findViewById(R.id.iv_right_icon);

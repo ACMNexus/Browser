@@ -202,12 +202,12 @@
     <string name="pref_privacy_clear_form_data_summary" msgid="7702091143640546200">"清除所有保存的表单数据"</string>
     <string name="pref_privacy_clear_form_data_dlg" msgid="8205626042241338983">"要删除所有保存的表单数据吗？"</string>
     <string name="pref_privacy_clear_passwords" msgid="4750234112289277480">"清除密码"</string>
-    <string name="pref_privacy_clear_passwords_summary" msgid="8856782718942903335">"清除所有保存的密码"</string>
+    <string name="pref_privacy_clear_passwords_summary" msgid="8856782718942903335">"清除所有保存的用户米和密码"</string>
     <string name="pref_privacy_clear_passwords_dlg" msgid="5836576259947160045">"要删除所有保存的密码吗？"</string>
     <string name="pref_privacy_location_title" msgid="7458378016606081067">"位置"</string>
     <string name="pref_privacy_enable_geolocation" msgid="1395040170290765686">"启用位置信息功能"</string>
     <string name="pref_privacy_enable_geolocation_summary" msgid="8437020934664306205">"允许网站请求获取您的位置信息"</string>
-    <string name="pref_privacy_clear_geolocation_access" msgid="6649680770030042980">"取消获取位置信息的权限"</string>
+    <string name="pref_privacy_clear_geolocation_access" msgid="6649680770030042980">"位置信息"</string>
     <string name="pref_privacy_clear_geolocation_access_summary" msgid="7750143359497314679">"取消所有网站获取您位置信息的权限"</string>
     <string name="pref_privacy_clear_geolocation_access_dlg" msgid="3190928760598034346">"要清除网站获取位置信息的权限吗？"</string>
     <string name="pref_security_passwords_title" msgid="5734190542383756711">"密码"</string>
@@ -415,5 +415,11 @@
     <string name="pref_setting_filter_ad_title">广告过滤</string>
     <string name="pref_setting_download_dir_title">选择存放的目录</string>
     <string name="pref_setting_download_dir_desc">/storage/emulated/0/Download/</string>
+    <string name="pref_setting_defalut_browser_title">设置为默认浏览器</string>
+    <string name="pref_setting_exitconfirm_title">退出前确认</string>
+    <string name="pref_setting_display_statusbar_title">显示状态栏</string>
+    <string name="pref_privacy_clear_data_operate">清除</string>
+    <string name="pref_privacy_clearall">全部清除</string>
+    <string name="setting_reset_browser_config">恢复默认设置</string>
 
 </resources>

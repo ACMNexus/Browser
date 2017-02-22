@@ -1042,5 +1042,11 @@
     <string name="pref_setting_filter_ad_title">广告过滤</string>
     <string name="pref_setting_download_dir_title">选择存放的目录</string>
     <string name="pref_setting_download_dir_desc">/storage/emulated/0/Download/</string>
+    <string name="pref_setting_defalut_browser_title">设置为默认浏览器</string>
+    <string name="pref_setting_exitconfirm_title">退出前确认</string>
+    <string name="pref_setting_display_statusbar_title">显示状态栏</string>
+    <string name="pref_privacy_clear_data_operate">清除</string>
+    <string name="pref_privacy_clearall">全部清除</string>
+    <string name="setting_reset_browser_config">恢复默认设置</string>
 
 </resources>

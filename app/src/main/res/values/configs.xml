@@ -16,4 +16,9 @@
         <item>百度</item>
     </string-array>
 
+    <string name="defalut_user_agent">默认</string>
+    <string name="iphone_user_agent">iPhone</string>
+    <string name="ipad_user_agent">iPad</string>
+    <string name="desktop_user_agent">桌面版</string>
+
 </resources>

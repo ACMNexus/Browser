@@ -2,7 +2,9 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#F2F2F2"
+    android:scrollbars="none">
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -12,7 +14,7 @@
         <com.android.browser.view.BrowserSettingItem
             android:id="@+id/setting_search"
             android:layout_width="fill_parent"
-            android:layout_height="70dip"
+            android:layout_height="60dip"
             app:setting_icon="@drawable/ic_launcher_browser"
             app:setting_state="2"
             app:setting_title="@string/pref_content_search_engine" />
@@ -20,7 +22,7 @@
         <com.android.browser.view.BrowserSettingItem
             android:id="@+id/setting_font_size"
             android:layout_width="fill_parent"
-            android:layout_height="70dip"
+            android:layout_height="60dip"
             app:setting_desc="@string/pref_setting_font_size_desc"
             app:setting_state="1"
             app:setting_title="@string/pref_font_size_category" />
@@ -28,7 +30,7 @@
         <com.android.browser.view.BrowserSettingItem
             android:id="@+id/setting_security"
             android:layout_width="fill_parent"
-            android:layout_height="70dip"
+            android:layout_height="60dip"
             app:setting_desc="@string/pref_setting_security_desc"
             app:setting_state="1"
             app:setting_title="@string/pref_privacy_security_title" />
@@ -36,21 +38,21 @@
         <com.android.browser.view.BrowserSettingItem
             android:id="@+id/setting_clear_data"
             android:layout_width="fill_parent"
-            android:layout_height="70dip"
+            android:layout_height="60dip"
             app:setting_state="-1"
             app:setting_title="@string/pref_setting_clear_data_title" />
 
         <com.android.browser.view.BrowserSettingItem
             android:id="@+id/setting_filter_ad"
             android:layout_width="fill_parent"
-            android:layout_height="70dip"
+            android:layout_height="60dip"
             app:setting_state="-1"
             app:setting_title="@string/pref_setting_filter_ad_title" />
 
         <com.android.browser.view.BrowserSettingItem
             android:id="@+id/setting_download_dir"
             android:layout_width="fill_parent"
-            android:layout_height="70dip"
+            android:layout_height="60dip"
             app:setting_desc="@string/pref_setting_download_dir_desc"
             app:setting_state="1"
             app:setting_title="@string/pref_setting_download_dir_title" />
@@ -58,7 +60,7 @@
         <com.android.browser.view.BrowserSettingItem
             android:id="@+id/setting_user_agent"
             android:layout_width="fill_parent"
-            android:layout_height="70dip"
+            android:layout_height="60dip"
             app:setting_state="3"
             app:setting_title="@string/pref_setting_user_agent_title"
             app:setting_value="@string/pref_setting_user_agent_value" />
@@ -66,31 +68,76 @@
         <com.android.browser.view.BrowserSettingItem
             android:id="@+id/setting_text_coding"
             android:layout_width="fill_parent"
-            android:layout_height="70dip"
+            android:layout_height="60dip"
             app:setting_state="3"
             app:setting_title="@string/pref_default_text_encoding"
             app:setting_value="UTF-8" />
 
         <com.android.browser.view.BrowserSettingItem
+            android:id="@+id/setting_statusbar"
+            android:layout_width="fill_parent"
+            android:layout_height="60dip"
+            app:setting_state="4"
+            app:setting_title="@string/pref_setting_display_statusbar_title"
+            app:setting_value="UTF-8" />
+
+        <com.android.browser.view.BrowserSettingItem
+            android:id="@+id/setting_default_browser"
+            android:layout_width="fill_parent"
+            android:layout_height="60dip"
+            app:setting_state="4"
+            app:setting_title="@string/pref_setting_defalut_browser_title"
+            app:setting_value="UTF-8" />
+
+        <com.android.browser.view.BrowserSettingItem
+            android:id="@+id/setting_exit_confirm"
+            android:layout_width="fill_parent"
+            android:layout_height="60dip"
+            app:setting_state="4"
+            app:setting_title="@string/pref_setting_exitconfirm_title"
+            app:setting_value="UTF-8" />
+
+        <com.android.browser.view.BrowserSettingItem
+            android:id="@+id/setting_force_scale"
+            android:layout_width="fill_parent"
+            android:layout_height="60dip"
+            app:setting_state="4"
+            app:setting_title="@string/pref_force_userscalable"
+            app:setting_value="UTF-8" />
+
+        <com.android.browser.view.BrowserSettingItem
             android:id="@+id/setting_rate_us"
             android:layout_width="fill_parent"
-            android:layout_height="70dip"
+            android:layout_height="60dip"
+            android:layout_marginTop="15dip"
             app:setting_state="-1"
             app:setting_title="@string/pref_setting_rate_us_title" />
 
         <com.android.browser.view.BrowserSettingItem
             android:id="@+id/setting_feedback"
             android:layout_width="fill_parent"
-            android:layout_height="70dip"
+            android:layout_height="60dip"
             app:setting_state="-1"
             app:setting_title="@string/pref_setting_feedback_title" />
 
         <com.android.browser.view.BrowserSettingItem
             android:id="@+id/setting_about"
             android:layout_width="fill_parent"
-            android:layout_height="70dip"
+            android:layout_height="60dip"
             app:setting_state="-1"
             app:setting_title="@string/pref_setting_about_title" />
+
+        <TextView
+            android:id="@+id/reset_browser_config"
+            android:layout_width="fill_parent"
+            android:layout_height="60dip"
+            android:layout_marginBottom="15dip"
+            android:layout_marginTop="15dip"
+            android:background="@color/white"
+            android:gravity="center"
+            android:text="@string/setting_reset_browser_config"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
 
     </LinearLayout>
 

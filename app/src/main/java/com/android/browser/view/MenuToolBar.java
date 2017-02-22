@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import com.android.browser.BaseUi;
+import com.android.browser.BrowserPreferencesPage;
+import com.android.browser.BrowserSettings;
 import com.android.browser.R;
 import com.android.browser.UiController;
 import com.android.browser.activitys.BrowserSettingActivity;
@@ -96,6 +98,7 @@ public class MenuToolBar extends LinearLayout implements View.OnClickListener {
             case R.id.menu_night_type:
                 break;
             case R.id.menu_pic_type:
+                ActivityUtils.startNextPager(mContext, BrowserPreferencesPage.class);
                 break;
             case R.id.menu_fullscreen_type:
                 break;

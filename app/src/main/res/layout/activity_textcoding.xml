@@ -1,6 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="none">
 
-</LinearLayout>
+    <LinearLayout
+        android:id="@+id/code_names"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.android.browser.view.BrowserSettingItem
+            android:id="@+id/latin_code"
+            android:layout_width="fill_parent"
+            android:layout_height="60dip"
+            app:setting_icon="@drawable/ic_browser_complete"
+            app:setting_state="2"
+            app:setting_title="@string/pref_content_search_engine" />
+
+        <com.android.browser.view.BrowserSettingItem
+            android:id="@+id/unicode_code"
+            android:layout_width="fill_parent"
+            android:layout_height="60dip"
+            app:setting_icon="@null"
+            app:setting_state="2"
+            app:setting_title="@string/pref_content_search_engine" />
+
+        <com.android.browser.view.BrowserSettingItem
+            android:id="@+id/gbk_code"
+            android:layout_width="fill_parent"
+            android:layout_height="60dip"
+            app:setting_icon="@null"
+            app:setting_state="2"
+            app:setting_title="@string/pref_content_search_engine" />
+
+        <com.android.browser.view.BrowserSettingItem
+            android:id="@+id/big5_code"
+            android:layout_width="fill_parent"
+            android:layout_height="60dip"
+            app:setting_icon="@null"
+            app:setting_state="2"
+            app:setting_title="@string/pref_content_search_engine" />
+
+        <com.android.browser.view.BrowserSettingItem
+            android:id="@+id/isojp_code"
+            android:layout_width="fill_parent"
+            android:layout_height="60dip"
+            app:setting_icon="@null"
+            app:setting_state="2"
+            app:setting_title="@string/pref_content_search_engine" />
+
+        <com.android.browser.view.BrowserSettingItem
+            android:id="@+id/jis_code"
+            android:layout_width="fill_parent"
+            android:layout_height="60dip"
+            app:setting_icon="@null"
+            app:setting_state="2"
+            app:setting_title="@string/pref_content_search_engine" />
+
+        <com.android.browser.view.BrowserSettingItem
+            android:id="@+id/eucjp_code"
+            android:layout_width="fill_parent"
+            android:layout_height="60dip"
+            app:setting_icon="@null"
+            app:setting_state="2"
+            app:setting_title="@string/pref_content_search_engine" />
+
+        <com.android.browser.view.BrowserSettingItem
+            android:id="@+id/euckr_code"
+            android:layout_width="fill_parent"
+            android:layout_height="60dip"
+            app:setting_icon="@null"
+            app:setting_state="2"
+            app:setting_title="@string/pref_content_search_engine" />
+
+    </LinearLayout>
+
+</ScrollView>
