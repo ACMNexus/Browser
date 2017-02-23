@@ -17,12 +17,9 @@ package com.android.browser.search;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.content.res.Resources.NotFoundException;
 import android.text.TextUtils;
 import android.util.Log;
-
 import com.android.browser.R;
-
 import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.Locale;
@@ -51,6 +48,8 @@ public class SearchEngineInfo {
     private static final String PARAMETER_INPUT_ENCODING = "{inputEncoding}";
 
     private final String mName;
+    private int mSeachEngineIcon;
+    private boolean mIsChecked;
 
     // The array of strings defining this search engine. The array values are in the same order as
     // the above enumeration definition.
@@ -89,10 +88,8 @@ public class SearchEngineInfo {
         }
 
         String language_str = language.toString();
-        mSearchEngineData[FIELD_SEARCH_URI] =
-                mSearchEngineData[FIELD_SEARCH_URI].replace(PARAMETER_LANGUAGE, language_str);
-        mSearchEngineData[FIELD_SUGGEST_URI] =
-                mSearchEngineData[FIELD_SUGGEST_URI].replace(PARAMETER_LANGUAGE, language_str);
+        mSearchEngineData[FIELD_SEARCH_URI] = mSearchEngineData[FIELD_SEARCH_URI].replace(PARAMETER_LANGUAGE, language_str);
+        mSearchEngineData[FIELD_SUGGEST_URI] = mSearchEngineData[FIELD_SUGGEST_URI].replace(PARAMETER_LANGUAGE, language_str);
 
         // Default to UTF-8 if not specified.
         String enc = mSearchEngineData[FIELD_ENCODING];
@@ -148,6 +145,22 @@ public class SearchEngineInfo {
         return mSearchEngineData[FIELD_SEARCH_URI];
     }
 
+    public int getSeachEngineIcon() {
+        return mSeachEngineIcon;
+    }
+
+    public void setSeachEngineIcon(int iconResId) {
+        this.mSeachEngineIcon = iconResId;
+    }
+
+    public boolean IsChecked() {
+        return mIsChecked;
+    }
+
+    public void setChecked(boolean isChecked) {
+        this.mIsChecked = isChecked;
+    }
+
     /**
      * Formats a launchable uri out of the template uri by replacing the template parameters with
      * actual values.
@@ -171,5 +184,4 @@ public class SearchEngineInfo {
     public String toString() {
         return "SearchEngineInfo{" + Arrays.toString(mSearchEngineData) + "}";
     }
-
 }

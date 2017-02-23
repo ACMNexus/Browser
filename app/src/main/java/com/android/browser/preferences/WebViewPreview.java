@@ -33,8 +33,7 @@ public abstract class WebViewPreview extends Preference
 
     protected WebView mWebView;
 
-    public WebViewPreview(
-            Context context, AttributeSet attrs, int defStyle) {
+    public WebViewPreview(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(context);
     }
@@ -93,8 +92,7 @@ public abstract class WebViewPreview extends Preference
     }
 
     @Override
-    public void onSharedPreferenceChanged(
-            SharedPreferences sharedPreferences, String key) {
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         updatePreview(false);
     }
 

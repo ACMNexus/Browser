@@ -16,6 +16,23 @@
         <item>百度</item>
     </string-array>
 
+    <string-array name="search_engines" translatable="false">
+        <item>baidu</item>
+        <item>google</item>
+        <item>search_360</item>
+        <item>sougou</item>
+        <item>yahoo</item>
+        <item>bing</item>
+    </string-array>
+
+    <string-array name="wordsArray">
+        <item>初级码农</item>
+        <item>中级码农</item>
+        <item>高级码农</item>
+        <item>CTO</item>
+        <item>卒</item>
+    </string-array>
+
     <string name="defalut_user_agent">默认</string>
     <string name="iphone_user_agent">iPhone</string>
     <string name="ipad_user_agent">iPad</string>

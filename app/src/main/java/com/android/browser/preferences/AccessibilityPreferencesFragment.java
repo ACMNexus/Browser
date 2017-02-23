@@ -107,19 +107,15 @@ public class AccessibilityPreferencesFragment extends PreferenceFragment
         }
         if (PreferenceKeys.PREF_TEXT_ZOOM.equals(pref.getKey())) {
             BrowserSettings settings = BrowserSettings.getInstance();
-            updateTextZoomSummary(pref, settings
-                    .getAdjustedTextZoom((Integer) objValue));
+            updateTextZoomSummary(pref, settings.getAdjustedTextZoom((Integer) objValue));
         }
         if (PreferenceKeys.PREF_DOUBLE_TAP_ZOOM.equals(pref.getKey())) {
             BrowserSettings settings = BrowserSettings.getInstance();
-            updateDoubleTapZoomSummary(pref, settings
-                    .getAdjustedDoubleTapZoom((Integer) objValue));
+            updateDoubleTapZoomSummary(pref, settings.getAdjustedDoubleTapZoom((Integer) objValue));
         }
         if (PreferenceKeys.PREF_INVERTED_CONTRAST.equals(pref.getKey())) {
-            updateInvertedContrastSummary(pref,
-                    (int) ((10 + (Integer) objValue) * 10));
+            updateInvertedContrastSummary(pref, (int) ((10 + (Integer) objValue) * 10));
         }
         return true;
     }
-
 }

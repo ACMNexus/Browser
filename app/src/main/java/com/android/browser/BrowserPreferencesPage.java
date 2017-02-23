@@ -93,7 +93,7 @@ public class BrowserPreferencesPage extends PreferenceActivity {
 
     @Override
     public Intent onBuildStartFragmentIntent(String fragmentName, Bundle args,
-            int titleRes, int shortTitleRes) {
+                                             int titleRes, int shortTitleRes) {
         Intent intent = super.onBuildStartFragmentIntent(fragmentName, args,
                 titleRes, shortTitleRes);
         String url = getIntent().getStringExtra(CURRENT_PAGE);

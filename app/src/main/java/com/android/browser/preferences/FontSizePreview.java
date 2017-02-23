@@ -16,13 +16,14 @@
 
 package com.android.browser.preferences;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.Resources;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-
 import com.android.browser.BrowserSettings;
 import com.android.browser.R;
 
@@ -30,10 +31,9 @@ public class FontSizePreview extends WebViewPreview {
 
     static final String HTML_FORMAT = "<!DOCTYPE html><html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"><style type=\"text/css\">p { margin: 2px auto;}</style><body><p style=\"font-size: 4pt\">%s</p><p style=\"font-size: 8pt\">%s</p><p style=\"font-size: 10pt\">%s</p><p style=\"font-size: 14pt\">%s</p><p style=\"font-size: 18pt\">%s</p></body></html>";
 
-    String mHtml;
+    private String mHtml;
 
-    public FontSizePreview(
-            Context context, AttributeSet attrs, int defStyle) {
+    public FontSizePreview(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
 
@@ -54,6 +54,7 @@ public class FontSizePreview extends WebViewPreview {
     }
 
     @Override
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     protected void updatePreview(boolean forceReload) {
         if (mWebView == null) return;
 

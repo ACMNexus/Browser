@@ -46,8 +46,7 @@ public class DefaultSearchEngine implements SearchEngine {
     }
 
     public static DefaultSearchEngine create(Context context) {
-        SearchManager searchManager =
-                (SearchManager) context.getSystemService(Context.SEARCH_SERVICE);
+        SearchManager searchManager = (SearchManager) context.getSystemService(Context.SEARCH_SERVICE);
         ComponentName name = ReflectUtils.getWebSearchActivity(searchManager);
         if (name == null) return null;
         SearchableInfo searchable = searchManager.getSearchableInfo(name);

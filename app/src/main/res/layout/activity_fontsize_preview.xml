@@ -1,6 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-</LinearLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/text_zoom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pref_text_zoom" />
+
+        <com.android.browser.view.RangeSeekBar
+            android:id="@+id/seekbar4"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            app:markTextArray="@array/wordsArray"
+            app:lineColorSelected="@color/colorAccent"
+            app:lineColorEdge="@color/colorSeekBarDefault"
+            app:textPadding="17dp"
+            app:cells="4"
+            app:hideProgressHint="true"
+            app:textSize="12sp"
+            app:hintBGHeight="28dp"
+            app:seekBarHeight="8dp"
+            app:thumbSize="26dp"
+            app:cellMode="other"
+            app:seekBarMode="single" />
+
+        <TextView
+            android:id="@+id/min_font_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pref_min_font_size" />
+
+    </LinearLayout>
+
+</ScrollView>

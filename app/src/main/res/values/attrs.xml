@@ -29,31 +29,87 @@
         <attr name="setting_value" format="string" />
         <attr name="setting_icon" format="reference" />
         <attr name="setting_checked" format="boolean" />
-        <attr name="settingValueColor" format="color"/>
+        <attr name="settingValueColor" format="color" />
     </declare-styleable>
 
     <declare-styleable name="SwitchButton">
-        <attr name="kswThumbDrawable" format="reference"/>
-        <attr name="kswThumbColor" format="color|reference"/>
-        <attr name="kswThumbMargin" format="dimension|reference"/>
-        <attr name="kswThumbMarginTop" format="dimension|reference"/>
-        <attr name="kswThumbMarginBottom" format="dimension|reference"/>
-        <attr name="kswThumbMarginLeft" format="dimension|reference"/>
-        <attr name="kswThumbMarginRight" format="dimension|reference"/>
-        <attr name="kswThumbWidth" format="dimension|reference"/>
-        <attr name="kswThumbHeight" format="dimension|reference"/>
-        <attr name="kswThumbRadius" format="dimension|reference"/>
-        <attr name="kswBackRadius" format="dimension|reference"/>
-        <attr name="kswBackDrawable" format="reference"/>
-        <attr name="kswBackColor" format="color|reference"/>
-        <attr name="kswFadeBack" format="boolean"/>
-        <attr name="kswBackMeasureRatio" format="float"/>
-        <attr name="kswAnimationDuration" format="integer"/>
-        <attr name="kswTintColor" format="color|reference"/>
-        <attr name="kswTextOn" format="string"/>
-        <attr name="kswTextOff" format="string"/>
-        <attr name="kswTextMarginH" format="dimension"/>
-        <attr name="kswAutoAdjustTextPosition" format="boolean"/>
+        <attr name="kswThumbDrawable" format="reference" />
+        <attr name="kswThumbColor" format="color|reference" />
+        <attr name="kswThumbMargin" format="dimension|reference" />
+        <attr name="kswThumbMarginTop" format="dimension|reference" />
+        <attr name="kswThumbMarginBottom" format="dimension|reference" />
+        <attr name="kswThumbMarginLeft" format="dimension|reference" />
+        <attr name="kswThumbMarginRight" format="dimension|reference" />
+        <attr name="kswThumbWidth" format="dimension|reference" />
+        <attr name="kswThumbHeight" format="dimension|reference" />
+        <attr name="kswThumbRadius" format="dimension|reference" />
+        <attr name="kswBackRadius" format="dimension|reference" />
+        <attr name="kswBackDrawable" format="reference" />
+        <attr name="kswBackColor" format="color|reference" />
+        <attr name="kswFadeBack" format="boolean" />
+        <attr name="kswBackMeasureRatio" format="float" />
+        <attr name="kswAnimationDuration" format="integer" />
+        <attr name="kswTintColor" format="color|reference" />
+        <attr name="kswTextOn" format="string" />
+        <attr name="kswTextOff" format="string" />
+        <attr name="kswTextMarginH" format="dimension" />
+        <attr name="kswAutoAdjustTextPosition" format="boolean" />
+    </declare-styleable>
+
+    <!-- ******************** 参数解释 ******************** -->
+    <!--最大值-->
+    <!--最小值-->
+    <!--两个按钮的最小间距-->
+    <!--cells 等于0为普通模式，大于1时切换为刻度模式-->
+    <!--是否关闭进度提示-->
+    <!--拖动后的Seekbar颜色-->
+    <!--默认的Seekbar颜色-->
+    <!--进度为最小值或最大值时按钮的颜色，默认此属性不调用-->
+    <!--进度不为最小值或最大值时按钮的颜色，默认此属性不调用-->
+    <!--刻度文字，不设置的时候默认隐藏-->
+    <!--按钮的背景资源，不设置的时候默认为圆形按钮-->
+    <!--进度提示背景资源，必须使用 9 path文件-->
+    <!--刻度文字与进度条之间的距离-->
+    <!--刻度文字和进度提示文字的大小-->
+    <!--进度提示背景的高度，不设置时根据文字尺寸自适应-->
+    <!--进度提示背景的宽度，不设置时根据文字尺寸自适应-->
+    <!--进度提示背景和进度条之间的距离-->
+    <!--进度条的高度-->
+    <!--按钮的尺寸-->
+    <!--刻度模式
+    number 根据刻度的实际所占比例分配位置（markTextArray中必须都为数字）
+    other 平分当前布局（markTextArray可以是任何字符）
+    -->
+    <!--单向、双向模式 single 单向模式，只有一个按钮 range 双向模式，有两个按钮 -->
+    <declare-styleable name="RangeSeekBar">
+        <attr name="max" format="float" />
+        <attr name="min" format="float" />
+        <attr name="reserve" format="float" />
+        <attr name="cells" format="integer" />
+        <attr name="hideProgressHint" format="boolean" />
+        <attr name="lineColorSelected" format="color" />
+        <attr name="lineColorEdge" format="color" />
+        <attr name="thumbPrimaryColor" format="color" />
+        <attr name="thumbSecondaryColor" format="color" />
+        <attr name="markTextArray" format="reference" />
+        <attr name="seekBarResId" format="reference" />
+        <!-- must use 9 path ！！！-->
+        <attr name="progressHintResId" format="reference" />
+        <attr name="textPadding" format="dimension" />
+        <attr name="textSize" format="dimension" />
+        <attr name="hintBGHeight" format="dimension" />
+        <attr name="hintBGWith" format="dimension" />
+        <attr name="hintBGPadding" format="dimension" />
+        <attr name="seekBarHeight" format="dimension" />
+        <attr name="thumbSize" format="dimension" />
+        <attr name="cellMode" format="enum">
+            <enum name="number" value="0" />
+            <enum name="other" value="1" />
+        </attr>
+        <attr name="seekBarMode" format="enum">
+            <enum name="single" value="1" />
+            <enum name="range" value="2" />
+        </attr>
     </declare-styleable>
 
 </resources>

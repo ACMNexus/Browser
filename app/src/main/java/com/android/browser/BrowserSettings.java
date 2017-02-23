@@ -610,7 +610,7 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener,
     // -----------------------------
 
     public String getSearchEngineName() {
-        return mPrefs.getString(PREF_SEARCH_ENGINE, SearchEngine.GOOGLE);
+        return mPrefs.getString(PREF_SEARCH_ENGINE, SearchEngine.BAIDU);
     }
 
     public boolean allowAppTabs() {

@@ -123,6 +123,22 @@ http://www.opensearch.org/Specifications/OpenSearch/1.1/Draft_4#OpenSearch_1.1_p
         <item>GB2312</item>
         <item></item>
     </string-array>
+    <string-array name="search_360">
+        <item>360搜索</item>
+        <item>so.com</item>
+        <item></item>
+        <item>https://www.so.com/s?q={searchTerms}</item>
+        <item>UTF-8</item>
+        <item></item>
+    </string-array>
+    <string-array name="sougou">
+        <item>搜狗</item>
+        <item>sogou.com</item>
+        <item></item>
+        <item>https://www.sogou.com/web?query={searchTerms}</item>
+        <item>UTF-8</item>
+        <item />
+    </string-array>
     <string-array name="yahoo_ch" translatable="false">
         <item>Yahoo! Suche</item>
         <item>ch.yahoo.com</item>
