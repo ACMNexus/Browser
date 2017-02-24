@@ -2,11 +2,12 @@ package com.android.browser.activitys;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.LinearLayout;
-
+import android.widget.AdapterView;
+import android.widget.ListView;
 import com.android.browser.R;
-import com.android.browser.view.BrowserSettingItem;
-
+import com.android.browser.adapter.TextCodingAdapter;
+import com.android.browser.bean.TextCodeInfo;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,41 +15,45 @@ import java.util.List;
  */
 public class TextCodingActivity extends BaseActivity {
 
-    private BrowserSettingItem mLatinCode;
-    private BrowserSettingItem mUTF8Code;
-    private BrowserSettingItem mGBKCode;
-    private BrowserSettingItem mBig5Code;
-    private BrowserSettingItem mISOJPCode;
-    private BrowserSettingItem mJISJPCode;
-    private BrowserSettingItem mEUCJPCode;
-    private BrowserSettingItem mEUCKRCode;
-
-    private LinearLayout mCodeNames;
-    private List<BrowserSettingItem> mCodeViews;
+    private ListView mTextCodeListView;
+    private TextCodingAdapter mAdapter;
+    private List<TextCodeInfo> mTextCodeInfos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_textcoding);
 
-        String codingtitles[] = getResources().getStringArray(R.array.pref_default_text_encoding_choices);
-        mCodeNames = (LinearLayout) findViewById(R.id.code_names);
-        for(int i = 0; i < mCodeNames.getChildCount(); i++) {
-            View view = mCodeNames.getChildAt(0);
-            if(view instanceof BrowserSettingItem) {
-                mCodeViews.add((BrowserSettingItem) view);
-                mCodeViews.get(i).setSettingTitle(codingtitles[i]);
-                mCodeViews.get(i).setOnClickListener(this);
-            }
-        }
+        init();
+        initView();
+    }
 
-        /*mLatinCode.setSettingTitle(codingtitles[0]);
-        mUTF8Code.setSettingTitle(codingtitles[1]);
-        mGBKCode.setSettingTitle(codingtitles[2]);
-        mBig5Code.setSettingTitle(codingtitles[3]);
-        mISOJPCode.setSettingTitle(codingtitles[4]);
-        mJISJPCode.setSettingTitle(codingtitles[5]);
-        mEUCJPCode.setSettingTitle(codingtitles[6]);
-        mEUCKRCode.setSettingTitle(codingtitles[7]);*/
+    private void init() {
+        TextCodeInfo textCodeInfo;
+        mTextCodeInfos = new ArrayList();
+        String defalutCode = mSettingValues.getDefaultTextEncoding();
+        String textCodeValue[] = getResources().getStringArray(R.array.pref_default_text_encoding_choices);
+        String textCodeKeys[] = getResources().getStringArray(R.array.pref_default_text_encoding_values);
+        for(int i = 0; i < textCodeKeys.length; i++) {
+            textCodeInfo = new TextCodeInfo(textCodeKeys[i], textCodeValue[i], false);
+            if(defalutCode.equals(textCodeKeys[i])) {
+                textCodeInfo.setIsChecked(true);
+            }
+            mTextCodeInfos.add(textCodeInfo);
+        }
+    }
+
+    private void initView() {
+        mAdapter = new TextCodingAdapter(this);
+        mTextCodeListView = (ListView) findViewById(R.id.codeListView);
+        mTextCodeListView.setOnItemClickListener(this);
+        mTextCodeListView.setAdapter(mAdapter);
+        mAdapter.setItems(mTextCodeInfos);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+        mSettingValues.setDefalutTextCoding(mAdapter.getItem(position).getTextCodeName());
+        finish();
     }
 }

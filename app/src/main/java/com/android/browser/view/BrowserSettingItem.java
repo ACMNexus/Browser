@@ -5,17 +5,17 @@ import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.android.browser.R;
 import com.android.browser.util.DisplayUtils;
 
 /**
  * Created by Luooh on 2017/2/16.
  */
-public class BrowserSettingItem extends RelativeLayout {
+public class BrowserSettingItem extends RelativeLayout implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
     private Context mContext;
     private TextView mSettingTitle;
@@ -23,7 +23,6 @@ public class BrowserSettingItem extends RelativeLayout {
     private ImageView mSettingIcon;
     private TextView mSettingValue;
     private SwitchButton mSettingToggle;
-
     private static final int SETTING_NONE_SHOW = -1;
     private static final int SETTING_ONLY_DESC = 1;
     private static final int SETTING_ONLY_ICON = 2;
@@ -31,6 +30,8 @@ public class BrowserSettingItem extends RelativeLayout {
     private static final int SETTING_ONLY_TOGGLE = 4;
     private static final int SETTING_DESC_AND_TOGGLE = 5;
     private static final int SETTING_DESC_AND_VALUE = 6;
+
+    private OnStateChangeListener mOnStateChangeListener;
 
     public BrowserSettingItem(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -101,6 +102,9 @@ public class BrowserSettingItem extends RelativeLayout {
             mSettingValue.setTextColor(valueColorResId);
         }
 
+        setOnClickListener(this);
+        mSettingToggle.setOnCheckedChangeListener(this);
+
         setItemState(state);
 
         array.recycle();
@@ -108,6 +112,30 @@ public class BrowserSettingItem extends RelativeLayout {
 
     public void setSettingTitle(String title) {
         mSettingTitle.setText(title);
+    }
+
+    public void setChecked(boolean isChecked) {
+        mSettingToggle.setChecked(isChecked);
+    }
+
+    public void setCheckedImmediatelyNoEvent(boolean isChecked) {
+        mSettingToggle.setCheckedImmediatelyNoEvent(isChecked);
+    }
+
+    public void setCheckedImmediately(boolean isChecked) {
+        mSettingToggle.setCheckedImmediately(isChecked);
+    }
+
+    public void setCheckedNoEvent(boolean isChecked) {
+        mSettingToggle.setCheckedNoEvent(isChecked);
+    }
+
+    public boolean isChecked() {
+        return mSettingToggle.isChecked();
+    }
+
+    public void setOnStateChangeListener(OnStateChangeListener listener) {
+        this.mOnStateChangeListener = listener;
     }
 
     private void setItemState(int state) {
@@ -135,5 +163,27 @@ public class BrowserSettingItem extends RelativeLayout {
                 mSettingValue.setVisibility(View.VISIBLE);
                 break;
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(v == this) {
+            if(mOnStateChangeListener != null) {
+                mOnStateChangeListener.onStateChange(this, !mSettingToggle.isChecked());
+            }
+        }
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if(buttonView == mSettingToggle) {
+            if(mOnStateChangeListener != null) {
+                mOnStateChangeListener.onStateChange(this, isChecked);
+            }
+        }
+    }
+
+    public interface OnStateChangeListener {
+        void onStateChange(View view, boolean state);
     }
 }

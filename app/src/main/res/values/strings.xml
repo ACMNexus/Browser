@@ -613,18 +613,6 @@
     </string-array>
     <!-- Dialog box title -->
     <string name="pref_default_text_encoding_dialogtitle">Text encoding</string>
-    <!-- Do not translate. Actual encoding values. Must be valid text encodings understandable from WebKit. -->
-    <string-array name="pref_default_text_encoding_values" translatable="false">
-        <item>Latin-1</item>
-        <item>UTF-8</item>
-        <item>GBK</item>
-        <item>Big5</item>
-        <item>ISO-2022-JP</item>
-        <item>SHIFT_JIS</item>
-        <item>EUC-JP</item>
-        <item>EUC-KR</item>
-    </string-array>
-    <string name="pref_default_text_encoding_default" translatable="false">Latin-1</string>
     <!-- Title for accessibility settings [CHAR LIMIT=25] -->
     <string name="pref_accessibility_title">Accessibility</string>
     <!-- Font size settings category under accessibility settings [CHAR LIMIT=50] -->
@@ -1036,6 +1024,12 @@
     <string name="pref_setting_rate_us_title">评价我们</string>
     <string name="pref_setting_user_agent_value">默认</string>
     <string name="pref_setting_user_agent_title">设置浏览器标识</string>
+    <string-array name="pref_user_agent_choices">
+        <item>Default(Android)</item>
+        <item>iPhone</item>
+        <item>iPad</item>
+        <item>Computer</item>
+    </string-array>
     <string name="pref_setting_font_size_desc">调整文本缩放和文字大小</string>
     <string name="pref_setting_security_desc">允许浏览器记住密码，保存表单等</string>
     <string name="pref_setting_clear_data_title">清除数据</string>

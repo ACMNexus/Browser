@@ -215,7 +215,7 @@
             android:theme="@style/swipe_style" />
         <activity
             android:name=".activitys.UserAgentActivity"
-            android:label="@string/menu_bottom_exit"
+            android:label="@string/pref_setting_user_agent_title"
             android:launchMode="singleTop"
             android:theme="@style/swipe_style" />
 

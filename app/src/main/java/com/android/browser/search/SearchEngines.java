@@ -48,8 +48,7 @@ public class SearchEngines {
     public static SearchEngine get(Context context, String name) {
         // TODO: cache
         SearchEngine defaultSearchEngine = getDefaultSearchEngine(context);
-        if (TextUtils.isEmpty(name)
-                || (defaultSearchEngine != null && name.equals(defaultSearchEngine.getName()))) {
+        if (TextUtils.isEmpty(name) || (defaultSearchEngine != null && name.equals(defaultSearchEngine.getName()))) {
             return defaultSearchEngine;
         }
         SearchEngineInfo searchEngineInfo = getSearchEngineInfo(context, name);

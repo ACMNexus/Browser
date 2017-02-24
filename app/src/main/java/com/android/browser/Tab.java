@@ -497,7 +497,7 @@ public class Tab implements PictureListener {
                 setSecurityState(SecurityState.SECURITY_STATE_NOT_SECURE);
                 return;
             }
-            if (mSettings.showSecurityWarnings()) {
+            if (mSettings.getSettingValues().showSecurityWarnings()) {
                 new AlertDialog.Builder(mContext)
                     .setTitle(R.string.security_warning)
                     .setMessage(R.string.ssl_warnings_header)

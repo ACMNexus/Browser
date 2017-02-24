@@ -1,43 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ListView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/userAgentView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:scrollbars="none">
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <com.android.browser.view.BrowserSettingItem
-            android:layout_width="fill_parent"
-            android:layout_height="60dip"
-            app:setting_icon="@drawable/ic_browser_complete"
-            app:setting_state="2"
-            app:setting_title="@string/defalut_user_agent" />
-
-        <com.android.browser.view.BrowserSettingItem
-            android:layout_width="fill_parent"
-            android:layout_height="60dip"
-            app:setting_icon="@null"
-            app:setting_state="2"
-            app:setting_title="@string/iphone_user_agent" />
-
-        <com.android.browser.view.BrowserSettingItem
-            android:layout_width="fill_parent"
-            android:layout_height="60dip"
-            app:setting_icon="@null"
-            app:setting_state="2"
-            app:setting_title="@string/ipad_user_agent" />
-
-        <com.android.browser.view.BrowserSettingItem
-            android:layout_width="fill_parent"
-            android:layout_height="60dip"
-            app:setting_icon="@null"
-            app:setting_state="2"
-            app:setting_title="@string/desktop_user_agent" />
-
-    </LinearLayout>
-
-</ScrollView>
+    android:divider="@null"
+    android:dividerHeight="0dip"
+    android:listSelector="@color/transparent"
+    android:scrollbars="none" />

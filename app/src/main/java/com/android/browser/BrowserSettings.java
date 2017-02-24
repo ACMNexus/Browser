@@ -46,7 +46,9 @@ import com.android.browser.homepages.HomeProvider;
 import com.android.browser.provider.BrowserProvider;
 import com.android.browser.search.SearchEngine;
 import com.android.browser.search.SearchEngines;
+import com.android.browser.util.Constants;
 import com.android.browser.util.ReflectUtils;
+import com.android.browser.util.SettingValues;
 
 import java.lang.ref.WeakReference;
 import java.util.Iterator;
@@ -56,37 +58,7 @@ import java.util.WeakHashMap;
 /**
  * Class for managing settings
  */
-public class BrowserSettings implements OnSharedPreferenceChangeListener,
-        PreferenceKeys {
-
-    // TODO: Do something with this UserAgent stuff
-    private static final String DESKTOP_USERAGENT = "Mozilla/5.0 (X11; " +
-            "Linux x86_64) AppleWebKit/534.24 (KHTML, like Gecko) " +
-            "Chrome/11.0.696.34 Safari/534.24";
-
-    private static final String IPHONE_USERAGENT = "Mozilla/5.0 (iPhone; U; " +
-            "CPU iPhone OS 4_0 like Mac OS X; en-us) AppleWebKit/532.9 " +
-            "(KHTML, like Gecko) Version/4.0.5 Mobile/8A293 Safari/6531.22.7";
-
-    private static final String IPAD_USERAGENT = "Mozilla/5.0 (iPad; U; " +
-            "CPU OS 3_2 like Mac OS X; en-us) AppleWebKit/531.21.10 " +
-            "(KHTML, like Gecko) Version/4.0.4 Mobile/7B367 Safari/531.21.10";
-
-    private static final String FROYO_USERAGENT = "Mozilla/5.0 (Linux; U; " +
-            "Android 2.2; en-us; Nexus One Build/FRF91) AppleWebKit/533.1 " +
-            "(KHTML, like Gecko) Version/4.0 Mobile Safari/533.1";
-
-    private static final String HONEYCOMB_USERAGENT = "Mozilla/5.0 (Linux; U; " +
-            "Android 3.1; en-us; Xoom Build/HMJ25) AppleWebKit/534.13 " +
-            "(KHTML, like Gecko) Version/4.0 Safari/534.13";
-
-    private static final String USER_AGENTS[] = {null,
-            DESKTOP_USERAGENT,
-            IPHONE_USERAGENT,
-            IPAD_USERAGENT,
-            FROYO_USERAGENT,
-            HONEYCOMB_USERAGENT,
-    };
+public class BrowserSettings implements OnSharedPreferenceChangeListener, PreferenceKeys {
 
     // The minimum min font size
     // Aka, the lower bounds for the min font size range
@@ -107,6 +79,7 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener,
 
     private Context mContext;
     private SharedPreferences mPrefs;
+    private SettingValues mSettingValues;
     private LinkedList<WeakReference<WebSettings>> mManagedSettings;
     private Controller mController;
     private WebStorageSizeManager mWebStorageSizeManager;
@@ -138,6 +111,7 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener,
     private BrowserSettings(Context context) {
         mContext = context.getApplicationContext();
         mPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+        mSettingValues = new SettingValues(mContext, mPrefs, this);
         mManagedSettings = new LinkedList<WeakReference<WebSettings>>();
         mCustomUserAgents = new WeakHashMap<WebSettings, String>();
         BackgroundHandler.execute(mSetup);
@@ -250,29 +224,29 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener,
      */
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     private void syncSetting(WebSettings settings) {
-        settings.setGeolocationEnabled(enableGeolocation());
-        settings.setJavaScriptEnabled(enableJavascript());
+        settings.setGeolocationEnabled(mSettingValues.enableGeolocation());
+        settings.setJavaScriptEnabled(mSettingValues.enableJavascript());
         settings.setLightTouchEnabled(enableLightTouch());
         ReflectUtils.setNavDump(settings, enableNavDump());
-        settings.setDefaultTextEncodingName(getDefaultTextEncoding());
+        settings.setDefaultTextEncodingName(mSettingValues.getDefaultTextEncoding());
         settings.setDefaultZoom(getDefaultZoom());
         settings.setMinimumFontSize(getMinimumFontSize());
         settings.setMinimumLogicalFontSize(getMinimumFontSize());
-        settings.setPluginState(getPluginState());
+        settings.setPluginState(mSettingValues.getPluginState());
         settings.setTextZoom(getTextZoom());
         settings.setLayoutAlgorithm(getLayoutAlgorithm());
         settings.setJavaScriptCanOpenWindowsAutomatically(!blockPopupWindows());
         settings.setLoadsImagesAutomatically(loadImages());
         settings.setLoadWithOverviewMode(loadPageInOverviewMode());
-        settings.setSavePassword(rememberPasswords());
-        settings.setSaveFormData(saveFormdata());
+        settings.setSavePassword(mSettingValues.rememberPasswords());
+        settings.setSaveFormData(mSettingValues.saveFormdata());
         settings.setUseWideViewPort(isWideViewport());
 
         String ua = mCustomUserAgents.get(settings);
         if (ua != null) {
             settings.setUserAgentString(ua);
         } else {
-            settings.setUserAgentString(USER_AGENTS[getUserAgent()]);
+            settings.setUserAgentString(Constants.USER_AGENTS[mSettingValues.getUserAgent()]);
         }
     }
 
@@ -312,7 +286,7 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener,
 
     private void syncSharedSettings() {
         mNeedsSharedSync = false;
-        CookieManager.getInstance().setAcceptCookie(acceptCookies());
+        CookieManager.getInstance().setAcceptCookie(mSettingValues.acceptCookies());
         if (mController != null) {
             mController.setShouldShowErrorConsole(enableJavascriptConsole());
         }
@@ -335,8 +309,7 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener,
     }
 
     @Override
-    public void onSharedPreferenceChanged(
-            SharedPreferences sharedPreferences, String key) {
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         syncManagedSettings();
         if (PREF_SEARCH_ENGINE.equals(key)) {
             updateSearchEngine(false);
@@ -356,6 +329,10 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener,
     public static String getFactoryResetHomeUrl(Context context) {
         requireInitialization();
         return sFactoryResetUrl;
+    }
+
+    public SettingValues getSettingValues() {
+        return mSettingValues;
     }
 
     public LayoutAlgorithm getLayoutAlgorithm() {
@@ -395,9 +372,8 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener,
     }
 
     private void updateSearchEngine(boolean force) {
-        String searchEngineName = getSearchEngineName();
-        if (force || mSearchEngine == null ||
-                !mSearchEngine.getName().equals(searchEngineName)) {
+        String searchEngineName = mSettingValues.getSearchEngineName();
+        if (force || mSearchEngine == null || !mSearchEngine.getName().equals(searchEngineName)) {
             mSearchEngine = SearchEngines.get(mContext, searchEngineName);
         }
     }
@@ -471,10 +447,7 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener,
     public void resetDefaultPreferences() {
         // Preserve autologin setting
         long gal = mPrefs.getLong(GoogleAccountLogin.PREF_AUTOLOGIN_TIME, -1);
-        mPrefs.edit()
-                .clear()
-                .putLong(GoogleAccountLogin.PREF_AUTOLOGIN_TIME, gal)
-                .apply();
+        mPrefs.edit().clear().putLong(GoogleAccountLogin.PREF_AUTOLOGIN_TIME, gal).apply();
         resetCachedValues();
         syncManagedSettings();
     }
@@ -498,10 +471,10 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener,
         WebSettings settings = view.getSettings();
         if (mCustomUserAgents.get(settings) != null) {
             mCustomUserAgents.remove(settings);
-            settings.setUserAgentString(USER_AGENTS[getUserAgent()]);
+            settings.setUserAgentString(Constants.USER_AGENTS[mSettingValues.getUserAgent()]);
         } else {
-            mCustomUserAgents.put(settings, DESKTOP_USERAGENT);
-            settings.setUserAgentString(DESKTOP_USERAGENT);
+            mCustomUserAgents.put(settings, Constants.DESKTOP_USERAGENT);
+            settings.setUserAgentString(Constants.DESKTOP_USERAGENT);
         }
     }
 
@@ -537,8 +510,7 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener,
 
     // update connectivity-dependent options
     public void updateConnectionType() {
-        ConnectivityManager cm = (ConnectivityManager)
-                mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
         String linkPrefetchPreference = getLinkPrefetchEnabled();
         boolean linkPrefetchAllowed = linkPrefetchPreference.
                 equals(getLinkPrefetchAlwaysPreferenceString(mContext));
@@ -548,8 +520,7 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener,
                 case ConnectivityManager.TYPE_WIFI:
                 case ConnectivityManager.TYPE_ETHERNET:
                 case ConnectivityManager.TYPE_BLUETOOTH:
-                    linkPrefetchAllowed |= linkPrefetchPreference.
-                            equals(getLinkPrefetchOnWifiOnlyPreferenceString(mContext));
+                    linkPrefetchAllowed |= linkPrefetchPreference.equals(getLinkPrefetchOnWifiOnlyPreferenceString(mContext));
                     break;
                 case ConnectivityManager.TYPE_MOBILE:
                 case ConnectivityManager.TYPE_MOBILE_DUN:
@@ -609,26 +580,12 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener,
     // getter/setters for advanced_preferences.xml
     // -----------------------------
 
-    public String getSearchEngineName() {
-        return mPrefs.getString(PREF_SEARCH_ENGINE, SearchEngine.BAIDU);
-    }
-
     public boolean allowAppTabs() {
         return mPrefs.getBoolean(PREF_ALLOW_APP_TABS, false);
     }
 
     public boolean openInBackground() {
         return mPrefs.getBoolean(PREF_OPEN_IN_BACKGROUND, false);
-    }
-
-    public boolean enableJavascript() {
-        return mPrefs.getBoolean(PREF_ENABLE_JAVASCRIPT, true);
-    }
-
-    // TODO: Cache
-    public PluginState getPluginState() {
-        String state = mPrefs.getString(PREF_PLUGIN_STATE, "ON");
-        return PluginState.valueOf(state);
     }
 
     // TODO: Cache
@@ -653,14 +610,9 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener,
         return mPrefs.getBoolean(PREF_LOAD_IMAGES, true);
     }
 
-    public String getDefaultTextEncoding() {
-        return mPrefs.getString(PREF_DEFAULT_TEXT_ENCODING, null);
-    }
-
     // -----------------------------
     // getter/setters for general_preferences.xml
     // -----------------------------
-
     public String getHomePage() {
         return mPrefs.getString(PREF_HOMEPAGE, getFactoryResetHomeUrl(mContext));
     }
@@ -693,13 +645,6 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener,
             return false;
         }
         return mPrefs.getBoolean(PREF_ENABLE_HARDWARE_ACCEL_SKIA, false);
-    }
-
-    public int getUserAgent() {
-        if (!isDebugEnabled()) {
-            return 0;
-        }
-        return Integer.parseInt(mPrefs.getString(PREF_USER_AGENT, "0"));
     }
 
     // -----------------------------
@@ -800,34 +745,8 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener,
         return 1 + (mPrefs.getInt(PREF_INVERTED_CONTRAST, 0) / 10f);
     }
 
-    // -----------------------------
-    // getter/setters for privacy_security_preferences.xml
-    // -----------------------------
-
-    public boolean showSecurityWarnings() {
-        return mPrefs.getBoolean(PREF_SHOW_SECURITY_WARNINGS, true);
-    }
-
-    public boolean acceptCookies() {
-        return mPrefs.getBoolean(PREF_ACCEPT_COOKIES, true);
-    }
-
-    public boolean saveFormdata() {
-        return mPrefs.getBoolean(PREF_SAVE_FORMDATA, true);
-    }
-
-    public boolean enableGeolocation() {
-        return mPrefs.getBoolean(PREF_ENABLE_GEOLOCATION, true);
-    }
-
-    public boolean rememberPasswords() {
-        return mPrefs.getBoolean(PREF_REMEMBER_PASSWORDS, true);
-    }
-
-    // -----------------------------
     // getter/setters for bandwidth_preferences.xml
     // -----------------------------
-
     public static String getPreloadOnWifiOnlyPreferenceString(Context context) {
         return context.getResources().getString(R.string.pref_data_preload_value_wifi_only);
     }

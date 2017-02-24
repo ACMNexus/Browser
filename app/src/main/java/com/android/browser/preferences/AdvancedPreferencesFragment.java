@@ -31,6 +31,7 @@ import android.util.Log;
 import android.webkit.GeolocationPermissions;
 import android.webkit.ValueCallback;
 import android.webkit.WebStorage;
+import android.widget.Toast;
 
 import java.util.Map;
 import java.util.Set;
@@ -53,7 +54,7 @@ public class AdvancedPreferencesFragment extends PreferenceFragment
         e.setOnPreferenceChangeListener(this);
         e.setSummary(getVisualDefaultZoomName(
                 getPreferenceScreen().getSharedPreferences()
-                .getString(PreferenceKeys.PREF_DEFAULT_ZOOM, null)) );
+                        .getString(PreferenceKeys.PREF_DEFAULT_ZOOM, null)));
 
         e = findPreference(PreferenceKeys.PREF_DEFAULT_TEXT_ENCODING);
         e.setOnPreferenceChangeListener(this);
@@ -63,6 +64,8 @@ public class AdvancedPreferencesFragment extends PreferenceFragment
 
         e = findPreference(PreferenceKeys.PREF_SEARCH_ENGINE);
         e.setOnPreferenceChangeListener(this);
+        Log.i("LOH", (((ListPreference)e).getEntry().toString()));
+        Toast.makeText(getActivity(), (((ListPreference)e).getEntry().toString()), Toast.LENGTH_LONG).show();
         updateListPreferenceSummary((ListPreference) e);
 
         e = findPreference(PreferenceKeys.PREF_PLUGIN_STATE);
@@ -125,8 +128,7 @@ public class AdvancedPreferencesFragment extends PreferenceFragment
                         getActivity(), BrowserActivity.class));
                 return true;
             }
-        } else if (pref.getKey().equals(PreferenceKeys.PREF_PLUGIN_STATE)
-                || pref.getKey().equals(PreferenceKeys.PREF_SEARCH_ENGINE)) {
+        } else if (pref.getKey().equals(PreferenceKeys.PREF_PLUGIN_STATE) || pref.getKey().equals(PreferenceKeys.PREF_SEARCH_ENGINE)) {
             ListPreference lp = (ListPreference) pref;
             lp.setValue((String) objValue);
             updateListPreferenceSummary(lp);

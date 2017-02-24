@@ -2,6 +2,7 @@ package com.android.browser.activitys;
 
 import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -33,10 +34,10 @@ public class SearchEngineActivity extends BaseActivity {
 
     private void init() {
         mSearchEngineInfos = new ArrayList<>();
-        SearchEngine defaultSearchEngine = SearchEngines.getDefaultSearchEngine(this);
-        String defaultSearchEngineName = null;
-        if (defaultSearchEngine != null) {
-            defaultSearchEngineName = defaultSearchEngine.getName();
+        String defaultSearchEngineName = mSettingValues.getSearchEngineName();
+        if (TextUtils.isEmpty(defaultSearchEngineName)) {
+            SearchEngine defaultSearchEngine = SearchEngines.getDefaultSearchEngine(this);
+            defaultSearchEngineName = defaultSearchEngine == null ? "" : defaultSearchEngine.getName();
         }
 
         List<SearchEngineInfo> list = SearchEngines.getSearchEngineInfos(this);
@@ -51,7 +52,7 @@ public class SearchEngineActivity extends BaseActivity {
             mSearchEngineInfos.add(searchEngineInfo);
         }
 
-        if(defaultSearchEngine == null) {
+        if(TextUtils.isEmpty(defaultSearchEngineName)) {
             mSearchEngineInfos.get(0).setChecked(true);
         }
 
@@ -68,6 +69,7 @@ public class SearchEngineActivity extends BaseActivity {
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-//        mAdapter.getList().get(position).setChecked(true);
+        mSettingValues.setSearchEngineName(mAdapter.getItem(position).getName());
+        finish();
     }
 }

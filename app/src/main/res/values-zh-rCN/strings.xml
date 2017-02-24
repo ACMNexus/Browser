@@ -409,6 +409,12 @@
     <string name="pref_setting_rate_us_title">评价我们</string>
     <string name="pref_setting_user_agent_value">默认</string>
     <string name="pref_setting_user_agent_title">设置浏览器标识</string>
+    <string-array name="pref_user_agent_choices">
+        <item>默认(Android)</item>
+        <item>iPhone</item>
+        <item>iPad</item>
+        <item>桌面版</item>
+    </string-array>
     <string name="pref_setting_font_size_desc">调整文本缩放和文字大小</string>
     <string name="pref_setting_security_desc">允许浏览器记住密码，保存表单等</string>
     <string name="pref_setting_clear_data_title">清除数据</string>

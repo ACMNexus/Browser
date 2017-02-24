@@ -127,5 +127,4 @@ public class DefaultSearchEngine implements SearchEngine {
     public boolean wantsEmptyQuery() {
         return false;
     }
-
 }

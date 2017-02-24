@@ -27,6 +27,15 @@ public abstract class KBaseAdapter<T> extends BaseAdapter {
         }
     }
 
+    public void addItem(T data, boolean refresh) {
+        if(data != null) {
+            mList.add(data);
+            if(refresh) {
+                notifyDataSetChanged();
+            }
+        }
+    }
+
     public void setItems(List<T> datas) {
         if(datas != null && datas.size() > 0) {
             mList.clear();

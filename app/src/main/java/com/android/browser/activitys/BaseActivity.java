@@ -10,7 +10,11 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.android.browser.BrowserSettings;
 import com.android.browser.R;
+import com.android.browser.util.SettingValues;
+
 import java.io.Serializable;
 import java.util.Map;
 import java.util.Set;
@@ -27,12 +31,14 @@ public class BaseActivity extends Activity implements View.OnClickListener, AbsL
     protected TextView mRigthTitleView;
     protected ImageView mRightiIcon;
     protected ImageView mLeftIcon;
+    protected SettingValues mSettingValues;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setWindowFeature();
         this.mActivity = this;
+        mSettingValues = BrowserSettings.getInstance().getSettingValues();
         initActionBar();
     }
 
@@ -68,7 +74,7 @@ public class BaseActivity extends Activity implements View.OnClickListener, AbsL
     }
 
     @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
     }
 
     protected void startNextPager(Class<?> clazz, Map<String, ? extends Serializable> map) {
