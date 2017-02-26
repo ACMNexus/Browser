@@ -20,7 +20,7 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/title_bg"
+        android:id="@+id/requestMode"
         android:layout_width="match_parent"
         android:layout_height="0dip"
         android:layout_marginBottom="8dip"
@@ -32,31 +32,13 @@
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <FrameLayout
-            android:id="@+id/iconcombo"
-            style="@style/HoloButton"
+        <ImageView
+            android:id="@+id/lock"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:contentDescription="@string/page_info"
-            android:padding="4dip">
-
-            <ImageView
-                android:id="@+id/favicon"
-                android:layout_width="32dip"
-                android:layout_height="32dip"
-                android:layout_gravity="center"
-                android:paddingLeft="4dip"
-                android:paddingRight="8dip"
-                android:visibility="gone" />
-
-            <ImageView
-                android:id="@+id/lock"
-                android:layout_width="24dip"
-                android:layout_height="24dip"
-                android:layout_gravity="center"
-                android:src="@drawable/common_icon_site" />
-        </FrameLayout>
+            android:padding="4dip"
+            android:src="@drawable/common_icon_site" />
 
         <TextView
             android:id="@+id/web_titles"
@@ -69,30 +51,7 @@
             android:singleLine="true"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/black"
-            android:textSize="16sp"
-            android:visibility="gone" />
-
-        <com.android.browser.UrlInputView
-            android:id="@+id/url"
-            style="@style/Suggestions"
-            android:layout_width="0dip"
-            android:layout_height="match_parent"
-            android:layout_weight="1.0"
-            android:background="@null"
-            android:ellipsize="end"
-            android:fadingEdge="horizontal"
-            android:fadingEdgeLength="24dip"
-            android:focusable="true"
-            android:hint="@string/search_hint"
-            android:imeOptions="actionGo|flagNoExtractUi|flagNoFullscreen"
-            android:inputType="textUri"
-            android:lines="1"
-            android:scrollHorizontally="true"
-            android:singleLine="true"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:visibility="visible" />
+            android:textSize="16sp" />
 
         <ImageView
             android:id="@+id/refresh"
@@ -103,14 +62,88 @@
             android:paddingRight="4dip"
             android:src="@drawable/common_titlebar_close_selector" />
 
-        <ImageView
-            android:id="@+id/clear"
-            style="@style/HoloButton"
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/editMode"
+        android:layout_width="fill_parent"
+        android:layout_height="0dip"
+        android:layout_gravity="center_vertical"
+        android:layout_marginBottom="8dip"
+        android:layout_marginLeft="8dip"
+        android:layout_marginRight="8dip"
+        android:layout_marginTop="8dip"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="0dip"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="@drawable/title_bar_background"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dip"
+                android:src="@drawable/common_icon_site" />
+
+            <com.android.browser.UrlInputView
+                android:id="@+id/url"
+                style="@style/Suggestions"
+                android:layout_width="0dip"
+                android:layout_height="match_parent"
+                android:layout_weight="1.0"
+                android:background="@null"
+                android:ellipsize="end"
+                android:fadingEdge="horizontal"
+                android:fadingEdgeLength="24dip"
+                android:focusable="true"
+                android:hint="@string/search_hint"
+                android:imeOptions="actionGo|flagNoExtractUi|flagNoFullscreen"
+                android:inputType="textUri"
+                android:lines="1"
+                android:scrollHorizontally="true"
+                android:singleLine="true"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/clear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dip"
+                android:src="@drawable/ic_close_window_holo_dark" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/enter"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:contentDescription="@string/accessibility_button_clear"
-            android:paddingRight="4dip"
-            android:src="@drawable/ic_close_window_holo_dark"
+            android:layout_height="fill_parent"
+            android:background="#4C9AFA"
+            android:gravity="center"
+            android:paddingLeft="10dip"
+            android:paddingRight="10dip"
+            android:text="进入"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:paddingLeft="12dip"
+            android:paddingRight="12dip"
+            android:text="取消"
+            android:textColor="@color/black"
+            android:textSize="16sp"
             android:visibility="gone" />
 
     </LinearLayout>

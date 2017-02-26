@@ -111,7 +111,6 @@ public class NavigationBarTablet extends NavigationBarBase implements StateListe
         mSearchButton.setOnClickListener(this);
         mClearButton.setOnClickListener(this);
         mVoiceButton.setOnClickListener(this);
-        mUrlInput.setContainer(mUrlContainer);
         mUrlInput.setStateListener(this);
     }
 
@@ -166,7 +165,7 @@ public class NavigationBarTablet extends NavigationBarBase implements StateListe
     public void onClick(View v) {
         if ((mBackButton == v) && (mUiController.getCurrentTab() != null)) {
             mUiController.getCurrentTab().goBack();
-        } else if ((mForwardButton == v)  && (mUiController.getCurrentTab() != null)) {
+        } else if ((mForwardButton == v) && (mUiController.getCurrentTab() != null)) {
             mUiController.getCurrentTab().goForward();
         } else if (mStar == v) {
             Intent intent = mUiController.createBookmarkCurrentPageIntent(true);
@@ -273,7 +272,7 @@ public class NavigationBarTablet extends NavigationBarBase implements StateListe
             return;
         }
         int awidth = mNavButtons.getMeasuredWidth();
-        Animator anim1 = ObjectAnimator.ofFloat(mNavButtons, View.TRANSLATION_X, 0, - awidth);
+        Animator anim1 = ObjectAnimator.ofFloat(mNavButtons, View.TRANSLATION_X, 0, -awidth);
         Animator anim2 = ObjectAnimator.ofInt(mUrlContainer, "left", mUrlContainer.getLeft(),
                 mUrlContainer.getPaddingLeft());
         Animator anim3 = ObjectAnimator.ofFloat(mNavButtons, View.ALPHA, 1f, 0f);
@@ -290,6 +289,7 @@ public class NavigationBarTablet extends NavigationBarBase implements StateListe
         mAnimation.start();
     }
 
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     private void showNavButtons() {
         if (mAnimation != null) {
             mAnimation.cancel();
@@ -298,12 +298,9 @@ public class NavigationBarTablet extends NavigationBarBase implements StateListe
         mNavButtons.setTranslationX(0);
         if (!mBaseUi.blockFocusAnimations()) {
             int awidth = mNavButtons.getMeasuredWidth();
-            Animator anim1 = ObjectAnimator.ofFloat(mNavButtons,
-                    View.TRANSLATION_X, -awidth, 0);
-            Animator anim2 = ObjectAnimator.ofInt(mUrlContainer, "left", 0,
-                    awidth);
-            Animator anim3 = ObjectAnimator.ofFloat(mNavButtons, View.ALPHA,
-                    0f, 1f);
+            Animator anim1 = ObjectAnimator.ofFloat(mNavButtons, View.TRANSLATION_X, -awidth, 0);
+            Animator anim2 = ObjectAnimator.ofInt(mUrlContainer, "left", 0, awidth);
+            Animator anim3 = ObjectAnimator.ofFloat(mNavButtons, View.ALPHA, 0f, 1f);
             AnimatorSet combo = new AnimatorSet();
             combo.playTogether(anim1, anim2, anim3);
             combo.setDuration(150);
@@ -326,20 +323,19 @@ public class NavigationBarTablet extends NavigationBarBase implements StateListe
     @Override
     public void onStateChanged(int state) {
         mVoiceButton.setVisibility(View.GONE);
-        switch(state) {
-        case STATE_NORMAL:
-            mClearButton.setVisibility(View.GONE);
-            break;
-        case STATE_HIGHLIGHTED:
-            mClearButton.setVisibility(View.GONE);
-            if ((mUiController != null) && mUiController.supportsVoice()) {
-                mVoiceButton.setVisibility(View.VISIBLE);
-            }
-            break;
-        case STATE_EDITED:
-            mClearButton.setVisibility(View.VISIBLE);
-            break;
+        switch (state) {
+            case STATE_NORMAL:
+                mClearButton.setVisibility(View.GONE);
+                break;
+            case STATE_CLEAR:
+                mClearButton.setVisibility(View.GONE);
+                if ((mUiController != null) && mUiController.supportsVoice()) {
+                    mVoiceButton.setVisibility(View.VISIBLE);
+                }
+                break;
+            case STATE_EDITED:
+                mClearButton.setVisibility(View.VISIBLE);
+                break;
         }
     }
-
 }

@@ -110,7 +110,6 @@ public class NavigationBarBase extends LinearLayout implements
             mUrlInput.setText(title);
             mUrlInput.selectAll();
         } else if (!mUrlInput.needsUpdate()) {
-            mUrlInput.dismissDropDown();
             mUrlInput.hideIME();
             if(currentTab != null) {
                 title = currentTab.getTitle() == null ? currentTab.getUrl() : currentTab.getTitle();
@@ -138,7 +137,7 @@ public class NavigationBarBase extends LinearLayout implements
     void setDisplayTitle(String title) {
         if (!isEditingUrl()) {
             if (!title.equals(mUrlInput.getText().toString())) {
-                mUrlInput.setText(title, false);
+                mUrlInput.setText(title);
             }
         }
     }
@@ -148,7 +147,7 @@ public class NavigationBarBase extends LinearLayout implements
     }
 
     void clearCompletions() {
-        mUrlInput.dismissDropDown();
+//        mUrlInput.dismissDropDown();
     }
 
  // UrlInputListener implementation
@@ -207,7 +206,7 @@ public class NavigationBarBase extends LinearLayout implements
      */
     @Override
     public void onCopySuggestion(String text) {
-        mUrlInput.setText(text, true);
+        mUrlInput.setText(text);
         if (text != null) {
             mUrlInput.setSelection(text.length());
         }

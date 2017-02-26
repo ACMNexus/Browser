@@ -16,60 +16,52 @@
 package com.android.browser;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.ImageView;
-import android.widget.PopupMenu;
-import android.widget.PopupMenu.OnDismissListener;
-import android.widget.PopupMenu.OnMenuItemClickListener;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.android.browser.UrlInputView.StateListener;
 
 @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-public class NavigationBarPhone extends NavigationBarBase implements
-        StateListener, OnMenuItemClickListener, OnDismissListener {
+public class NavigationBarPhone extends NavigationBarBase implements StateListener, View.OnTouchListener {
 
     private ImageView mClearButton;
-    private TextView mWebViewTitles;
     private ImageView mRefreshButton;
+    private TextView mWebViewTitles;
+    private TextView mEnterButton;
+    private TextView mCancelButton;
+    private LinearLayout mEditMode;
+    private LinearLayout mRequestMode;
+
     private Drawable mStopDrawable;
     private Drawable mRefreshDrawable;
     private Drawable mIconSiteDrawable;
     private Drawable mSafetySiteDrawable;
+
     private String mStopDescription;
     private String mRefreshDescription;
-    private PopupMenu mPopupMenu;
-    private boolean mOverflowMenuShowing;
-
-    public NavigationBarPhone(Context context) {
-        super(context);
-    }
 
     public NavigationBarPhone(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public NavigationBarPhone(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-    }
-
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        mClearButton = (ImageView) findViewById(R.id.clear);
-        mRefreshButton = (ImageView) findViewById(R.id.refresh);
-        mWebViewTitles = (TextView) findViewById(R.id.web_titles);
-        mClearButton.setOnClickListener(this);
-        mRefreshButton.setOnClickListener(this);
-        findViewById(R.id.iconcombo).setOnClickListener(this);
+
+        init();
+        initView();
+        setListener();
+    }
+
+    private void init() {
         setFocusState(false);
         Resources res = getContext().getResources();
         mStopDrawable = res.getDrawable(R.drawable.common_titlebar_close_selector);
@@ -78,8 +70,26 @@ public class NavigationBarPhone extends NavigationBarBase implements
         mSafetySiteDrawable = res.getDrawable(R.drawable.website_safe_icon);
         mStopDescription = res.getString(R.string.accessibility_button_stop);
         mRefreshDescription = res.getString(R.string.accessibility_button_refresh);
-        mUrlInput.setContainer(this);
+    }
+
+    private void initView() {
+        mRefreshButton = (ImageView) findViewById(R.id.refresh);
+        mWebViewTitles = (TextView) findViewById(R.id.web_titles);
+        mEnterButton = (TextView) findViewById(R.id.enter);
+        mClearButton = (ImageView) findViewById(R.id.clear);
+        mEditMode = (LinearLayout) findViewById(R.id.editMode);
+        mRequestMode = (LinearLayout) findViewById(R.id.requestMode);
+        mCancelButton = (TextView) findViewById(R.id.cancel);
+    }
+
+    private void setListener() {
         mUrlInput.setStateListener(this);
+        mLockIcon.setOnClickListener(this);
+        mEnterButton.setOnClickListener(this);
+        mClearButton.setOnClickListener(this);
+        mRefreshButton.setOnClickListener(this);
+        mWebViewTitles.setOnTouchListener(this);
+        mCancelButton.setOnClickListener(this);
     }
 
     @Override
@@ -108,6 +118,7 @@ public class NavigationBarPhone extends NavigationBarBase implements
 
     /**
      * Update the text displayed in the title bar.
+     *
      * @param title String to display.  If null, the new tab string will be shown.
      */
     @Override
@@ -117,7 +128,7 @@ public class NavigationBarPhone extends NavigationBarBase implements
             if (title == null) {
                 mUrlInput.setText(R.string.new_tab);
             } else {
-                mUrlInput.setText(UrlUtils.stripUrl(title), false);
+                mUrlInput.setText(UrlUtils.stripUrl(title));
             }
             mUrlInput.setSelection(0);
         }
@@ -126,62 +137,39 @@ public class NavigationBarPhone extends NavigationBarBase implements
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.stop:
-                break;
             case R.id.clear:
                 mUrlInput.setText("");
                 break;
-            case R.id.iconcombo:
+            case R.id.lock:
                 mUiController.showPageInfo();
                 break;
-            case R.id.refresh:
-                if (mTitleBar.isInLoad()) {
-                    mUiController.stopLoading();
-                } else {
-                    WebView web = mBaseUi.getWebView();
-                    if (web != null) {
-                        stopEditingUrl();
-                        web.reload();
-                    }
-                }
+            case R.id.cancel:
+                onStateChanged(StateListener.STATE_NORMAL);
                 break;
+            case R.id.refresh:
+                reloadPage();
+                break;
+            case R.id.enter:
+                reloadPage();
+                break;
+        }
+    }
+
+    private void reloadPage() {
+        if (mTitleBar.isInLoad()) {
+            mUiController.stopLoading();
+        } else {
+            WebView web = mBaseUi.getWebView();
+            if (web != null) {
+                stopEditingUrl();
+                web.reload();
+            }
         }
     }
 
     @Override
     public boolean isMenuShowing() {
-        return super.isMenuShowing() || mOverflowMenuShowing;
-    }
-
-    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-    public void showMenu(View anchor) {
-        Activity activity = mUiController.getActivity();
-        if (mPopupMenu == null) {
-            mPopupMenu = new PopupMenu(getContext(), anchor);
-            mPopupMenu.setOnMenuItemClickListener(this);
-            mPopupMenu.setOnDismissListener(this);
-            if (!activity.onCreateOptionsMenu(mPopupMenu.getMenu())) {
-                mPopupMenu = null;
-                return;
-            }
-        }
-        Menu menu = mPopupMenu.getMenu();
-        if (activity.onPrepareOptionsMenu(menu)) {
-            mOverflowMenuShowing = true;
-            mPopupMenu.show();
-        }
-    }
-
-    @Override
-    public void onDismiss(PopupMenu menu) {
-        if (menu == mPopupMenu) {
-            onMenuHidden();
-        }
-    }
-
-    private void onMenuHidden() {
-        mOverflowMenuShowing = false;
-        mBaseUi.showTitleBarForDuration();
+        return super.isMenuShowing();
     }
 
     @Override
@@ -193,12 +181,20 @@ public class NavigationBarPhone extends NavigationBarBase implements
     public void onStateChanged(int state) {
         switch (state) {
             case StateListener.STATE_NORMAL:
-                mClearButton.setVisibility(View.GONE);
-                mLockIcon.setImageDrawable(mSafetySiteDrawable);
+                mEditMode.setVisibility(View.GONE);
+                mRequestMode.setVisibility(View.VISIBLE);
                 break;
             case StateListener.STATE_EDITED:
+                mEditMode.setVisibility(View.VISIBLE);
+                mRequestMode.setVisibility(View.GONE);
+                mCancelButton.setVisibility(View.GONE);
                 mClearButton.setVisibility(View.VISIBLE);
-                mLockIcon.setImageDrawable(mIconSiteDrawable);
+                mEnterButton.setVisibility(View.VISIBLE);
+                break;
+            case StateListener.STATE_CLEAR:
+                mClearButton.setVisibility(View.GONE);
+                mEnterButton.setVisibility(View.GONE);
+                mCancelButton.setVisibility(View.VISIBLE);
                 break;
         }
     }
@@ -206,11 +202,14 @@ public class NavigationBarPhone extends NavigationBarBase implements
     @Override
     public void onTabDataChanged(Tab tab) {
         super.onTabDataChanged(tab);
-//        mIncognitoIcon.setVisibility(tab.isPrivateBrowsingEnabled() ? View.VISIBLE : View.GONE);
     }
 
     @Override
-    public boolean onMenuItemClick(MenuItem item) {
-        return mUiController.onOptionsItemSelected(item);
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        if (view == mWebViewTitles) {
+            onStateChanged(StateListener.STATE_EDITED);
+            return true;
+        }
+        return false;
     }
 }

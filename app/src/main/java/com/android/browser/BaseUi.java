@@ -115,7 +115,6 @@ public abstract class BaseUi implements UI {
     protected MenuBar mMenuBar;
     private NavigationBarBase mNavigationBar;
     protected PieControl mPieControl;
-    protected View mMenuBarParentView;
     private boolean mBlockFocusAnimations;
 
     public BaseUi(Activity browser, UiController controller) {
@@ -128,7 +127,6 @@ public abstract class BaseUi implements UI {
         mLockIconMixed = res.getDrawable(R.drawable.ic_secure_partial_holo_dark);
         FrameLayout frameLayout = (FrameLayout) mActivity.getWindow().getDecorView().findViewById(android.R.id.content);
         LayoutInflater.from(mActivity).inflate(R.layout.custom_screen, frameLayout);
-        mMenuBarParentView = frameLayout.findViewById(R.id.menu_settings);
         mFixedTitlebarContainer = (FrameLayout) frameLayout.findViewById(R.id.fixed_titlebar_container);
         mContentView = (FrameLayout) frameLayout.findViewById(R.id.main_content);
         mCustomViewContainer = (FrameLayout) frameLayout.findViewById(R.id.fullscreen_custom_content);
@@ -181,12 +179,10 @@ public abstract class BaseUi implements UI {
     }
 
     public void showPopMenuTool() {
-        if(mBottomMenuPopup.getVisibility() == View.VISIBLE) {
-            mBottomMenuPopup.setVisibility(View.GONE);
-            mMenuBarParentView.setBackgroundResource(R.color.transparent);
-        }else {
-            mBottomMenuPopup.setVisibility(View.VISIBLE);
-            mMenuBarParentView.setBackgroundResource(R.color.menubar_show_background);
+        if (mBottomMenuPopup.getVisibility() == View.VISIBLE) {
+            mBottomMenuPopup.showPopMenu(View.GONE);
+        } else {
+            mBottomMenuPopup.showPopMenu(View.VISIBLE);
         }
     }
 
@@ -201,9 +197,8 @@ public abstract class BaseUi implements UI {
             mUiController.hideCustomView();
             return true;
         }
-        if(mBottomMenuPopup.getVisibility() == View.VISIBLE) {
-            mBottomMenuPopup.setVisibility(View.GONE);
-            mMenuBarParentView.setBackgroundResource(R.color.transparent);
+        if (mBottomMenuPopup.getVisibility() == View.VISIBLE) {
+            mBottomMenuPopup.showPopMenu(View.GONE);
             return true;
         }
         return false;
@@ -533,8 +528,7 @@ public abstract class BaseUi implements UI {
     }
 
     @Override
-    public void showCustomView(View view, int requestedOrientation,
-                               WebChromeClient.CustomViewCallback callback) {
+    public void showCustomView(View view, int requestedOrientation, WebChromeClient.CustomViewCallback callback) {
         // if a view already exists then immediately terminate the new one
         if (mCustomView != null) {
             callback.onCustomViewHidden();
@@ -760,7 +754,7 @@ public abstract class BaseUi implements UI {
         warning.show();
     }
 
-    protected WebView getWebView() {
+    public WebView getWebView() {
         if (mActiveTab != null) {
             return mActiveTab.getWebView();
         } else {

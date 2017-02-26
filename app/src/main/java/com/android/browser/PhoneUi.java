@@ -29,7 +29,6 @@ import android.graphics.Matrix;
 import android.os.Build;
 import android.os.Message;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.ActionMode;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -55,7 +54,6 @@ public class PhoneUi extends BaseUi {
     private AnimScreen mAnimScreen;
     private NavigationBarPhone mNavigationBar;
 
-    boolean mAnimating;
     boolean mShowNav = false;
 
     /**
@@ -66,9 +64,6 @@ public class PhoneUi extends BaseUi {
         super(browser, controller);
         setUseQuickControls(BrowserSettings.getInstance().useQuickControls());
         mNavigationBar = (NavigationBarPhone) mTitleBar.getNavigationBar();
-//        TypedValue heightValue = new TypedValue();
-//        browser.getTheme().resolveAttribute(R.attr.actionBarSize, heightValue, true);
-//        mActionBarHeight = TypedValue.complexToDimensionPixelSize(heightValue.data, browser.getResources().getDisplayMetrics());
     }
 
     @Override
@@ -160,8 +155,6 @@ public class PhoneUi extends BaseUi {
         updateLockIconToLatest(tab);
         mTitleBar.setSkipTitleBarAnimations(false);
     }
-
-    // menu handling callbacks
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
@@ -306,20 +299,13 @@ public class PhoneUi extends BaseUi {
         mContentView.setVisibility(View.GONE);
         AnimatorSet set1 = new AnimatorSet();
         AnimatorSet inanim = new AnimatorSet();
-        ObjectAnimator tx = ObjectAnimator.ofInt(mAnimScreen.mContent, "left",
-                fromLeft, toLeft);
-        ObjectAnimator ty = ObjectAnimator.ofInt(mAnimScreen.mContent, "top",
-                fromTop, toTop);
-        ObjectAnimator tr = ObjectAnimator.ofInt(mAnimScreen.mContent, "right",
-                fromRight, toRight);
-        ObjectAnimator tb = ObjectAnimator.ofInt(mAnimScreen.mContent, "bottom",
-                fromBottom, toBottom);
-        ObjectAnimator title = ObjectAnimator.ofFloat(mAnimScreen.mTitle, "alpha",
-                1f, 0f);
-        ObjectAnimator sx = ObjectAnimator.ofFloat(mAnimScreen, "scaleFactor",
-                1f, scaleFactor);
-        ObjectAnimator blend1 = ObjectAnimator.ofFloat(mAnimScreen.mMain,
-                "alpha", 1f, 0f);
+        ObjectAnimator tx = ObjectAnimator.ofInt(mAnimScreen.mContent, "left", fromLeft, toLeft);
+        ObjectAnimator ty = ObjectAnimator.ofInt(mAnimScreen.mContent, "top", fromTop, toTop);
+        ObjectAnimator tr = ObjectAnimator.ofInt(mAnimScreen.mContent, "right", fromRight, toRight);
+        ObjectAnimator tb = ObjectAnimator.ofInt(mAnimScreen.mContent, "bottom", fromBottom, toBottom);
+        ObjectAnimator title = ObjectAnimator.ofFloat(mAnimScreen.mTitle, "alpha", 1f, 0f);
+        ObjectAnimator sx = ObjectAnimator.ofFloat(mAnimScreen, "scaleFactor", 1f, scaleFactor);
+        ObjectAnimator blend1 = ObjectAnimator.ofFloat(mAnimScreen.mMain, "alpha", 1f, 0f);
         blend1.setDuration(100);
 
         inanim.playTogether(tx, ty, tr, tb, sx, title);
@@ -379,8 +365,7 @@ public class PhoneUi extends BaseUi {
         if (mAnimScreen.mMain.getParent() == null) {
             mCustomViewContainer.addView(mAnimScreen.mMain, COVER_SCREEN_PARAMS);
         }
-        mAnimScreen.mMain.layout(0, 0, mContentView.getWidth(),
-                mContentView.getHeight());
+        mAnimScreen.mMain.layout(0, 0, mContentView.getWidth(), mContentView.getHeight());
         mNavScreen.mScroller.finishScroller();
         ImageView target = tabview.mImage;
         int toLeft = 0;
@@ -405,16 +390,11 @@ public class PhoneUi extends BaseUi {
         set1.playTogether(fade1, fade2);
         set1.setDuration(100);
         AnimatorSet set2 = new AnimatorSet();
-        ObjectAnimator l = ObjectAnimator.ofInt(mAnimScreen.mContent, "left",
-                fromLeft, toLeft);
-        ObjectAnimator t = ObjectAnimator.ofInt(mAnimScreen.mContent, "top",
-                fromTop, toTop);
-        ObjectAnimator r = ObjectAnimator.ofInt(mAnimScreen.mContent, "right",
-                fromRight, toRight);
-        ObjectAnimator b = ObjectAnimator.ofInt(mAnimScreen.mContent, "bottom",
-                fromBottom, toBottom);
-        ObjectAnimator scale = ObjectAnimator.ofFloat(mAnimScreen, "scaleFactor",
-                1f, scaleFactor);
+        ObjectAnimator l = ObjectAnimator.ofInt(mAnimScreen.mContent, "left", fromLeft, toLeft);
+        ObjectAnimator t = ObjectAnimator.ofInt(mAnimScreen.mContent, "top", fromTop, toTop);
+        ObjectAnimator r = ObjectAnimator.ofInt(mAnimScreen.mContent, "right", fromRight, toRight);
+        ObjectAnimator b = ObjectAnimator.ofInt(mAnimScreen.mContent, "bottom", fromBottom, toBottom);
+        ObjectAnimator scale = ObjectAnimator.ofFloat(mAnimScreen, "scaleFactor", 1f, scaleFactor);
         ObjectAnimator otheralpha = ObjectAnimator.ofFloat(mCustomViewContainer, "alpha", 1f, 0f);
         otheralpha.setDuration(100);
         set2.playTogether(l, t, r, b, scale);
@@ -467,8 +447,7 @@ public class PhoneUi extends BaseUi {
         private Bitmap mContentBitmap;
 
         public AnimScreen(Context ctx) {
-            mMain = LayoutInflater.from(ctx).inflate(R.layout.anim_screen,
-                    null);
+            mMain = LayoutInflater.from(ctx).inflate(R.layout.anim_screen, null);
             mTitle = (ImageView) mMain.findViewById(R.id.title);
             mContent = (ImageView) mMain.findViewById(R.id.content);
             mContent.setScaleType(ImageView.ScaleType.MATRIX);
@@ -485,8 +464,7 @@ public class PhoneUi extends BaseUi {
                 if (mTitleBarBitmap == null
                         || mTitleBarBitmap.getWidth() != tbar.getWidth()
                         || mTitleBarBitmap.getHeight() != tbar.getEmbeddedHeight()) {
-                    mTitleBarBitmap = safeCreateBitmap(tbar.getWidth(),
-                            tbar.getEmbeddedHeight());
+                    mTitleBarBitmap = safeCreateBitmap(tbar.getWidth(), tbar.getEmbeddedHeight());
                 }
                 if (mTitleBarBitmap != null) {
                     Canvas c = new Canvas(mTitleBarBitmap);
@@ -517,8 +495,7 @@ public class PhoneUi extends BaseUi {
 
         private Bitmap safeCreateBitmap(int width, int height) {
             if (width <= 0 || height <= 0) {
-                Log.w(LOGTAG, "safeCreateBitmap failed! width: " + width
-                        + ", height: " + height);
+                Log.w(LOGTAG, "safeCreateBitmap failed! width: " + width + ", height: " + height);
                 return null;
             }
             return Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
@@ -532,14 +509,12 @@ public class PhoneUi extends BaseUi {
         private void setScaleFactor(float sf) {
             mScale = sf;
             Matrix m = new Matrix();
-            m.postScale(sf,sf);
+            m.postScale(sf, sf);
             mContent.setImageMatrix(m);
         }
 
         private float getScaleFactor() {
             return mScale;
         }
-
     }
-
 }

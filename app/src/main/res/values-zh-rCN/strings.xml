@@ -404,6 +404,15 @@
     <string name="menu_enter_shortcut_label" msgid="2743362785111309668">"Enter 键"</string>
     <string name="menu_delete_shortcut_label" msgid="3658178007202748164">"删除"</string>
 
+    <string name="menu_bottom_refresh">刷新</string>
+    <string name="menu_bottom_add_bookmark">添加书签</string>
+    <string name="menu_bottom_history">书签/历史</string>
+    <string name="menu_bottom_download">文件下载</string>
+    <string name="menu_bottom_setting">设置</string>
+    <string name="menu_bottom_share">分享</string>
+    <string name="menu_bottom_tools">工具箱</string>
+    <string name="menu_bottom_exit">退出</string>
+
     <string name="pref_setting_about_title">关于浏览器</string>
     <string name="pref_setting_feedback_title">意见反馈</string>
     <string name="pref_setting_rate_us_title">评价我们</string>
