@@ -53,30 +53,27 @@ public class ComboViewActivity extends FragmentActivity implements CombinedBookm
         Bundle extras = getIntent().getExtras();
         Bundle args = extras.getBundle(EXTRA_COMBO_ARGS);
         String svStr = extras.getString(EXTRA_INITIAL_VIEW, null);
-        ComboViews startingView = svStr != null
-                ? ComboViews.valueOf(svStr)
-                : ComboViews.Bookmarks;
+        ComboViews startingView = svStr != null ? ComboViews.valueOf(svStr) : ComboViews.Bookmarks;
         mViewPager = new ViewPager(this);
         mViewPager.setId(R.id.tab_view);
         setContentView(mViewPager);
 
-        final ActionBar bar = getActionBar();
-        bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-        if (BrowserActivity.isTablet(this)) {
-            bar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME
-                    | ActionBar.DISPLAY_USE_LOGO);
-            bar.setHomeButtonEnabled(true);
-        } else {
-            bar.setDisplayOptions(0);
-        }
+//        final ActionBar bar = getActionBar();
+        /*if(bar != null) {
+            bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+            if (BrowserActivity.isTablet(this)) {
+                bar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_USE_LOGO);
+                bar.setHomeButtonEnabled(true);
+            } else {
+                bar.setDisplayOptions(0);
+            }
+        }*/
 
         mTabsAdapter = new TabsAdapter(this, mViewPager);
-        mTabsAdapter.addTab(bar.newTab().setText(R.string.tab_bookmarks),
-                BrowserBookmarksPage.class, args);
+//        mTabsAdapter.addTab(bar.newTab().setText(R.string.tab_bookmarks), BrowserBookmarksPage.class, args);
 
         if (savedInstanceState != null) {
-            bar.setSelectedNavigationItem(
-                    savedInstanceState.getInt(STATE_SELECTED_TAB, 0));
+//            bar.setSelectedNavigationItem(savedInstanceState.getInt(STATE_SELECTED_TAB, 0));
         } else {
             switch (startingView) {
             case Bookmarks:
@@ -162,7 +159,7 @@ public class ComboViewActivity extends FragmentActivity implements CombinedBookm
     public static class TabsAdapter extends FragmentPagerAdapter
             implements ActionBar.TabListener, ViewPager.OnPageChangeListener {
         private final Context mContext;
-        private final ActionBar mActionBar;
+//        private final ActionBar mActionBar;
         private final ViewPager mViewPager;
         private final ArrayList<TabInfo> mTabs = new ArrayList<TabInfo>();
 
@@ -179,7 +176,7 @@ public class ComboViewActivity extends FragmentActivity implements CombinedBookm
         public TabsAdapter(FragmentActivity activity, ViewPager pager) {
             super(activity.getSupportFragmentManager());
             mContext = activity;
-            mActionBar = activity.getActionBar();
+//            mActionBar = activity.getActionBar();
             mViewPager = pager;
             mViewPager.setAdapter(this);
             mViewPager.setOnPageChangeListener(this);
@@ -190,7 +187,7 @@ public class ComboViewActivity extends FragmentActivity implements CombinedBookm
             tab.setTag(info);
             tab.setTabListener(this);
             mTabs.add(info);
-            mActionBar.addTab(tab);
+//            mActionBar.addTab(tab);
             notifyDataSetChanged();
         }
 
@@ -211,7 +208,7 @@ public class ComboViewActivity extends FragmentActivity implements CombinedBookm
 
         @Override
         public void onPageSelected(int position) {
-            mActionBar.setSelectedNavigationItem(position);
+//            mActionBar.setSelectedNavigationItem(position);
         }
 
         @Override
@@ -243,5 +240,4 @@ public class ComboViewActivity extends FragmentActivity implements CombinedBookm
     private static String makeFragmentName(int viewId, int index) {
         return "android:switcher:" + viewId + ":" + index;
     }
-
 }

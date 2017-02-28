@@ -16,37 +16,27 @@
 
 package com.android.browser;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpHost;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.params.HttpClientParams;
-import org.apache.http.conn.params.ConnRouteParams;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Proxy;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Message;
 import android.util.Log;
 import android.webkit.WebView;
-
-import com.android.browser.http.AndroidHttpClient;
 import com.android.browser.provider.BrowserContract;
 import com.android.browser.provider.BrowserContract.Images;
 import com.android.browser.util.IOUtils;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-class DownloadTouchIcon extends AsyncTask<String, Void, Void> {
+public class DownloadTouchIcon extends AsyncTask<String, Void, Void> {
 
     private final ContentResolver mContentResolver;
     private Cursor mCursor;

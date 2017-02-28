@@ -156,8 +156,7 @@ public class TitleBar extends RelativeLayout {
     void setupTitleBarAnimator(Animator animator) {
         Resources res = getContext().getResources();
         int duration = res.getInteger(R.integer.titlebar_animation_duration);
-        animator.setInterpolator(new DecelerateInterpolator(
-                ANIM_TITLEBAR_DECELERATE));
+        animator.setInterpolator(new DecelerateInterpolator(ANIM_TITLEBAR_DECELERATE));
         animator.setDuration(duration);
     }
 
@@ -172,9 +171,7 @@ public class TitleBar extends RelativeLayout {
             if (getTranslationY() != 0) {
                 startPos = Math.max(startPos, getTranslationY());
             }
-            mTitleBarAnimator = ObjectAnimator.ofFloat(this,
-                    "translationY",
-                    startPos, 0);
+            mTitleBarAnimator = ObjectAnimator.ofFloat(this, "translationY", startPos, 0);
             setupTitleBarAnimator(mTitleBarAnimator);
             mTitleBarAnimator.start();
         }

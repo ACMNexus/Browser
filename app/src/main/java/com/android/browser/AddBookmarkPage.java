@@ -21,6 +21,8 @@ import com.android.browser.addbookmark.FolderSpinnerAdapter;
 import com.android.browser.http.WebAddress;
 import com.android.browser.provider.BrowserContract;
 import com.android.browser.provider.BrowserContract.Accounts;
+import com.android.browser.util.BookmarkUtils;
+
 import android.app.Activity;
 import android.app.LoaderManager;
 import android.app.LoaderManager.LoaderCallbacks;
@@ -794,9 +796,7 @@ public class AddBookmarkPage extends Activity
                 throw new IllegalArgumentException("No ContentValues provided!");
             }
             Uri uri = ContentUris.withAppendedId(BookmarkUtils.getBookmarksUri(mContext), mId);
-            mContext.getContentResolver().update(
-                    uri,
-                    params[0], null, null);
+            mContext.getContentResolver().update(uri, params[0], null, null);
             return null;
         }
     }

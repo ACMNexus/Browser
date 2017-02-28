@@ -82,22 +82,6 @@ public class UrlInputView extends EditText implements OnEditorActionListener,
         mState = StateListener.STATE_NORMAL;
     }
 
-    /*protected void onFocusChanged(boolean focused, int direction, Rect prevRect) {
-        super.onFocusChanged(focused, direction, prevRect);
-        int state = -1;
-        if (focused) {
-            state = StateListener.STATE_EDITED;
-        } else {
-            state = StateListener.STATE_NORMAL;
-        }
-        final int s = state;
-        post(new Runnable() {
-            public void run() {
-                changeState(s);
-            }
-        });
-    }*/
-
     /**
      * check if focus change requires a title bar update
      */
@@ -161,7 +145,7 @@ public class UrlInputView extends EditText implements OnEditorActionListener,
 
     private void finishInput(String url, String extra, String source) {
         mNeedsUpdate = true;
-        mInputManager.hideSoftInputFromWindow(getWindowToken(), 0);
+//        mInputManager.hideSoftInputFromWindow(getWindowToken(), 0);
         if (TextUtils.isEmpty(url)) {
             mListener.onDismiss();
         } else {
@@ -191,8 +175,6 @@ public class UrlInputView extends EditText implements OnEditorActionListener,
         }
         return true;
     }
-
-    // Completion Listener
 
     @Override
     public void onSearch(String search) {

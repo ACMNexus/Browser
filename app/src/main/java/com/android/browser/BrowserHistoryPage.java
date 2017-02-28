@@ -40,6 +40,7 @@ import android.os.Bundle;
 import android.provider.Browser;
 import com.android.browser.provider.BrowserContract;
 import com.android.browser.provider.BrowserContract.Combined;
+import com.android.browser.util.BookmarkUtils;
 import com.android.browser.util.ReflectUtils;
 
 import android.view.ContextMenu;

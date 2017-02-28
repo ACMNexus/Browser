@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.browser;
+package com.android.browser.util;
 
 import android.annotation.TargetApi;
 import android.app.ActivityManager;
@@ -40,6 +40,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Message;
 import android.provider.Browser;
+
+import com.android.browser.R;
 import com.android.browser.provider.BrowserContract;
 
 public class BookmarkUtils {
@@ -60,7 +62,7 @@ public class BookmarkUtils {
      * will be used, else we draw our own depending on the type of "bookmark" being created.
      */
     static Bitmap createIcon(Context context, Bitmap touchIcon, Bitmap favicon,
-            BookmarkIconType type) {
+                             BookmarkIconType type) {
         final ActivityManager am = (ActivityManager) context
                 .getSystemService(Context.ACTIVITY_SERVICE);
         final int iconDimension = am.getLauncherLargeIconSize();
@@ -68,7 +70,7 @@ public class BookmarkUtils {
         return createIcon(context, touchIcon, favicon, type, iconDimension, iconDensity);
     }
 
-    static Drawable createListFaviconBackground(Context context) {
+    public static Drawable createListFaviconBackground(Context context) {
         PaintDrawable faviconBackground = new PaintDrawable();
         Resources res = context.getResources();
         int padding = res.getDimensionPixelSize(R.dimen.list_favicon_padding);
@@ -81,7 +83,7 @@ public class BookmarkUtils {
     }
 
     private static Bitmap createIcon(Context context, Bitmap touchIcon,
-            Bitmap favicon, BookmarkIconType type, int iconDimension, int iconDensity) {
+                                     Bitmap favicon, BookmarkIconType type, int iconDimension, int iconDensity) {
         Bitmap bm = Bitmap.createBitmap(iconDimension, iconDimension, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bm);
         Rect iconBounds = new Rect(0, 0, bm.getWidth(), bm.getHeight());
@@ -113,8 +115,8 @@ public class BookmarkUtils {
     /**
      * Convenience method for creating an intent that will add a shortcut to the home screen.
      */
-    static Intent createAddToHomeIntent(Context context, String url, String title,
-            Bitmap touchIcon, Bitmap favicon) {
+    public static Intent createAddToHomeIntent(Context context, String url, String title,
+                                               Bitmap touchIcon, Bitmap favicon) {
         Intent i = new Intent(INSTALL_SHORTCUT);
         Intent shortcutIntent = createShortcutIntent(url);
         i.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
@@ -127,7 +129,7 @@ public class BookmarkUtils {
         return i;
     }
 
-    static Intent createShortcutIntent(String url) {
+    public static Intent createShortcutIntent(String url) {
         Intent shortcutIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         long urlHash = url.hashCode();
         long uniqueId = (urlHash << 32) | shortcutIntent.hashCode();
@@ -181,7 +183,7 @@ public class BookmarkUtils {
     }
 
     private static void drawFaviconToCanvas(Context context, Bitmap favicon,
-            Canvas canvas, Rect iconBounds, BookmarkIconType type) {
+                                            Canvas canvas, Rect iconBounds, BookmarkIconType type) {
         // Make a Paint for the white background rectangle and for
         // filtering the favicon.
         Paint p = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);
@@ -222,19 +224,20 @@ public class BookmarkUtils {
         canvas.drawBitmap(favicon, null, r, null);
     }
 
-    /* package */ static Uri getBookmarksUri(Context context) {
+    public static Uri getBookmarksUri(Context context) {
         return BrowserContract.Bookmarks.CONTENT_URI;
     }
 
     /**
      * Show a confirmation dialog to remove a bookmark.
-     * @param id Id of the bookmark to remove
-     * @param title Title of the bookmark, to be displayed in the confirmation method.
+     *
+     * @param id      Id of the bookmark to remove
+     * @param title   Title of the bookmark, to be displayed in the confirmation method.
      * @param context Package Context for strings, dialog, ContentResolver
-     * @param msg Message to send if the bookmark is deleted.
+     * @param msg     Message to send if the bookmark is deleted.
      */
-    static void displayRemoveBookmarkDialog( final long id, final String title,
-            final Context context, final Message msg) {
+    public static void displayRemoveBookmarkDialog(final long id, final String title,
+                                                   final Context context, final Message msg) {
 
         new AlertDialog.Builder(context)
                 .setIconAttribute(android.R.attr.alertDialogIcon)
@@ -247,7 +250,7 @@ public class BookmarkUtils {
                                 if (msg != null) {
                                     msg.sendToTarget();
                                 }
-                                Runnable runnable = new Runnable(){
+                                Runnable runnable = new Runnable() {
                                     @Override
                                     public void run() {
                                         Uri uri = ContentUris.withAppendedId(

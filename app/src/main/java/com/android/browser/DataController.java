@@ -34,6 +34,8 @@ import android.util.Log;
 import com.android.browser.provider.BrowserContract;
 import com.android.browser.provider.BrowserContract.History;
 import com.android.browser.provider.BrowserProvider2.Thumbnails;
+import com.android.browser.util.BookmarkUtils;
+
 import java.nio.ByteBuffer;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;

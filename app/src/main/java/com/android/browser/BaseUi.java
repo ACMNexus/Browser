@@ -91,6 +91,7 @@ public abstract class BaseUi implements UI {
 
     private Toast mStopToast;
     protected FrameLayout mContentView;
+    protected FrameLayout mHomePagerContainer;
     protected FrameLayout mCustomViewContainer;
     protected FrameLayout mFullscreenContainer;
     protected LinearLayout mBottomTools;
@@ -128,6 +129,7 @@ public abstract class BaseUi implements UI {
         FrameLayout frameLayout = (FrameLayout) mActivity.getWindow().getDecorView().findViewById(android.R.id.content);
         LayoutInflater.from(mActivity).inflate(R.layout.custom_screen, frameLayout);
         mFixedTitlebarContainer = (FrameLayout) frameLayout.findViewById(R.id.fixed_titlebar_container);
+        mHomePagerContainer = (FrameLayout) frameLayout.findViewById(R.id.homepage_container);
         mContentView = (FrameLayout) frameLayout.findViewById(R.id.main_content);
         mCustomViewContainer = (FrameLayout) frameLayout.findViewById(R.id.fullscreen_custom_content);
         mErrorConsoleContainer = (LinearLayout) frameLayout.findViewById(R.id.error_console);
@@ -421,14 +423,10 @@ public abstract class BaseUi implements UI {
      */
     @Override
     public void createSubWindow(Tab tab, WebView subView) {
-        View subViewContainer = mActivity.getLayoutInflater().inflate(
-                R.layout.browser_subwindow, null);
-        ViewGroup inner = (ViewGroup) subViewContainer
-                .findViewById(R.id.inner_container);
-        inner.addView(subView, new LayoutParams(LayoutParams.MATCH_PARENT,
-                LayoutParams.MATCH_PARENT));
-        final ImageButton cancel = (ImageButton) subViewContainer
-                .findViewById(R.id.subwindow_close);
+        View subViewContainer = mActivity.getLayoutInflater().inflate(R.layout.browser_subwindow, null);
+        ViewGroup inner = (ViewGroup) subViewContainer.findViewById(R.id.inner_container);
+        inner.addView(subView, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+        final ImageButton cancel = (ImageButton) subViewContainer.findViewById(R.id.subwindow_close);
         final WebView cancelSubView = subView;
         cancel.setOnClickListener(new OnClickListener() {
             @Override
@@ -811,8 +809,7 @@ public abstract class BaseUi implements UI {
      * as if the user is editing the URL bar or if the page is loading
      */
     public void suggestHideTitleBar() {
-        if (!isLoading() && !isEditingUrl() && !mTitleBar.wantsToBeVisible()
-                && !mNavigationBar.isMenuShowing()) {
+        if (!isLoading() && !isEditingUrl() && !mTitleBar.wantsToBeVisible() && !mNavigationBar.isMenuShowing()) {
             hideTitleBar();
         }
     }

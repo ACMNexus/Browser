@@ -33,6 +33,8 @@ import android.widget.Toast;
 import com.android.browser.provider.BrowserContract;
 import com.android.browser.provider.BrowserContract.Combined;
 import com.android.browser.provider.BrowserContract.Images;
+import com.android.browser.util.BookmarkUtils;
+
 import java.io.ByteArrayOutputStream;
 
 /**
@@ -62,7 +64,7 @@ public class Bookmarks {
      *  @param thumbnail A thumbnail for the bookmark.
      *  @param parent ID of the parent folder.
      */
-    /* package */ static void addBookmark(Context context, boolean showToast, String url,
+     public static void addBookmark(Context context, boolean showToast, String url,
             String name, Bitmap thumbnail, long parent) {
         // Want to append to the beginning of the list
         ContentValues values = new ContentValues();

@@ -22,6 +22,12 @@
         android:background="@color/black"
         android:visibility="gone" />
 
+    <FrameLayout
+        android:id="@+id/homepage_container"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/white" />
+
     <com.android.browser.view.CustomScreenLinearLayout
         android:id="@+id/vertical_layout"
         android:layout_width="match_parent"
@@ -56,8 +62,8 @@
     <View
         android:layout_width="fill_parent"
         android:layout_height="0.5dip"
-        android:layout_marginBottom="48dip"
         android:layout_gravity="bottom"
+        android:layout_marginBottom="48dip"
         android:background="@color/content_divider" />
 
     <LinearLayout

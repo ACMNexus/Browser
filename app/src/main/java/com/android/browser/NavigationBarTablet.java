@@ -59,18 +59,8 @@ public class NavigationBarTablet extends NavigationBarBase implements StateListe
     private boolean mHideNavButtons;
     private Drawable mFaviconDrawable;
 
-    public NavigationBarTablet(Context context) {
-        super(context);
-        init(context);
-    }
-
     public NavigationBarTablet(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(context);
-    }
-
-    public NavigationBarTablet(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
         init(context);
     }
 

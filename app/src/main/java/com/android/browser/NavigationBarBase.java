@@ -34,28 +34,17 @@ import android.widget.LinearLayout;
 
 import com.android.browser.UrlInputView.UrlInputListener;
 
-public class NavigationBarBase extends LinearLayout implements
-        OnClickListener, UrlInputListener, OnFocusChangeListener,
-        TextWatcher {
+public class NavigationBarBase extends LinearLayout implements OnClickListener, UrlInputListener, OnFocusChangeListener, TextWatcher {
 
     protected BaseUi mBaseUi;
     protected TitleBar mTitleBar;
     protected UiController mUiController;
     protected UrlInputView mUrlInput;
     protected ImageView mLockIcon;
-
     private ImageView mFavicon;
-
-    public NavigationBarBase(Context context) {
-        super(context);
-    }
 
     public NavigationBarBase(Context context, AttributeSet attrs) {
         super(context, attrs);
-    }
-
-    public NavigationBarBase(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
     }
 
     @Override
@@ -101,15 +90,11 @@ public class NavigationBarBase extends LinearLayout implements
         if(currentTab != null) {
             title = currentTab.getUrl() == null ? "" : currentTab.getUrl();
         }
-        // if losing focus and not in touch mode, leave as is
-        if (hasFocus || view.isInTouchMode() || mUrlInput.needsUpdate()) {
-            setFocusState(hasFocus);
-        }
         if (hasFocus) {
             mBaseUi.showTitleBar();
             mUrlInput.setText(title);
             mUrlInput.selectAll();
-        } else if (!mUrlInput.needsUpdate()) {
+        } /*else if (!mUrlInput.needsUpdate()) {
             mUrlInput.hideIME();
             if(currentTab != null) {
                 title = currentTab.getTitle() == null ? currentTab.getUrl() : currentTab.getTitle();
@@ -117,7 +102,7 @@ public class NavigationBarBase extends LinearLayout implements
             setDisplayTitle(title == null ? "" : title);
             mBaseUi.suggestHideTitleBar();
         }
-        mUrlInput.clearNeedsUpdate();
+        mUrlInput.clearNeedsUpdate();*/
     }
 
     protected void setFocusState(boolean focus) {
@@ -147,10 +132,7 @@ public class NavigationBarBase extends LinearLayout implements
     }
 
     void clearCompletions() {
-//        mUrlInput.dismissDropDown();
     }
-
- // UrlInputListener implementation
 
     /**
      * callback from suggestion dropdown
@@ -265,12 +247,14 @@ public class NavigationBarBase extends LinearLayout implements
     }
 
     @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+    }
 
     @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) { }
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+    }
 
     @Override
-    public void afterTextChanged(Editable s) { }
-
+    public void afterTextChanged(Editable s) {
+    }
 }

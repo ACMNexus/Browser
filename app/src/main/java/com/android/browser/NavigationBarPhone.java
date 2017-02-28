@@ -118,7 +118,6 @@ public class NavigationBarPhone extends NavigationBarBase implements StateListen
 
     /**
      * Update the text displayed in the title bar.
-     *
      * @param title String to display.  If null, the new tab string will be shown.
      */
     @Override
@@ -173,16 +172,13 @@ public class NavigationBarPhone extends NavigationBarBase implements StateListen
     }
 
     @Override
-    public void onFocusChange(View view, boolean hasFocus) {
-        super.onFocusChange(view, hasFocus);
-    }
-
-    @Override
     public void onStateChanged(int state) {
         switch (state) {
             case StateListener.STATE_NORMAL:
                 mEditMode.setVisibility(View.GONE);
                 mRequestMode.setVisibility(View.VISIBLE);
+//                mUrlInput.clearFocus();
+//                mUrlInput.setFocusable(false);
                 break;
             case StateListener.STATE_EDITED:
                 mEditMode.setVisibility(View.VISIBLE);
@@ -190,11 +186,14 @@ public class NavigationBarPhone extends NavigationBarBase implements StateListen
                 mCancelButton.setVisibility(View.GONE);
                 mClearButton.setVisibility(View.VISIBLE);
                 mEnterButton.setVisibility(View.VISIBLE);
+                mUrlInput.setFocusable(true);
                 break;
             case StateListener.STATE_CLEAR:
                 mClearButton.setVisibility(View.GONE);
                 mEnterButton.setVisibility(View.GONE);
                 mCancelButton.setVisibility(View.VISIBLE);
+                mUrlInput.clearFocus();
+                mUrlInput.setFocusable(false);
                 break;
         }
     }

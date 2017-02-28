@@ -51,6 +51,7 @@ import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.Toast;
 
 import com.android.browser.provider.BrowserProvider2;
+import com.android.browser.util.BookmarkUtils;
 import com.android.browser.view.BookmarkExpandableView;
 import com.android.browser.view.BookmarkExpandableView.BookmarkContextMenuInfo;
 
@@ -125,13 +126,11 @@ public class BrowserBookmarksPage extends Fragment implements View.OnCreateConte
                 Bundle args = new Bundle();
                 args.putString(ACCOUNT_NAME, accountName);
                 args.putString(ACCOUNT_TYPE, accountType);
-                BrowserBookmarksAdapter adapter = new BrowserBookmarksAdapter(
-                        getActivity());
+                BrowserBookmarksAdapter adapter = new BrowserBookmarksAdapter(getActivity());
                 mBookmarkAdapters.put(id, adapter);
                 boolean expand = true;
                 try {
-                    expand = mState.getBoolean(accountName != null ? accountName
-                            : BookmarkExpandableView.LOCAL_ACCOUNT_NAME);
+                    expand = mState.getBoolean(accountName != null ? accountName : BookmarkExpandableView.LOCAL_ACCOUNT_NAME);
                 } catch (JSONException e) {} // no state for accountName
                 mGrid.addAccount(accountName, adapter, expand);
                 lm.restartLoader(id, args, this);

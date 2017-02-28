@@ -4,6 +4,8 @@ import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -11,9 +13,16 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import com.android.browser.BaseUi;
+import com.android.browser.BrowserBookmarksPage;
+import com.android.browser.ComboViewActivity;
+import com.android.browser.Controller;
 import com.android.browser.R;
+import com.android.browser.Tab;
+import com.android.browser.UI;
 import com.android.browser.UiController;
 import com.android.browser.BrowserPreferencesPage;
+import com.android.browser.activitys.AddBookMarkActivity;
+import com.android.browser.activitys.BookMarkActivity;
 import com.android.browser.activitys.BrowserSettingActivity;
 import com.android.browser.activitys.DownloadFileActivity;
 import com.android.browser.util.ActivityUtils;
@@ -101,17 +110,18 @@ public class MenuToolBar extends RelativeLayout implements View.OnClickListener 
     private void initAnimator() {
         ObjectAnimator menuShadowAnimator = ObjectAnimator.ofFloat(mMenuShadow, "alpha", 0.0f, 1.0f);
         ObjectAnimator menuToolBarAnimator = ObjectAnimator.ofFloat(this, "alpha", 0.0f, 1.0f);
-        ObjectAnimator menuTranslatXAnimator = ObjectAnimator.ofFloat(mMenuParent, "translationX", 0.0f, 0.0f);
+        ObjectAnimator menuTranslatYAnimator = ObjectAnimator.ofFloat(mMenuParent, "translationY", 600f, 0f);
 
         showAnimatorSet = new AnimatorSet();
-        showAnimatorSet.playTogether(menuShadowAnimator, menuToolBarAnimator, menuTranslatXAnimator);
-        showAnimatorSet.setDuration(100);
+        showAnimatorSet.playTogether(menuShadowAnimator, menuToolBarAnimator, menuTranslatYAnimator);
+        showAnimatorSet.setDuration(500);
 
         ObjectAnimator menuShadowDismissAnimator = ObjectAnimator.ofFloat(mMenuShadow, "alpha", 1.0f, 0.0f);
         ObjectAnimator menuToolBarDismissAnimator = ObjectAnimator.ofFloat(this, "alpha", 1.0f, 0.0f);
+        ObjectAnimator menuDissmissAnimator = ObjectAnimator.ofFloat(mMenuParent, "translationY", 0, 800f);
         dismissAimatorSet = new AnimatorSet();
-        dismissAimatorSet.playTogether(menuShadowDismissAnimator, menuToolBarDismissAnimator);
-        dismissAimatorSet.setDuration(100);
+        dismissAimatorSet.playTogether(menuShadowDismissAnimator, menuToolBarDismissAnimator, menuDissmissAnimator);
+        dismissAimatorSet.setDuration(500);
         dismissAimatorSet.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animator) {
@@ -155,6 +165,7 @@ public class MenuToolBar extends RelativeLayout implements View.OnClickListener 
         setVisibility(View.GONE);
         switch (view.getId()) {
             case R.id.menu_night_type:
+                mUiController.bookmarkCurrentPage();
                 break;
             case R.id.menu_pic_type:
                 ActivityUtils.startNextPager(mContext, BrowserPreferencesPage.class);
@@ -164,8 +175,10 @@ public class MenuToolBar extends RelativeLayout implements View.OnClickListener 
             case R.id.menu_trace_type:
                 break;
             case R.id.menu_addbookmark:
+                ActivityUtils.startNextPager(mContext, AddBookMarkActivity.class);
                 break;
             case R.id.menu_history:
+                mUiController.bookmarksOrHistoryPicker(UI.ComboViews.Bookmarks);
                 break;
             case R.id.menu_download:
                 ActivityUtils.startNextPager(mContext, DownloadFileActivity.class);
