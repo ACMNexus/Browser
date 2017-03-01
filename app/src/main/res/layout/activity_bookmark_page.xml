@@ -10,8 +10,8 @@
         android:layout_width="fill_parent"
         android:layout_height="48dip"
         android:background="@color/white"
-        app:pstsIndicatorColor="@color/ksw_md_solid_checked"
-        app:pstsIndicatorHeight="2dip"
+        app:pstsIndicatorColor="#4C9AFA"
+        app:pstsIndicatorHeight="1dip"
         app:pstsTabItemHeight="16dip" />
 
     <android.support.v4.view.ViewPager

@@ -42,7 +42,7 @@ public class AddBookMarkActivity extends BaseActivity implements Handler.Callbac
     public static final String USER_AGENT = "user_agent";
     public static final String CHECK_FOR_DUPE = "check_for_dupe";
 
-    private long mCurrentFolder = 1;
+    private long mCurrentFolder = 0;
     private static final int SAVE_BOOKMARK = 100;
     private static final int TOUCH_ICON_DOWNLOADED = 101;
 

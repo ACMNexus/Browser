@@ -106,14 +106,14 @@ public class MenuToolBar extends RelativeLayout implements View.OnClickListener 
 
         showAnimatorSet = new AnimatorSet();
         showAnimatorSet.playTogether(menuShadowAnimator, menuToolBarAnimator, menuTranslatYAnimator);
-        showAnimatorSet.setDuration(500);
+        showAnimatorSet.setDuration(200);
 
         ObjectAnimator menuShadowDismissAnimator = ObjectAnimator.ofFloat(mMenuShadow, "alpha", 1.0f, 0.0f);
         ObjectAnimator menuToolBarDismissAnimator = ObjectAnimator.ofFloat(this, "alpha", 1.0f, 0.0f);
         ObjectAnimator menuDissmissAnimator = ObjectAnimator.ofFloat(mMenuParent, "translationY", 0, 800f);
         dismissAimatorSet = new AnimatorSet();
         dismissAimatorSet.playTogether(menuShadowDismissAnimator, menuToolBarDismissAnimator, menuDissmissAnimator);
-        dismissAimatorSet.setDuration(500);
+        dismissAimatorSet.setDuration(200);
         dismissAimatorSet.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animator) {

@@ -33,8 +33,7 @@ public class ShortcutActivity extends Activity
         super.onCreate(savedInstanceState);
         setTitle(R.string.shortcut_bookmark_title);
         setContentView(R.layout.pick_bookmark);
-        mBookmarks = (BrowserBookmarksPage) getFragmentManager()
-                .findFragmentById(R.id.bookmarks);
+//        mBookmarks = (BrowserBookmarksPage) getFragmentManager().findFragmentById(R.id.bookmarks);
         mBookmarks.setEnableContextMenu(false);
         mBookmarks.setCallbackListener(this);
         View cancel = findViewById(R.id.cancel);

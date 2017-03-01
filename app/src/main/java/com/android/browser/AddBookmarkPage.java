@@ -395,8 +395,7 @@ public class AddBookmarkPage extends Activity
         }
 
         @Override
-        public void onLoadFinished(Loader<EditBookmarkInfo> loader,
-                EditBookmarkInfo info) {
+        public void onLoadFinished(Loader<EditBookmarkInfo> loader, EditBookmarkInfo info) {
             boolean setAccount = false;
             if (info.id != -1) {
                 mEditingExisting = true;
@@ -443,8 +442,7 @@ public class AddBookmarkPage extends Activity
     void setAccount(String accountName, String accountType) {
         for (int i = 0; i < mAccountAdapter.getCount(); i++) {
             BookmarkAccount account = mAccountAdapter.getItem(i);
-            if (TextUtils.equals(account.accountName, accountName)
-                    && TextUtils.equals(account.accountType, accountType)) {
+            if (TextUtils.equals(account.accountName, accountName) && TextUtils.equals(account.accountType, accountType)) {
                 mAccountSpinner.setSelection(i);
                 onRootFolderFound(account.rootFolderId);
                 return;

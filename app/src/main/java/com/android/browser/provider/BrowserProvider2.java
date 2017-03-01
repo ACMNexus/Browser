@@ -39,6 +39,7 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 import android.provider.Browser;
 import android.provider.Browser.BookmarkColumns;
+
 import com.android.browser.provider.BrowserContract.Accounts;
 import com.android.browser.provider.BrowserContract.Bookmarks;
 import com.android.browser.provider.BrowserContract.ChromeSyncColumns;
@@ -48,12 +49,15 @@ import com.android.browser.provider.BrowserContract.Images;
 import com.android.browser.provider.BrowserContract.Searches;
 import com.android.browser.provider.BrowserContract.Settings;
 import com.android.browser.provider.BrowserContract.SyncState;
+
 import android.provider.ContactsContract.RawContacts;
 import android.provider.SyncStateContract;
 import android.text.TextUtils;
+
 import com.android.browser.R;
 import com.android.browser.UrlUtils;
 import com.android.browser.widget.BookmarkThumbnailWidgetProvider;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -108,18 +112,18 @@ public class BrowserProvider2 extends SQLiteContentProvider {
 
     static final String FORMAT_COMBINED_JOIN_SUBQUERY_JOIN_IMAGES =
             "history LEFT OUTER JOIN (%s) bookmarks " +
-            "ON history.url = bookmarks.url LEFT OUTER JOIN images " +
-            "ON history.url = images.url_key";
+                    "ON history.url = bookmarks.url LEFT OUTER JOIN images " +
+                    "ON history.url = images.url_key";
 
     static final String DEFAULT_SORT_HISTORY = History.DATE_LAST_VISITED + " DESC";
     static final String DEFAULT_SORT_ACCOUNTS =
             Accounts.ACCOUNT_NAME + " IS NOT NULL DESC, "
-            + Accounts.ACCOUNT_NAME + " ASC";
+                    + Accounts.ACCOUNT_NAME + " ASC";
 
     private static final String TABLE_BOOKMARKS_JOIN_HISTORY =
-        "history LEFT OUTER JOIN bookmarks ON history.url = bookmarks.url";
+            "history LEFT OUTER JOIN bookmarks ON history.url = bookmarks.url";
 
-    private static final String[] SUGGEST_PROJECTION = new String[] {
+    private static final String[] SUGGEST_PROJECTION = new String[]{
             qualifyColumn(TABLE_HISTORY, History._ID),
             qualifyColumn(TABLE_HISTORY, History.URL),
             bookmarkOrHistoryColumn(Combined.TITLE),
@@ -130,15 +134,15 @@ public class BrowserProvider2 extends SQLiteContentProvider {
 
     private static final String SUGGEST_SELECTION =
             "history.url LIKE ? OR history.url LIKE ? OR history.url LIKE ? OR history.url LIKE ?"
-            + " OR history.title LIKE ? OR bookmarks.title LIKE ?";
+                    + " OR history.title LIKE ? OR bookmarks.title LIKE ?";
 
     private static final String ZERO_QUERY_SUGGEST_SELECTION =
             TABLE_HISTORY + "." + History.DATE_LAST_VISITED + " != 0";
 
     private static final String IMAGE_PRUNE =
             "url_key NOT IN (SELECT url FROM bookmarks " +
-            "WHERE url IS NOT NULL AND deleted == 0) AND url_key NOT IN " +
-            "(SELECT url FROM history WHERE url IS NOT NULL)";
+                    "WHERE url IS NOT NULL AND deleted == 0) AND url_key NOT IN " +
+                    "(SELECT url FROM history WHERE url IS NOT NULL)";
 
     static final int THUMBNAILS = 10;
     static final int THUMBNAILS_ID = 11;
@@ -280,13 +284,13 @@ public class BrowserProvider2 extends SQLiteContentProvider {
                 ") AS " + Bookmarks.INSERT_AFTER_SOURCE_ID);
         map.put(Bookmarks.TYPE, "CASE "
                 + " WHEN " + Bookmarks.IS_FOLDER + "=0 THEN "
-                    + Bookmarks.BOOKMARK_TYPE_BOOKMARK
+                + Bookmarks.BOOKMARK_TYPE_BOOKMARK
                 + " WHEN " + ChromeSyncColumns.SERVER_UNIQUE + "='"
-                    + ChromeSyncColumns.FOLDER_NAME_BOOKMARKS_BAR + "' THEN "
-                    + Bookmarks.BOOKMARK_TYPE_BOOKMARK_BAR_FOLDER
+                + ChromeSyncColumns.FOLDER_NAME_BOOKMARKS_BAR + "' THEN "
+                + Bookmarks.BOOKMARK_TYPE_BOOKMARK_BAR_FOLDER
                 + " WHEN " + ChromeSyncColumns.SERVER_UNIQUE + "='"
-                    + ChromeSyncColumns.FOLDER_NAME_OTHER_BOOKMARKS + "' THEN "
-                    + Bookmarks.BOOKMARK_TYPE_OTHER_FOLDER
+                + ChromeSyncColumns.FOLDER_NAME_OTHER_BOOKMARKS + "' THEN "
+                + Bookmarks.BOOKMARK_TYPE_OTHER_FOLDER
                 + " ELSE " + Bookmarks.BOOKMARK_TYPE_FOLDER
                 + " END AS " + Bookmarks.TYPE);
 
@@ -370,7 +374,7 @@ public class BrowserProvider2 extends SQLiteContentProvider {
     }
 
     static final String bookmarkOrHistoryLiteral(String column, String bookmarkValue,
-            String historyValue) {
+                                                 String historyValue) {
         return "CASE WHEN bookmarks." + column + " IS NOT NULL THEN \"" + bookmarkValue +
                 "\" ELSE \"" + historyValue + "\" END";
     }
@@ -389,6 +393,7 @@ public class BrowserProvider2 extends SQLiteContentProvider {
     final class DatabaseHelper extends SQLiteOpenHelper {
         static final String DATABASE_NAME = "browser2.db";
         static final int DATABASE_VERSION = 32;
+
         public DatabaseHelper(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
             setWriteAheadLoggingEnabled(true);
@@ -514,12 +519,12 @@ public class BrowserProvider2 extends SQLiteContentProvider {
                     String table = BrowserProvider.TABLE_NAMES[BrowserProvider.URI_MATCH_BOOKMARKS];
                     // Import bookmarks
                     c = oldDb.query(table,
-                            new String[] {
-                            BookmarkColumns.URL, // 0
-                            BookmarkColumns.TITLE, // 1
-                            BookmarkColumns.FAVICON, // 2
+                            new String[]{
+                                    BookmarkColumns.URL, // 0
+                                    BookmarkColumns.TITLE, // 1
+                                    BookmarkColumns.FAVICON, // 2
                                     "touch_icon", // 3
-                            BookmarkColumns.CREATED, // 4
+                                    BookmarkColumns.CREATED, // 4
                             }, BookmarkColumns.BOOKMARK + "!=0", null,
                             null, null, null);
                     if (c != null) {
@@ -544,14 +549,14 @@ public class BrowserProvider2 extends SQLiteContentProvider {
                     }
                     // Import history
                     c = oldDb.query(table,
-                            new String[] {
-                            BookmarkColumns.URL, // 0
-                            BookmarkColumns.TITLE, // 1
-                            BookmarkColumns.VISITS, // 2
-                            BookmarkColumns.DATE, // 3
-                            BookmarkColumns.CREATED, // 4
+                            new String[]{
+                                    BookmarkColumns.URL, // 0
+                                    BookmarkColumns.TITLE, // 1
+                                    BookmarkColumns.VISITS, // 2
+                                    BookmarkColumns.DATE, // 3
+                                    BookmarkColumns.CREATED, // 4
                             }, BookmarkColumns.VISITS + " > 0 OR "
-                            + BookmarkColumns.BOOKMARK + " = 0",
+                                    + BookmarkColumns.BOOKMARK + " = 0",
                             null, null, null, null);
                     if (c != null) {
                         while (c.moveToNext()) {
@@ -624,7 +629,7 @@ public class BrowserProvider2 extends SQLiteContentProvider {
                 db.execSQL("DROP TABLE IF EXISTS " + TABLE_SEARCHES);
                 db.execSQL("DROP TABLE IF EXISTS " + TABLE_IMAGES);
                 db.execSQL("DROP TABLE IF EXISTS " + TABLE_SETTINGS);
-                mSyncHelper.onAccountsChanged(db, new Account[] {}); // remove all sync info
+                mSyncHelper.onAccountsChanged(db, new Account[]{}); // remove all sync info
                 onCreate(db);
             }
         }
@@ -656,7 +661,7 @@ public class BrowserProvider2 extends SQLiteContentProvider {
                     R.array.bookmarks);
             int size = bookmarks.length;
             TypedArray preloads = null/*res.obtainTypedArray(R.array.bookmark_preloads)*/;
-            if(preloads == null) return;
+            if (preloads == null) return;
             try {
                 String parent = Long.toString(parentId);
                 String now = Long.toString(System.currentTimeMillis());
@@ -670,7 +675,7 @@ public class BrowserProvider2 extends SQLiteContentProvider {
                             Bookmarks.PARENT + "," +
                             Bookmarks.POSITION + "," +
                             Bookmarks.DATE_CREATED +
-                        ") VALUES (" +
+                            ") VALUES (" +
                             "'" + bookmarks[i] + "', " +
                             "'" + bookmarkDestination + "', " +
                             "0," +
@@ -734,7 +739,7 @@ public class BrowserProvider2 extends SQLiteContentProvider {
             Cursor c = null;
             try {
                 c = cr.query(Uri.parse("content://com.google.settings/partner"),
-                        new String[] { "value" }, "name='client_id'", null, null);
+                        new String[]{"value"}, "name='client_id'", null, null);
                 if (c != null && c.moveToNext()) {
                     ret = c.getString(0);
                 }
@@ -759,7 +764,7 @@ public class BrowserProvider2 extends SQLiteContentProvider {
                 if (c == '{') {
                     sb.append(srcString.subSequence(lastCharLoc, i));
                     lastCharLoc = i;
-              inner:
+                    inner:
                     for (int j = i; j < srcString.length(); ++j) {
                         char k = srcString.charAt(j);
                         if (k == '}') {
@@ -855,20 +860,19 @@ public class BrowserProvider2 extends SQLiteContentProvider {
                 selection = DatabaseUtils.concatenateWhere(selection,
                         Bookmarks.ACCOUNT_TYPE + "=? AND " + Bookmarks.ACCOUNT_NAME + "=? ");
                 selectionArgs = DatabaseUtils.appendSelectionArgs(selectionArgs,
-                        new String[] { accountType, accountName });
+                        new String[]{accountType, accountName});
                 hasAccounts = true;
             } else {
                 selection = DatabaseUtils.concatenateWhere(selection,
                         Bookmarks.ACCOUNT_NAME + " IS NULL AND " +
-                        Bookmarks.ACCOUNT_TYPE + " IS NULL");
+                                Bookmarks.ACCOUNT_TYPE + " IS NULL");
             }
         }
-        return new Object[] { selection, selectionArgs, hasAccounts };
+        return new Object[]{selection, selectionArgs, hasAccounts};
     }
 
     @Override
-    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
-            String sortOrder) {
+    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         SQLiteDatabase db = mOpenHelper.getReadableDatabase();
         final int match = URI_MATCHER.match(uri);
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
@@ -880,15 +884,13 @@ public class BrowserProvider2 extends SQLiteContentProvider {
                 qb.setProjectionMap(ACCOUNTS_PROJECTION_MAP);
                 String allowEmpty = uri.getQueryParameter(PARAM_ALLOW_EMPTY_ACCOUNTS);
                 if ("false".equals(allowEmpty)) {
-                    selection = DatabaseUtils.concatenateWhere(selection,
-                            SQL_WHERE_ACCOUNT_HAS_BOOKMARKS);
+                    selection = DatabaseUtils.concatenateWhere(selection, SQL_WHERE_ACCOUNT_HAS_BOOKMARKS);
                 }
                 if (sortOrder == null) {
                     sortOrder = DEFAULT_SORT_ACCOUNTS;
                 }
                 break;
             }
-
             case BOOKMARKS_FOLDER_ID:
             case BOOKMARKS_ID:
             case BOOKMARKS: {
@@ -903,13 +905,13 @@ public class BrowserProvider2 extends SQLiteContentProvider {
                     selection = DatabaseUtils.concatenateWhere(selection,
                             TABLE_BOOKMARKS + "." + Bookmarks._ID + "=?");
                     selectionArgs = DatabaseUtils.appendSelectionArgs(selectionArgs,
-                            new String[] { Long.toString(ContentUris.parseId(uri)) });
+                            new String[]{Long.toString(ContentUris.parseId(uri))});
                 } else if (match == BOOKMARKS_FOLDER_ID) {
                     // Tack on the ID of the specific folder requested
                     selection = DatabaseUtils.concatenateWhere(selection,
                             TABLE_BOOKMARKS + "." + Bookmarks.PARENT + "=?");
                     selectionArgs = DatabaseUtils.appendSelectionArgs(selectionArgs,
-                            new String[] { Long.toString(ContentUris.parseId(uri)) });
+                            new String[]{Long.toString(ContentUris.parseId(uri))});
                 }
 
                 Object[] withAccount = getSelectionWithAccounts(uri, selection, selectionArgs);
@@ -955,7 +957,7 @@ public class BrowserProvider2 extends SQLiteContentProvider {
                     qb.setProjectionMap(BOOKMARKS_PROJECTION_MAP);
                     String where = Bookmarks.PARENT + "=? AND " + Bookmarks.IS_DELETED + "=0";
                     where = DatabaseUtils.concatenateWhere(where, selection);
-                    args = new String[] { Long.toString(FIXED_ID_ROOT) };
+                    args = new String[]{Long.toString(FIXED_ID_ROOT)};
                     if (selectionArgs != null) {
                         args = DatabaseUtils.appendSelectionArgs(args, selectionArgs);
                     }
@@ -973,7 +975,7 @@ public class BrowserProvider2 extends SQLiteContentProvider {
                     where = DatabaseUtils.concatenateWhere(where, selection);
                     String bookmarksBarQuery = qb.buildQuery(projection,
                             where, null, null, null, null);
-                    args = new String[] {accountType, accountName,
+                    args = new String[]{accountType, accountName,
                             accountType, accountName};
                     if (selectionArgs != null) {
                         args = DatabaseUtils.appendSelectionArgs(args, selectionArgs);
@@ -987,12 +989,12 @@ public class BrowserProvider2 extends SQLiteContentProvider {
                             where, null, null, null, null);
 
                     query = qb.buildUnionQuery(
-                            new String[] { bookmarksBarQuery, otherBookmarksQuery },
+                            new String[]{bookmarksBarQuery, otherBookmarksQuery},
                             sortOrder, limit);
 
-                    args = DatabaseUtils.appendSelectionArgs(args, new String[] {
+                    args = DatabaseUtils.appendSelectionArgs(args, new String[]{
                             accountType, accountName, ChromeSyncColumns.FOLDER_NAME_OTHER_BOOKMARKS,
-                            });
+                    });
                     if (selectionArgs != null) {
                         args = DatabaseUtils.appendSelectionArgs(args, selectionArgs);
                     }
@@ -1010,7 +1012,7 @@ public class BrowserProvider2 extends SQLiteContentProvider {
                 String accountName = uri.getQueryParameter(Bookmarks.PARAM_ACCOUNT_NAME);
                 String accountType = uri.getQueryParameter(Bookmarks.PARAM_ACCOUNT_TYPE);
                 long id = queryDefaultFolderId(accountName, accountType);
-                MatrixCursor c = new MatrixCursor(new String[] {Bookmarks._ID});
+                MatrixCursor c = new MatrixCursor(new String[]{Bookmarks._ID});
                 c.newRow().add(id);
                 return c;
             }
@@ -1022,7 +1024,7 @@ public class BrowserProvider2 extends SQLiteContentProvider {
             case HISTORY_ID: {
                 selection = DatabaseUtils.concatenateWhere(selection, TABLE_HISTORY + "._id=?");
                 selectionArgs = DatabaseUtils.appendSelectionArgs(selectionArgs,
-                        new String[] { Long.toString(ContentUris.parseId(uri)) });
+                        new String[]{Long.toString(ContentUris.parseId(uri))});
                 // fall through
             }
             case HISTORY: {
@@ -1038,7 +1040,7 @@ public class BrowserProvider2 extends SQLiteContentProvider {
             case SEARCHES_ID: {
                 selection = DatabaseUtils.concatenateWhere(selection, TABLE_SEARCHES + "._id=?");
                 selectionArgs = DatabaseUtils.appendSelectionArgs(selectionArgs,
-                        new String[] { Long.toString(ContentUris.parseId(uri)) });
+                        new String[]{Long.toString(ContentUris.parseId(uri))});
                 // fall through
             }
             case SEARCHES: {
@@ -1055,7 +1057,7 @@ public class BrowserProvider2 extends SQLiteContentProvider {
                 selection = appendAccountToSelection(uri, selection);
                 String selectionWithId =
                         (SyncStateContract.Columns._ID + "=" + ContentUris.parseId(uri) + " ")
-                        + (selection == null ? "" : " AND (" + selection + ")");
+                                + (selection == null ? "" : " AND (" + selection + ")");
                 return mSyncHelper.query(db, projection, selectionWithId, selectionArgs, sortOrder);
             }
 
@@ -1070,7 +1072,7 @@ public class BrowserProvider2 extends SQLiteContentProvider {
                 selection = DatabaseUtils.concatenateWhere(
                         selection, Combined._ID + " = CAST(? AS INTEGER)");
                 selectionArgs = DatabaseUtils.appendSelectionArgs(selectionArgs,
-                        new String[] { Long.toString(ContentUris.parseId(uri)) });
+                        new String[]{Long.toString(ContentUris.parseId(uri))});
                 // fall through
             }
             case LEGACY:
@@ -1098,7 +1100,7 @@ public class BrowserProvider2 extends SQLiteContentProvider {
                 selection = DatabaseUtils.concatenateWhere(
                         selection, Thumbnails._ID + " = ?");
                 selectionArgs = DatabaseUtils.appendSelectionArgs(selectionArgs,
-                        new String[] { Long.toString(ContentUris.parseId(uri)) });
+                        new String[]{Long.toString(ContentUris.parseId(uri))});
                 // fall through
             }
             case THUMBNAILS: {
@@ -1191,7 +1193,7 @@ public class BrowserProvider2 extends SQLiteContentProvider {
                 null, null, null, null);
         // Put it all together
         String query = qb.buildUnionQuery(
-                new String[] {historySubQuery, bookmarksSubQuery},
+                new String[]{historySubQuery, bookmarksSubQuery},
                 null, null);
         qb.setTables("(" + query + ")");
         qb.setProjectionMap(null);
@@ -1199,7 +1201,7 @@ public class BrowserProvider2 extends SQLiteContentProvider {
     }
 
     int deleteBookmarks(String selection, String[] selectionArgs,
-            boolean callerIsSyncAdapter) {
+                        boolean callerIsSyncAdapter) {
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         if (callerIsSyncAdapter) {
             return db.delete(TABLE_BOOKMARKS, selection, selectionArgs);
@@ -1218,7 +1220,7 @@ public class BrowserProvider2 extends SQLiteContentProvider {
 
     private Object[] appendBookmarksIfFolder(String selection, String[] selectionArgs) {
         final SQLiteDatabase db = mOpenHelper.getReadableDatabase();
-        final String[] bookmarksProjection = new String[] {
+        final String[] bookmarksProjection = new String[]{
                 Bookmarks._ID, // 0
                 Bookmarks.IS_FOLDER // 1
         };
@@ -1236,7 +1238,7 @@ public class BrowserProvider2 extends SQLiteContentProvider {
                     if (cursor.getInt(1) != 0) {
                         // collect bookmarks in this folder
                         Object[] bookmarks = appendBookmarksIfFolder(
-                                Bookmarks.PARENT + "=?", new String[] { id });
+                                Bookmarks.PARENT + "=?", new String[]{id});
                         String[] bookmarkIds = (String[]) bookmarks[1];
                         if (bookmarkIds.length > 0) {
                             newSelection.append(" OR " + TABLE_BOOKMARKS + "._id IN (");
@@ -1256,7 +1258,7 @@ public class BrowserProvider2 extends SQLiteContentProvider {
             }
         }
 
-        return new Object[] {
+        return new Object[]{
                 newSelection.toString(),
                 newSelectionArgs.toArray(new String[newSelectionArgs.size()])
         };
@@ -1264,7 +1266,7 @@ public class BrowserProvider2 extends SQLiteContentProvider {
 
     @Override
     public int deleteInTransaction(Uri uri, String selection, String[] selectionArgs,
-            boolean callerIsSyncAdapter) {
+                                   boolean callerIsSyncAdapter) {
         final int match = URI_MATCHER.match(uri);
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         int deleted = 0;
@@ -1273,7 +1275,7 @@ public class BrowserProvider2 extends SQLiteContentProvider {
                 selection = DatabaseUtils.concatenateWhere(selection,
                         TABLE_BOOKMARKS + "._id=?");
                 selectionArgs = DatabaseUtils.appendSelectionArgs(selectionArgs,
-                        new String[] { Long.toString(ContentUris.parseId(uri)) });
+                        new String[]{Long.toString(ContentUris.parseId(uri))});
                 // fall through
             }
             case BOOKMARKS: {
@@ -1292,7 +1294,7 @@ public class BrowserProvider2 extends SQLiteContentProvider {
             case HISTORY_ID: {
                 selection = DatabaseUtils.concatenateWhere(selection, TABLE_HISTORY + "._id=?");
                 selectionArgs = DatabaseUtils.appendSelectionArgs(selectionArgs,
-                        new String[] { Long.toString(ContentUris.parseId(uri)) });
+                        new String[]{Long.toString(ContentUris.parseId(uri))});
                 // fall through
             }
             case HISTORY: {
@@ -1305,7 +1307,7 @@ public class BrowserProvider2 extends SQLiteContentProvider {
             case SEARCHES_ID: {
                 selection = DatabaseUtils.concatenateWhere(selection, TABLE_SEARCHES + "._id=?");
                 selectionArgs = DatabaseUtils.appendSelectionArgs(selectionArgs,
-                        new String[] { Long.toString(ContentUris.parseId(uri)) });
+                        new String[]{Long.toString(ContentUris.parseId(uri))});
                 // fall through
             }
             case SEARCHES: {
@@ -1320,7 +1322,7 @@ public class BrowserProvider2 extends SQLiteContentProvider {
             case SYNCSTATE_ID: {
                 String selectionWithId =
                         (SyncStateContract.Columns._ID + "=" + ContentUris.parseId(uri) + " ")
-                        + (selection == null ? "" : " AND (" + selection + ")");
+                                + (selection == null ? "" : " AND (" + selection + ")");
                 deleted = mSyncHelper.delete(db, selectionWithId, selectionArgs);
                 break;
             }
@@ -1328,12 +1330,12 @@ public class BrowserProvider2 extends SQLiteContentProvider {
                 selection = DatabaseUtils.concatenateWhere(
                         selection, Combined._ID + " = CAST(? AS INTEGER)");
                 selectionArgs = DatabaseUtils.appendSelectionArgs(selectionArgs,
-                        new String[] { Long.toString(ContentUris.parseId(uri)) });
+                        new String[]{Long.toString(ContentUris.parseId(uri))});
                 // fall through
             }
             case LEGACY: {
-                String[] projection = new String[] { Combined._ID,
-                        Combined.IS_BOOKMARK, Combined.URL };
+                String[] projection = new String[]{Combined._ID,
+                        Combined.IS_BOOKMARK, Combined.URL};
                 SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
                 String[] args = createCombinedQuery(uri, projection, qb);
                 if (selectionArgs == null) {
@@ -1350,14 +1352,14 @@ public class BrowserProvider2 extends SQLiteContentProvider {
                     String url = c.getString(2);
                     if (isBookmark) {
                         deleted += deleteBookmarks(Bookmarks._ID + "=?",
-                                new String[] { Long.toString(id) },
+                                new String[]{Long.toString(id)},
                                 callerIsSyncAdapter);
                         db.delete(TABLE_HISTORY, History.URL + "=?",
-                                new String[] { url });
+                                new String[]{url});
                     } else {
                         deleted += db.delete(TABLE_HISTORY,
                                 Bookmarks._ID + "=?",
-                                new String[] { Long.toString(id) });
+                                new String[]{Long.toString(id)});
                     }
                 }
                 c.close();
@@ -1367,7 +1369,7 @@ public class BrowserProvider2 extends SQLiteContentProvider {
                 selection = DatabaseUtils.concatenateWhere(
                         selection, Thumbnails._ID + " = ?");
                 selectionArgs = DatabaseUtils.appendSelectionArgs(selectionArgs,
-                        new String[] { Long.toString(ContentUris.parseId(uri)) });
+                        new String[]{Long.toString(ContentUris.parseId(uri))});
                 // fall through
             }
             case THUMBNAILS: {
@@ -1390,11 +1392,11 @@ public class BrowserProvider2 extends SQLiteContentProvider {
     long queryDefaultFolderId(String accountName, String accountType) {
         if (!isNullAccount(accountName) && !isNullAccount(accountType)) {
             final SQLiteDatabase db = mOpenHelper.getReadableDatabase();
-            Cursor c = db.query(TABLE_BOOKMARKS, new String[] { Bookmarks._ID },
+            Cursor c = db.query(TABLE_BOOKMARKS, new String[]{Bookmarks._ID},
                     ChromeSyncColumns.SERVER_UNIQUE + " = ?" +
-                    " AND account_type = ? AND account_name = ?",
-                    new String[] { ChromeSyncColumns.FOLDER_NAME_BOOKMARKS_BAR,
-                    accountType, accountName }, null, null, null);
+                            " AND account_type = ? AND account_name = ?",
+                    new String[]{ChromeSyncColumns.FOLDER_NAME_BOOKMARKS_BAR,
+                            accountType, accountName}, null, null, null);
             try {
                 if (c.moveToFirst()) {
                     return c.getLong(0);
@@ -1470,7 +1472,7 @@ public class BrowserProvider2 extends SQLiteContentProvider {
                 if ((isFolder == null || !isFolder)
                         && imageValues != null && !TextUtils.isEmpty(url)) {
                     int count = db.update(TABLE_IMAGES, imageValues, Images.URL + "=?",
-                            new String[] { url });
+                            new String[]{url});
                     if (count == 0) {
                         db.insertOrThrow(TABLE_IMAGES, Images.FAVICON, imageValues);
                     }
@@ -1544,13 +1546,13 @@ public class BrowserProvider2 extends SQLiteContentProvider {
         }
         Uri uri = ContentUris.withAppendedId(Bookmarks.CONTENT_URI, id);
         Cursor c = query(uri,
-                new String[] { Bookmarks.ACCOUNT_NAME, Bookmarks.ACCOUNT_TYPE },
+                new String[]{Bookmarks.ACCOUNT_NAME, Bookmarks.ACCOUNT_TYPE},
                 null, null, null);
         try {
             if (c.moveToFirst()) {
                 String parentName = c.getString(0);
                 String parentType = c.getString(1);
-                return new String[] { parentName, parentType };
+                return new String[]{parentName, parentType};
             }
             return null;
         } finally {
@@ -1569,7 +1571,7 @@ public class BrowserProvider2 extends SQLiteContentProvider {
     }
 
     private boolean isValidParent(String accountType, String accountName,
-            long parentId) {
+                                  long parentId) {
         String[] parent = getAccountNameAndType(parentId);
         if (parent != null
                 && TextUtils.equals(accountName, parent[0])
@@ -1599,7 +1601,7 @@ public class BrowserProvider2 extends SQLiteContentProvider {
                         .concat(url.substring(end + 1));
             } else {
                 // the url.charAt(index-1) should be either '?' or '&'
-                url = url.substring(0, index-1);
+                url = url.substring(0, index - 1);
             }
         }
         return url;
@@ -1615,12 +1617,12 @@ public class BrowserProvider2 extends SQLiteContentProvider {
         }
         Cursor cursor = null;
         try {
-            cursor = db.query(TABLE_SEARCHES, new String[] { Searches._ID },
-                    Searches.SEARCH + "=?", new String[] { search }, null, null, null);
+            cursor = db.query(TABLE_SEARCHES, new String[]{Searches._ID},
+                    Searches.SEARCH + "=?", new String[]{search}, null, null, null);
             if (cursor.moveToNext()) {
                 long id = cursor.getLong(0);
                 db.update(TABLE_SEARCHES, values, Searches._ID + "=?",
-                        new String[] { Long.toString(id) });
+                        new String[]{Long.toString(id)});
                 return id;
             } else {
                 return db.insertOrThrow(TABLE_SEARCHES, Searches.SEARCH, values);
@@ -1638,10 +1640,10 @@ public class BrowserProvider2 extends SQLiteContentProvider {
         if (TextUtils.isEmpty(key)) {
             throw new IllegalArgumentException("Must include the KEY field");
         }
-        String[] keyArray = new String[] { key };
+        String[] keyArray = new String[]{key};
         Cursor cursor = null;
         try {
-            cursor = db.query(TABLE_SETTINGS, new String[] { Settings.KEY },
+            cursor = db.query(TABLE_SETTINGS, new String[]{Settings.KEY},
                     Settings.KEY + "=?", keyArray, null, null, null);
             if (cursor.moveToNext()) {
                 long id = cursor.getLong(0);
@@ -1657,7 +1659,7 @@ public class BrowserProvider2 extends SQLiteContentProvider {
 
     @Override
     public int updateInTransaction(Uri uri, ContentValues values, String selection,
-            String[] selectionArgs, boolean callerIsSyncAdapter) {
+                                   String[] selectionArgs, boolean callerIsSyncAdapter) {
         int match = URI_MATCHER.match(uri);
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         if (match == LEGACY || match == LEGACY_ID) {
@@ -1687,7 +1689,7 @@ public class BrowserProvider2 extends SQLiteContentProvider {
                 selection = DatabaseUtils.concatenateWhere(selection,
                         TABLE_BOOKMARKS + "._id=?");
                 selectionArgs = DatabaseUtils.appendSelectionArgs(selectionArgs,
-                        new String[] { Long.toString(ContentUris.parseId(uri)) });
+                        new String[]{Long.toString(ContentUris.parseId(uri))});
                 // fall through
             }
             case BOOKMARKS: {
@@ -1705,7 +1707,7 @@ public class BrowserProvider2 extends SQLiteContentProvider {
             case HISTORY_ID: {
                 selection = DatabaseUtils.concatenateWhere(selection, TABLE_HISTORY + "._id=?");
                 selectionArgs = DatabaseUtils.appendSelectionArgs(selectionArgs,
-                        new String[] { Long.toString(ContentUris.parseId(uri)) });
+                        new String[]{Long.toString(ContentUris.parseId(uri))});
                 // fall through
             }
             case HISTORY: {
@@ -1723,7 +1725,7 @@ public class BrowserProvider2 extends SQLiteContentProvider {
                 selection = appendAccountToSelection(uri, selection);
                 String selectionWithId =
                         (SyncStateContract.Columns._ID + "=" + ContentUris.parseId(uri) + " ")
-                        + (selection == null ? "" : " AND (" + selection + ")");
+                                + (selection == null ? "" : " AND (" + selection + ")");
                 modified = mSyncHelper.update(mDb, values,
                         selectionWithId, selectionArgs);
                 break;
@@ -1738,7 +1740,7 @@ public class BrowserProvider2 extends SQLiteContentProvider {
                     return 0;
                 }
                 int count = db.update(TABLE_IMAGES, values, Images.URL + "=?",
-                        new String[] { url });
+                        new String[]{url});
                 if (count == 0) {
                     db.insertOrThrow(TABLE_IMAGES, Images.FAVICON, values);
                     count = 1;
@@ -1805,13 +1807,13 @@ public class BrowserProvider2 extends SQLiteContentProvider {
     // With this, that drops to 0 or 1, depending on if the thumbnail changed.
     private boolean shouldUpdateImages(
             SQLiteDatabase db, String url, ContentValues values) {
-        final String[] projection = new String[] {
+        final String[] projection = new String[]{
                 Images.FAVICON,
                 Images.THUMBNAIL,
                 Images.TOUCH_ICON,
         };
         Cursor cursor = db.query(TABLE_IMAGES, projection, Images.URL + "=?",
-                new String[] { url }, null, null, null);
+                new String[]{url}, null, null, null);
         byte[] nfavicon = values.getAsByteArray(Images.FAVICON);
         byte[] nthumb = values.getAsByteArray(Images.THUMBNAIL);
         byte[] ntouch = values.getAsByteArray(Images.TOUCH_ICON);
@@ -1849,8 +1851,8 @@ public class BrowserProvider2 extends SQLiteContentProvider {
     }
 
     int getUrlCount(SQLiteDatabase db, String table, String url) {
-        Cursor c = db.query(table, new String[] { "COUNT(*)" },
-                "url = ?", new String[] { url }, null, null, null);
+        Cursor c = db.query(table, new String[]{"COUNT(*)"},
+                "url = ?", new String[]{url}, null, null, null);
         try {
             int count = 0;
             if (c.moveToFirst()) {
@@ -1866,10 +1868,10 @@ public class BrowserProvider2 extends SQLiteContentProvider {
      * Does a query to find the matching bookmarks and updates each one with the provided values.
      */
     int updateBookmarksInTransaction(ContentValues values, String selection,
-            String[] selectionArgs, boolean callerIsSyncAdapter) {
+                                     String[] selectionArgs, boolean callerIsSyncAdapter) {
         int count = 0;
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
-        final String[] bookmarksProjection = new String[] {
+        final String[] bookmarksProjection = new String[]{
                 Bookmarks._ID, // 0
                 Bookmarks.VERSION, // 1
                 Bookmarks.URL, // 2
@@ -1885,9 +1887,9 @@ public class BrowserProvider2 extends SQLiteContentProvider {
         String parentAccountType = null;
         if (updatingParent) {
             long parent = values.getAsLong(Bookmarks.PARENT);
-            Cursor c = db.query(TABLE_BOOKMARKS, new String[] {
-                    Bookmarks.ACCOUNT_NAME, Bookmarks.ACCOUNT_TYPE},
-                    "_id = ?", new String[] { Long.toString(parent) },
+            Cursor c = db.query(TABLE_BOOKMARKS, new String[]{
+                            Bookmarks.ACCOUNT_NAME, Bookmarks.ACCOUNT_TYPE},
+                    "_id = ?", new String[]{Long.toString(parent)},
                     null, null, null);
             if (c.moveToFirst()) {
                 parentAccountName = c.getString(0);
@@ -1941,8 +1943,8 @@ public class BrowserProvider2 extends SQLiteContentProvider {
                         ContentValues updateChildren = new ContentValues(1);
                         updateChildren.put(Bookmarks.PARENT, newId);
                         count += updateBookmarksInTransaction(updateChildren,
-                                Bookmarks.PARENT + "=?", new String[] {
-                                Long.toString(id)}, callerIsSyncAdapter);
+                                Bookmarks.PARENT + "=?", new String[]{
+                                        Long.toString(id)}, callerIsSyncAdapter);
                     }
                     // Now, delete the old one
                     Uri uri = ContentUris.withAppendedId(Bookmarks.CONTENT_URI, id);
@@ -1983,18 +1985,18 @@ public class BrowserProvider2 extends SQLiteContentProvider {
         String[] colNames = c.getColumnNames();
         for (int i = 0; i < count; i++) {
             switch (c.getType(i)) {
-            case Cursor.FIELD_TYPE_BLOB:
-                values.put(colNames[i], c.getBlob(i));
-                break;
-            case Cursor.FIELD_TYPE_FLOAT:
-                values.put(colNames[i], c.getFloat(i));
-                break;
-            case Cursor.FIELD_TYPE_INTEGER:
-                values.put(colNames[i], c.getLong(i));
-                break;
-            case Cursor.FIELD_TYPE_STRING:
-                values.put(colNames[i], c.getString(i));
-                break;
+                case Cursor.FIELD_TYPE_BLOB:
+                    values.put(colNames[i], c.getBlob(i));
+                    break;
+                case Cursor.FIELD_TYPE_FLOAT:
+                    values.put(colNames[i], c.getFloat(i));
+                    break;
+                case Cursor.FIELD_TYPE_INTEGER:
+                    values.put(colNames[i], c.getLong(i));
+                    break;
+                case Cursor.FIELD_TYPE_STRING:
+                    values.put(colNames[i], c.getString(i));
+                    break;
             }
         }
         return values;
@@ -2008,7 +2010,7 @@ public class BrowserProvider2 extends SQLiteContentProvider {
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         filterSearchClient(selectionArgs);
         Cursor cursor = query(History.CONTENT_URI,
-                new String[] { History._ID, History.URL },
+                new String[]{History._ID, History.URL},
                 selection, selectionArgs, null);
         try {
             String[] args = new String[1];
@@ -2101,7 +2103,7 @@ public class BrowserProvider2 extends SQLiteContentProvider {
         }
 
         if (imageValues != null) {
-            imageValues.put(Images.URL,  url);
+            imageValues.put(Images.URL, url);
         }
         return imageValues;
     }
@@ -2149,7 +2151,7 @@ public class BrowserProvider2 extends SQLiteContentProvider {
         private static final int SUGGEST_COLUMN_LAST_ACCESS_HINT_ID = 7;
 
         // shared suggestion columns
-        private static final String[] COLUMNS = new String[] {
+        private static final String[] COLUMNS = new String[]{
                 BaseColumns._ID,
                 SearchManager.SUGGEST_COLUMN_INTENT_ACTION,
                 SearchManager.SUGGEST_COLUMN_INTENT_DATA,
@@ -2173,21 +2175,21 @@ public class BrowserProvider2 extends SQLiteContentProvider {
         @Override
         public String getString(int columnIndex) {
             switch (columnIndex) {
-            case ID_INDEX:
-                return mSource.getString(columnIndex);
-            case SUGGEST_COLUMN_INTENT_ACTION_ID:
-                return Intent.ACTION_VIEW;
-            case SUGGEST_COLUMN_INTENT_DATA_ID:
-                return mSource.getString(URL_INDEX);
-            case SUGGEST_COLUMN_TEXT_2_TEXT_ID:
-            case SUGGEST_COLUMN_TEXT_2_URL_ID:
-                return UrlUtils.stripUrl(mSource.getString(URL_INDEX));
-            case SUGGEST_COLUMN_TEXT_1_ID:
-                return mSource.getString(TITLE_INDEX);
-            case SUGGEST_COLUMN_ICON_1_ID:
-                return mSource.getString(ICON_INDEX);
-            case SUGGEST_COLUMN_LAST_ACCESS_HINT_ID:
-                return mSource.getString(LAST_ACCESS_TIME_INDEX);
+                case ID_INDEX:
+                    return mSource.getString(columnIndex);
+                case SUGGEST_COLUMN_INTENT_ACTION_ID:
+                    return Intent.ACTION_VIEW;
+                case SUGGEST_COLUMN_INTENT_DATA_ID:
+                    return mSource.getString(URL_INDEX);
+                case SUGGEST_COLUMN_TEXT_2_TEXT_ID:
+                case SUGGEST_COLUMN_TEXT_2_URL_ID:
+                    return UrlUtils.stripUrl(mSource.getString(URL_INDEX));
+                case SUGGEST_COLUMN_TEXT_1_ID:
+                    return mSource.getString(TITLE_INDEX);
+                case SUGGEST_COLUMN_ICON_1_ID:
+                    return mSource.getString(ICON_INDEX);
+                case SUGGEST_COLUMN_LAST_ACCESS_HINT_ID:
+                    return mSource.getString(LAST_ACCESS_TIME_INDEX);
             }
             return null;
         }
@@ -2215,10 +2217,10 @@ public class BrowserProvider2 extends SQLiteContentProvider {
         @Override
         public long getLong(int column) {
             switch (column) {
-            case ID_INDEX:
-                return mSource.getLong(ID_INDEX);
-            case SUGGEST_COLUMN_LAST_ACCESS_HINT_ID:
-                return mSource.getLong(LAST_ACCESS_TIME_INDEX);
+                case ID_INDEX:
+                    return mSource.getLong(ID_INDEX);
+                case SUGGEST_COLUMN_LAST_ACCESS_HINT_ID:
+                    return mSource.getLong(LAST_ACCESS_TIME_INDEX);
             }
             throw new UnsupportedOperationException();
         }
@@ -2245,29 +2247,29 @@ public class BrowserProvider2 extends SQLiteContentProvider {
 
     private static final String SQL_CREATE_VIEW_OMNIBOX_SUGGESTIONS =
             "CREATE VIEW IF NOT EXISTS v_omnibox_suggestions "
-            + " AS "
-            + "  SELECT _id, url, title, 1 AS bookmark, 0 AS visits, 0 AS date"
-            + "  FROM bookmarks "
-            + "  WHERE deleted = 0 AND folder = 0 "
-            + "  UNION ALL "
-            + "  SELECT _id, url, title, 0 AS bookmark, visits, date "
-            + "  FROM history "
-            + "  WHERE url NOT IN (SELECT url FROM bookmarks"
-            + "    WHERE deleted = 0 AND folder = 0) "
-            + "  ORDER BY bookmark DESC, visits DESC, date DESC ";
+                    + " AS "
+                    + "  SELECT _id, url, title, 1 AS bookmark, 0 AS visits, 0 AS date"
+                    + "  FROM bookmarks "
+                    + "  WHERE deleted = 0 AND folder = 0 "
+                    + "  UNION ALL "
+                    + "  SELECT _id, url, title, 0 AS bookmark, visits, date "
+                    + "  FROM history "
+                    + "  WHERE url NOT IN (SELECT url FROM bookmarks"
+                    + "    WHERE deleted = 0 AND folder = 0) "
+                    + "  ORDER BY bookmark DESC, visits DESC, date DESC ";
 
     private static final String SQL_WHERE_ACCOUNT_HAS_BOOKMARKS =
             "0 < ( "
-            + "SELECT count(*) "
-            + "FROM bookmarks "
-            + "WHERE deleted = 0 AND folder = 0 "
-            + "  AND ( "
-            + "    v_accounts.account_name = bookmarks.account_name "
-            + "    OR (v_accounts.account_name IS NULL AND bookmarks.account_name IS NULL) "
-            + "  ) "
-            + "  AND ( "
-            + "    v_accounts.account_type = bookmarks.account_type "
-            + "    OR (v_accounts.account_type IS NULL AND bookmarks.account_type IS NULL) "
-            + "  ) "
-            + ")";
+                    + "SELECT count(*) "
+                    + "FROM bookmarks "
+                    + "WHERE deleted = 0 AND folder = 0 "
+                    + "  AND ( "
+                    + "    v_accounts.account_name = bookmarks.account_name "
+                    + "    OR (v_accounts.account_name IS NULL AND bookmarks.account_name IS NULL) "
+                    + "  ) "
+                    + "  AND ( "
+                    + "    v_accounts.account_type = bookmarks.account_type "
+                    + "    OR (v_accounts.account_type IS NULL AND bookmarks.account_type IS NULL) "
+                    + "  ) "
+                    + ")";
 }

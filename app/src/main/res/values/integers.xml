@@ -40,8 +40,8 @@
 
     <integer-array name="tab_images">
         <item>@drawable/bookmark_tab_icon_normal</item>
-        <item>@drawable/bookmark_tab_icon_normal</item>
+        <item>@drawable/bookmark_tab_icon_press</item>
         <item>@drawable/history_tab_icon_normal</item>
-        <item>@drawable/history_tab_icon_normal</item>
+        <item>@drawable/history_tab_icon_press</item>
     </integer-array>
 </resources>

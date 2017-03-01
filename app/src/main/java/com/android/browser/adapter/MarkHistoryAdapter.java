@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.util.SparseArray;
+
+import com.android.browser.BrowserBookmarksPage;
 import com.android.browser.R;
 import com.android.browser.fragments.BaseFragment;
 import com.android.browser.fragments.BookMarkFragment;
@@ -44,7 +46,8 @@ public class MarkHistoryAdapter extends FragmentPagerAdapter implements PagerSli
         if(baseFragment == null) {
             switch (position) {
                 case 0:
-                    baseFragment = BookMarkFragment.newInstance();
+//                    baseFragment = BookMarkFragment.newInstance();
+                    baseFragment = new BrowserBookmarksPage();
                     break;
                 case 1:
                     baseFragment = HistoryFragment.newInstance();

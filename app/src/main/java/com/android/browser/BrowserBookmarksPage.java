@@ -37,6 +37,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import com.android.browser.fragments.BaseFragment;
 import com.android.browser.provider.BrowserContract;
 import com.android.browser.provider.BrowserContract.Accounts;
 import android.view.ContextMenu;
@@ -53,6 +54,7 @@ import android.widget.Toast;
 import com.android.browser.provider.BrowserProvider2;
 import com.android.browser.util.BookmarkUtils;
 import com.android.browser.util.IOUtils;
+import com.android.browser.util.ToastUtils;
 import com.android.browser.view.BookmarkExpandableView;
 import com.android.browser.view.BookmarkExpandableView.BookmarkContextMenuInfo;
 
@@ -71,7 +73,7 @@ interface BookmarksPageCallbacks {
 /**
  *  View showing the user's bookmarks in the browser.
  */
-public class BrowserBookmarksPage extends Fragment implements View.OnCreateContextMenuListener,
+public class BrowserBookmarksPage extends BaseFragment implements View.OnCreateContextMenuListener,
         LoaderManager.LoaderCallbacks<Cursor>, BreadCrumbView.Controller,
         OnChildClickListener {
 
@@ -119,7 +121,7 @@ public class BrowserBookmarksPage extends Fragment implements View.OnCreateConte
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         if (loader.getId() == LOADER_ACCOUNTS) {
-            LoaderManager lm = getLoaderManager();
+            LoaderManager lm = mActivity.getLoaderManager();
             int id = LOADER_BOOKMARKS;
             while (cursor.moveToNext()) {
                 String accountName = cursor.getString(0);
@@ -127,6 +129,7 @@ public class BrowserBookmarksPage extends Fragment implements View.OnCreateConte
                 Bundle args = new Bundle();
                 args.putString(ACCOUNT_NAME, accountName);
                 args.putString(ACCOUNT_TYPE, accountType);
+                ToastUtils.show(mActivity, "acountname。。" + accountName + "...accountType.." + accountType);
                 BrowserBookmarksAdapter adapter = new BrowserBookmarksAdapter(getActivity());
                 mBookmarkAdapters.put(id, adapter);
                 boolean expand = true;
@@ -398,7 +401,7 @@ public class BrowserBookmarksPage extends Fragment implements View.OnCreateConte
         setEnableContextMenu(mEnableContextMenu);
 
         // Start the loaders
-        LoaderManager lm = getLoaderManager();
+        LoaderManager lm = mActivity.getLoaderManager();
         lm.restartLoader(LOADER_ACCOUNTS, null, this);
 
         return mRoot;
@@ -409,7 +412,7 @@ public class BrowserBookmarksPage extends Fragment implements View.OnCreateConte
         super.onDestroyView();
         mGrid.setBreadcrumbController(null);
         mGrid.clearAccounts();
-        LoaderManager lm = getLoaderManager();
+        LoaderManager lm = mActivity.getLoaderManager();
         lm.destroyLoader(LOADER_ACCOUNTS);
         for (int id : mBookmarkAdapters.keySet()) {
             lm.destroyLoader(id);
@@ -581,7 +584,7 @@ public class BrowserBookmarksPage extends Fragment implements View.OnCreateConte
      * @param uri
      */
     private void loadFolder(int groupPosition, Uri uri) {
-        LoaderManager manager = getLoaderManager();
+        LoaderManager manager = mActivity.getLoaderManager();
         // This assumes groups are ordered the same as loaders
         BookmarksLoader loader = (BookmarksLoader) ((Loader<?>) manager.getLoader(LOADER_BOOKMARKS + groupPosition));
         loader.setUri(uri);
