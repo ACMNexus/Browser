@@ -4,8 +4,6 @@ import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -13,16 +11,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import com.android.browser.BaseUi;
-import com.android.browser.BrowserBookmarksPage;
-import com.android.browser.ComboViewActivity;
-import com.android.browser.Controller;
 import com.android.browser.R;
-import com.android.browser.Tab;
 import com.android.browser.UI;
 import com.android.browser.UiController;
 import com.android.browser.BrowserPreferencesPage;
-import com.android.browser.activitys.AddBookMarkActivity;
-import com.android.browser.activitys.BookMarkActivity;
 import com.android.browser.activitys.BrowserSettingActivity;
 import com.android.browser.activitys.DownloadFileActivity;
 import com.android.browser.util.ActivityUtils;
@@ -175,7 +167,7 @@ public class MenuToolBar extends RelativeLayout implements View.OnClickListener 
             case R.id.menu_trace_type:
                 break;
             case R.id.menu_addbookmark:
-                ActivityUtils.startNextPager(mContext, AddBookMarkActivity.class);
+                mUiController.bookmarkCurrentPage();
                 break;
             case R.id.menu_history:
                 mUiController.bookmarksOrHistoryPicker(UI.ComboViews.Bookmarks);

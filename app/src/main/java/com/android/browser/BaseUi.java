@@ -52,6 +52,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.browser.Tab.SecurityState;
+import com.android.browser.activitys.MarkHistoryActivity;
 import com.android.browser.view.MenuBar;
 import com.android.browser.view.MenuToolBar;
 import com.android.internal.view.menu.MenuBuilder;
@@ -515,12 +516,12 @@ public abstract class BaseUi implements UI {
 
     @Override
     public void showComboView(ComboViews startingView, Bundle extras) {
-        Intent intent = new Intent(mActivity, ComboViewActivity.class);
-        intent.putExtra(ComboViewActivity.EXTRA_INITIAL_VIEW, startingView.name());
-        intent.putExtra(ComboViewActivity.EXTRA_COMBO_ARGS, extras);
+        Intent intent = new Intent(mActivity, MarkHistoryActivity.class);
+        intent.putExtra(MarkHistoryActivity.EXTRA_INITIAL_VIEW, startingView.name());
+        intent.putExtra(MarkHistoryActivity.EXTRA_COMBO_ARGS, extras);
         Tab t = getActiveTab();
         if (t != null) {
-            intent.putExtra(ComboViewActivity.EXTRA_CURRENT_URL, t.getUrl());
+            intent.putExtra(MarkHistoryActivity.EXTRA_CURRENT_URL, t.getUrl());
         }
         mActivity.startActivityForResult(intent, Controller.COMBO_VIEW);
     }

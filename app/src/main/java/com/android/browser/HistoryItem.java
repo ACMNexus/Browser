@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
- 
+
 package com.android.browser;
 
 import android.content.Context;
@@ -24,21 +24,22 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
 /**
- *  Layout representing a history item in the classic history viewer.
+ * Layout representing a history item in the classic history viewer.
  */
-/* package */ class HistoryItem extends BookmarkItem
-        implements OnCheckedChangeListener {
+public class HistoryItem extends BookmarkItem implements OnCheckedChangeListener {
 
-    private CompoundButton  mStar;      // Star for bookmarking
+    private CompoundButton mStar;      // Star for bookmarking
+
     /**
-     *  Create a new HistoryItem.
-     *  @param context  Context for this HistoryItem.
+     * Create a new HistoryItem.
+     *
+     * @param context Context for this HistoryItem.
      */
-    /* package */ HistoryItem(Context context) {
+    public HistoryItem(Context context) {
         this(context, true);
     }
 
-    /* package */ HistoryItem(Context context, boolean showStar) {
+    public HistoryItem(Context context, boolean showStar) {
         super(context);
 
         mStar = (CompoundButton) findViewById(R.id.star);
@@ -49,8 +50,8 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
             mStar.setVisibility(View.GONE);
         }
     }
-    
-    /* package */ void copyTo(HistoryItem item) {
+
+    public void copyTo(HistoryItem item) {
         item.mTextView.setText(mTextView.getText());
         item.mUrlText.setText(mUrlText.getText());
         item.setIsBookmark(mStar.isChecked());
@@ -60,31 +61,29 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
     /**
      * Whether or not this item represents a bookmarked site
      */
-    /* package */ boolean isBookmark() {
+    public boolean isBookmark() {
         return mStar.isChecked();
     }
 
     /**
-     *  Set whether or not this represents a bookmark, and make sure the star
-     *  behaves appropriately.
+     * Set whether or not this represents a bookmark, and make sure the star
+     * behaves appropriately.
      */
-    /* package */ void setIsBookmark(boolean isBookmark) {
+    public void setIsBookmark(boolean isBookmark) {
         mStar.setOnCheckedChangeListener(null);
         mStar.setChecked(isBookmark);
         mStar.setOnCheckedChangeListener(this);
     }
 
     @Override
-    public void onCheckedChanged(CompoundButton buttonView,
-            boolean isChecked) {
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (isChecked) {
             // Uncheck ourseves. When the bookmark is actually added,
             // we will be notified
             setIsBookmark(false);
             Browser.saveBookmark(getContext(), getName(), mUrl);
         } else {
-            Bookmarks.removeFromBookmarks(getContext(),
-                    getContext().getContentResolver(), mUrl, getName());
+            Bookmarks.removeFromBookmarks(getContext(), getContext().getContentResolver(), mUrl, getName());
         }
     }
 }

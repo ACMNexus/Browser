@@ -18,6 +18,7 @@ package com.android.browser;
 import android.graphics.drawable.BitmapDrawable;
 
 public class BrowserBookmarksAdapterItem {
+
     public String url;
     public CharSequence title;
     public BitmapDrawable thumbnail;

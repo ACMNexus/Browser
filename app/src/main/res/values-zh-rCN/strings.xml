@@ -350,7 +350,7 @@
     <string name="website_settings_clear_all_dialog_cancel_button" msgid="1896757051856611674">"取消"</string>
     <string name="progress_dialog_setting_wallpaper" msgid="2031391201442335889">"正在设置壁纸..."</string>
     <string name="defaultBookmarksUpButton" msgid="2303951020715704735">"书签"</string>
-    <string name="empty_bookmarks_folder" msgid="6239830231917618556">"没有书签。"</string>
+    <string name="empty_bookmarks_folder" msgid="6239830231917618556">"没有书签"</string>
     <string name="other_bookmarks" msgid="8021889794475657319">"其他书签"</string>
     <string name="rlz_access_point" msgid="7165847807377650632">"Y1"</string>
     <string name="account_chooser_dialog_title" msgid="3314204833188808194">"选择帐户"</string>

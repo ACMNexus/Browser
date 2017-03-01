@@ -41,8 +41,7 @@ public class BookmarkContainer extends RelativeLayout implements OnClickListener
         init();
     }
 
-    public BookmarkContainer(
-            Context context, AttributeSet attrs, int defStyle) {
+    public BookmarkContainer(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init();
     }

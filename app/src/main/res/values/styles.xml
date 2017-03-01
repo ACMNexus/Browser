@@ -141,4 +141,25 @@
         <item name="android:paddingTop">4dp</item>
         <item name="android:paddingBottom">4dp</item>
     </style>
+
+    <declare-styleable name="PagerSlidingTabStrip">
+        <attr name="pstsIndicatorColor" format="color" />
+        <attr name="pstsUnderlineColor" format="color" />
+        <attr name="pstsDividerColor" format="color" />
+        <attr name="pstsDefaultColor" format="color" />
+        <attr name="pstsIndicatorHeight" format="dimension" />
+        <attr name="pstsUnderlineHeight" format="dimension" />
+        <attr name="pstsDividerPadding" format="dimension" />
+        <attr name="pstsTabItemWidth" format="dimension" />
+        <attr name="pstsTabItemHeight" format="dimension" />
+        <attr name="pstsTabItemPaddingTop" format="dimension" />
+        <attr name="pstsTabItemPaddingBottom" format="dimension" />
+        <attr name="pstsTabPaddingLeftRight" format="dimension" />
+        <attr name="pstsTabDivider" format="dimension" />
+        <attr name="pstsScrollOffset" format="dimension" />
+        <attr name="pstsTabBackground" format="reference" />
+        <attr name="pstsShouldExpand" format="boolean" />
+        <attr name="pstsTextAllCaps" format="boolean" />
+    </declare-styleable>
+
 </resources>

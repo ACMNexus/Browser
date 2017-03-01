@@ -52,6 +52,7 @@ import android.widget.Toast;
 
 import com.android.browser.provider.BrowserProvider2;
 import com.android.browser.util.BookmarkUtils;
+import com.android.browser.util.IOUtils;
 import com.android.browser.view.BookmarkExpandableView;
 import com.android.browser.view.BookmarkExpandableView.BookmarkContextMenuInfo;
 
@@ -450,7 +451,7 @@ public class BrowserBookmarksPage extends Fragment implements View.OnCreateConte
         return true;
     }
 
-    /* package */ static Intent createShortcutIntent(Context context, Cursor cursor) {
+    public static Intent createShortcutIntent(Context context, Cursor cursor) {
         String url = cursor.getString(BookmarksLoader.COLUMN_INDEX_URL);
         String title = cursor.getString(BookmarksLoader.COLUMN_INDEX_TITLE);
         Bitmap touchIcon = getBitmap(cursor, BookmarksLoader.COLUMN_INDEX_TOUCH_ICON);
@@ -510,22 +511,16 @@ public class BrowserBookmarksPage extends Fragment implements View.OnCreateConte
         Intent intent = new Intent(getActivity(), AddBookmarkPage.class);
         Cursor cursor = adapter.getItem(position);
         Bundle item = new Bundle();
-        item.putString(BrowserContract.Bookmarks.TITLE,
-                cursor.getString(BookmarksLoader.COLUMN_INDEX_TITLE));
-        item.putString(BrowserContract.Bookmarks.URL,
-                cursor.getString(BookmarksLoader.COLUMN_INDEX_URL));
+        item.putString(BrowserContract.Bookmarks.TITLE, cursor.getString(BookmarksLoader.COLUMN_INDEX_TITLE));
+        item.putString(BrowserContract.Bookmarks.URL, cursor.getString(BookmarksLoader.COLUMN_INDEX_URL));
         byte[] data = cursor.getBlob(BookmarksLoader.COLUMN_INDEX_FAVICON);
         if (data != null) {
-            item.putParcelable(BrowserContract.Bookmarks.FAVICON,
-                    BitmapFactory.decodeByteArray(data, 0, data.length));
+            item.putParcelable(BrowserContract.Bookmarks.FAVICON, BitmapFactory.decodeByteArray(data, 0, data.length));
         }
-        item.putLong(BrowserContract.Bookmarks._ID,
-                cursor.getLong(BookmarksLoader.COLUMN_INDEX_ID));
-        item.putLong(BrowserContract.Bookmarks.PARENT,
-                cursor.getLong(BookmarksLoader.COLUMN_INDEX_PARENT));
+        item.putLong(BrowserContract.Bookmarks._ID, cursor.getLong(BookmarksLoader.COLUMN_INDEX_ID));
+        item.putLong(BrowserContract.Bookmarks.PARENT, cursor.getLong(BookmarksLoader.COLUMN_INDEX_PARENT));
         intent.putExtra(AddBookmarkPage.EXTRA_EDIT_BOOKMARK, item);
-        intent.putExtra(AddBookmarkPage.EXTRA_IS_FOLDER,
-                cursor.getInt(BookmarksLoader.COLUMN_INDEX_IS_FOLDER) == 1);
+        intent.putExtra(AddBookmarkPage.EXTRA_IS_FOLDER, cursor.getInt(BookmarksLoader.COLUMN_INDEX_IS_FOLDER) == 1);
         startActivity(intent);
     }
 
@@ -544,13 +539,12 @@ public class BrowserBookmarksPage extends Fragment implements View.OnCreateConte
         return getUrl(adapter.getItem(position));
     }
 
-    /* package */ static String getUrl(Cursor c) {
+    public static String getUrl(Cursor c) {
         return c.getString(BookmarksLoader.COLUMN_INDEX_URL);
     }
 
     private void copy(CharSequence text) {
-        ClipboardManager cm = (ClipboardManager) getActivity().getSystemService(
-                Context.CLIPBOARD_SERVICE);
+        ClipboardManager cm = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
         cm.setPrimaryClip(ClipData.newRawUri(null, Uri.parse(text.toString())));
     }
 
@@ -589,8 +583,7 @@ public class BrowserBookmarksPage extends Fragment implements View.OnCreateConte
     private void loadFolder(int groupPosition, Uri uri) {
         LoaderManager manager = getLoaderManager();
         // This assumes groups are ordered the same as loaders
-        BookmarksLoader loader = (BookmarksLoader) ((Loader<?>)
-                manager.getLoader(LOADER_BOOKMARKS + groupPosition));
+        BookmarksLoader loader = (BookmarksLoader) ((Loader<?>) manager.getLoader(LOADER_BOOKMARKS + groupPosition));
         loader.setUri(uri);
         loader.forceLoad();
     }
@@ -634,9 +627,7 @@ public class BrowserBookmarksPage extends Fragment implements View.OnCreateConte
 
                 return c.getCount();
             } finally {
-                if ( c != null) {
-                    c.close();
-                }
+                IOUtils.closeCursor(c);
             }
         }
 
@@ -665,6 +656,5 @@ public class BrowserBookmarksPage extends Fragment implements View.OnCreateConte
                     .build(),
                     ACCOUNTS_PROJECTION, null, null, null);
         }
-
     }
 }

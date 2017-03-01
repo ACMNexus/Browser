@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="36dip"
+    android:background="@drawable/tab_unselected_background"
+    android:gravity="center">
+
+    <TextView
+        android:id="@+id/tv_tab"
+        android:layout_width="wrap_content"
+        android:layout_height="36dip"
+        android:fontFamily="@string/font_family_medium"
+        android:gravity="center"
+        android:paddingLeft="16dip"
+        android:paddingRight="16dip"
+        android:textColor="@color/white"
+        android:textSize="14sp" />
+
+</LinearLayout>

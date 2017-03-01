@@ -52,8 +52,7 @@ public class BookmarksLoader extends CursorLoader {
     String mAccountName;
 
     public BookmarksLoader(Context context, String accountType, String accountName) {
-        super(context, addAccount(Bookmarks.CONTENT_URI_DEFAULT_FOLDER, accountType, accountName),
-                PROJECTION, null, null, null);
+        super(context, addAccount(Bookmarks.CONTENT_URI_DEFAULT_FOLDER, accountType, accountName), PROJECTION, null, null, null);
         mAccountType = accountType;
         mAccountName = accountName;
     }
@@ -64,7 +63,6 @@ public class BookmarksLoader extends CursorLoader {
     }
 
     static Uri addAccount(Uri uri, String accountType, String accountName) {
-        return uri.buildUpon().appendQueryParameter(Bookmarks.PARAM_ACCOUNT_TYPE, accountType).
-                appendQueryParameter(Bookmarks.PARAM_ACCOUNT_NAME, accountName).build();
+        return uri.buildUpon().appendQueryParameter(Bookmarks.PARAM_ACCOUNT_TYPE, accountType).appendQueryParameter(Bookmarks.PARAM_ACCOUNT_NAME, accountName).build();
     }
 }

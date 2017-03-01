@@ -38,6 +38,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Browser;
+
 import com.android.browser.provider.BrowserContract;
 import com.android.browser.provider.BrowserContract.Combined;
 import com.android.browser.util.BookmarkUtils;
@@ -87,8 +88,8 @@ public class BrowserHistoryPage extends Fragment
 
     private View mRoot;
 
-    static interface HistoryQuery {
-        static final String[] PROJECTION = new String[] {
+    public static interface HistoryQuery {
+        public static final String[] PROJECTION = new String[]{
                 Combined._ID, // 0
                 Combined.DATE_LAST_VISITED, // 1
                 Combined.TITLE, // 2
@@ -207,7 +208,7 @@ public class BrowserHistoryPage extends Fragment
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         mRoot = inflater.inflate(R.layout.history, container, false);
         mAdapter = new HistoryAdapter(getActivity());
         ViewStub stub = (ViewStub) mRoot.findViewById(R.id.pref_stub);
@@ -273,7 +274,7 @@ public class BrowserHistoryPage extends Fragment
 
     @Override
     public boolean onChildClick(ExpandableListView parent, View view,
-            int groupPosition, int childPosition, long id) {
+                                int groupPosition, int childPosition, long id) {
         mCallback.openUrl(((HistoryItem) view).getUrl());
         return true;
     }
@@ -299,12 +300,12 @@ public class BrowserHistoryPage extends Fragment
                 .setIconAttribute(android.R.attr.alertDialogIcon)
                 .setNegativeButton(R.string.cancel, null)
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                     @Override
-                     public void onClick(DialogInterface dialog, int which) {
-                         if (which == DialogInterface.BUTTON_POSITIVE) {
-                             clear.start();
-                         }
-                     }
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (which == DialogInterface.BUTTON_POSITIVE) {
+                            clear.start();
+                        }
+                    }
                 });
         final Dialog dialog = builder.create();
         dialog.show();
@@ -456,6 +457,7 @@ public class BrowserHistoryPage extends Fragment
         }
 
     }
+
     private static class HistoryGroupWrapper extends HistoryWrapper {
 
         public HistoryGroupWrapper(HistoryAdapter adapter) {
@@ -599,7 +601,7 @@ public class BrowserHistoryPage extends Fragment
 
         @Override
         public View getGroupView(int groupPosition, boolean isExpanded,
-                View convertView, ViewGroup parent) {
+                                 View convertView, ViewGroup parent) {
             if (groupPosition >= super.getGroupCount()) {
                 if (mMostVisited == null || mMostVisited.isClosed()) {
                     throw new IllegalStateException("Data is not valid");
@@ -618,7 +620,7 @@ public class BrowserHistoryPage extends Fragment
         }
 
         @Override
-        boolean moveCursorToChildPosition(
+        public boolean moveCursorToChildPosition(
                 int groupPosition, int childPosition) {
             if (groupPosition >= super.getGroupCount()) {
                 if (mMostVisited != null && !mMostVisited.isClosed()) {
@@ -632,7 +634,7 @@ public class BrowserHistoryPage extends Fragment
 
         @Override
         public View getChildView(int groupPosition, int childPosition, boolean isLastChild,
-                View convertView, ViewGroup parent) {
+                                 View convertView, ViewGroup parent) {
             HistoryItem item;
             if (null == convertView || !(convertView instanceof HistoryItem)) {
                 item = new HistoryItem(getContext());

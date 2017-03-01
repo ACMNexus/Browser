@@ -761,8 +761,7 @@ public class AddBookmarkPage extends Activity
             String title = bundle.getString(BrowserContract.Bookmarks.TITLE);
             String url = bundle.getString(BrowserContract.Bookmarks.URL);
             boolean invalidateThumbnail = bundle.getBoolean(REMOVE_THUMBNAIL);
-            Bitmap thumbnail = invalidateThumbnail ? null
-                    : (Bitmap) bundle.getParcelable(BrowserContract.Bookmarks.THUMBNAIL);
+            Bitmap thumbnail = invalidateThumbnail ? null : (Bitmap) bundle.getParcelable(BrowserContract.Bookmarks.THUMBNAIL);
             String touchIconUrl = bundle.getString(TOUCH_ICON_URL);
 
             // Save to the bookmarks DB.

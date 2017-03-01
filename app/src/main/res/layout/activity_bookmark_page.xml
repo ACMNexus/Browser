@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.android.browser.view.PagerSlidingTabStrip
+        android:id="@+id/tabs"
+        android:layout_width="fill_parent"
+        android:layout_height="48dip"
+        android:background="@color/white"
+        app:pstsIndicatorColor="@color/ksw_md_solid_checked"
+        app:pstsIndicatorHeight="2dip"
+        app:pstsTabItemHeight="16dip" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpage"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
+
+</LinearLayout>

@@ -34,6 +34,7 @@ import com.android.browser.provider.BrowserContract;
 import com.android.browser.provider.BrowserContract.Combined;
 import com.android.browser.provider.BrowserContract.Images;
 import com.android.browser.util.BookmarkUtils;
+import com.android.browser.util.ToastUtils;
 
 import java.io.ByteArrayOutputStream;
 
@@ -69,20 +70,17 @@ public class Bookmarks {
         // Want to append to the beginning of the list
         ContentValues values = new ContentValues();
         try {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
             values.put(BrowserContract.Bookmarks.TITLE, name);
             values.put(BrowserContract.Bookmarks.URL, url);
             values.put(BrowserContract.Bookmarks.IS_FOLDER, 0);
-            values.put(BrowserContract.Bookmarks.THUMBNAIL,
-                    bitmapToBytes(thumbnail));
+            values.put(BrowserContract.Bookmarks.THUMBNAIL, bitmapToBytes(thumbnail));
             values.put(BrowserContract.Bookmarks.PARENT, parent);
             context.getContentResolver().insert(BrowserContract.Bookmarks.CONTENT_URI, values);
         } catch (IllegalStateException e) {
             Log.e(LOGTAG, "addBookmark", e);
         }
         if (showToast) {
-            Toast.makeText(context, R.string.added_to_bookmarks,
-                    Toast.LENGTH_LONG).show();
+            ToastUtils.show(context, R.string.added_to_bookmarks);
         }
     }
 

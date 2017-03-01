@@ -28,23 +28,23 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
- *  Custom layout for an item representing a bookmark in the browser.
+ * Custom layout for an item representing a bookmark in the browser.
  */
 class BookmarkItem extends HorizontalScrollView {
 
     final static int MAX_TEXTVIEW_LEN = 80;
 
-    protected TextView    mTextView;
-    protected TextView    mUrlText;
-    protected ImageView   mImageView;
-    protected String      mUrl;
-    protected String      mTitle;
+    protected TextView mTextView;
+    protected TextView mUrlText;
+    protected ImageView mImageView;
+    protected String mUrl;
+    protected String mTitle;
     protected boolean mEnableScrolling = false;
 
     /**
-     *  Instantiate a bookmark item, including a default favicon.
+     * Instantiate a bookmark item, including a default favicon.
      *
-     *  @param context  The application context for the item.
+     * @param context The application context for the item.
      */
     BookmarkItem(Context context) {
         super(context);
@@ -61,8 +61,9 @@ class BookmarkItem extends HorizontalScrollView {
     }
 
     /**
-     *  Copy this BookmarkItem to item.
-     *  @param item BookmarkItem to receive the info from this BookmarkItem.
+     * Copy this BookmarkItem to item.
+     *
+     * @param item BookmarkItem to receive the info from this BookmarkItem.
      */
     /* package */ void copyTo(BookmarkItem item) {
         item.mTextView.setText(mTextView.getText());
@@ -73,21 +74,21 @@ class BookmarkItem extends HorizontalScrollView {
     /**
      * Return the name assigned to this bookmark item.
      */
-    /* package */ String getName() {
+    public String getName() {
         return mTitle;
     }
 
-    /* package */ String getUrl() {
+    public String getUrl() {
         return mUrl;
     }
 
     /**
-     *  Set the favicon for this item.
+     * Set the favicon for this item.
      *
-     *  @param b    The new bitmap for this item.
-     *              If it is null, will use the default.
+     * @param b The new bitmap for this item.
+     *          If it is null, will use the default.
      */
-    /* package */ void setFavicon(Bitmap b) {
+    public void setFavicon(Bitmap b) {
         if (b != null) {
             mImageView.setImageBitmap(b);
         } else {
@@ -95,16 +96,16 @@ class BookmarkItem extends HorizontalScrollView {
         }
     }
 
-    void setFaviconBackground(Drawable d) {
+    public void setFaviconBackground(Drawable d) {
         mImageView.setBackgroundDrawable(d);
     }
 
     /**
-     *  Set the new name for the bookmark item.
+     * Set the new name for the bookmark item.
      *
-     *  @param name The new name for the bookmark item.
+     * @param name The new name for the bookmark item.
      */
-    /* package */ void setName(String name) {
+    public void setName(String name) {
         if (name == null) {
             return;
         }
@@ -117,12 +118,13 @@ class BookmarkItem extends HorizontalScrollView {
 
         mTextView.setText(name);
     }
-    
+
     /**
-     *  Set the new url for the bookmark item.
-     *  @param url  The new url for the bookmark item.
+     * Set the new url for the bookmark item.
+     *
+     * @param url The new url for the bookmark item.
      */
-    /* package */ void setUrl(String url) {
+    public void setUrl(String url) {
         if (url == null) {
             return;
         }
@@ -137,7 +139,7 @@ class BookmarkItem extends HorizontalScrollView {
         mUrlText.setText(url);
     }
 
-    void setEnableScrolling(boolean enable) {
+    public void setEnableScrolling(boolean enable) {
         mEnableScrolling = enable;
         setFocusable(mEnableScrolling);
         setFocusableInTouchMode(mEnableScrolling);
@@ -155,7 +157,7 @@ class BookmarkItem extends HorizontalScrollView {
 
     @Override
     protected void measureChild(View child, int parentWidthMeasureSpec,
-            int parentHeightMeasureSpec) {
+                                int parentHeightMeasureSpec) {
         if (mEnableScrolling) {
             super.measureChild(child, parentWidthMeasureSpec, parentHeightMeasureSpec);
             return;
@@ -172,12 +174,10 @@ class BookmarkItem extends HorizontalScrollView {
     }
 
     @Override
-    protected void measureChildWithMargins(View child,
-            int parentWidthMeasureSpec, int widthUsed,
-            int parentHeightMeasureSpec, int heightUsed) {
+    protected void measureChildWithMargins(View child, int parentWidthMeasureSpec, int widthUsed,
+                                           int parentHeightMeasureSpec, int heightUsed) {
         if (mEnableScrolling) {
-            super.measureChildWithMargins(child, parentWidthMeasureSpec,
-                    widthUsed, parentHeightMeasureSpec, heightUsed);
+            super.measureChildWithMargins(child, parentWidthMeasureSpec, widthUsed, parentHeightMeasureSpec, heightUsed);
             return;
         }
 

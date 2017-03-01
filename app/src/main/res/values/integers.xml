@@ -37,4 +37,11 @@
         <item>@drawable/ic_browser_engine_yahoo</item>
         <item>@drawable/ic_browser_engine_bing</item>
     </integer-array>
+
+    <integer-array name="tab_images">
+        <item>@drawable/bookmark_tab_icon_normal</item>
+        <item>@drawable/bookmark_tab_icon_normal</item>
+        <item>@drawable/history_tab_icon_normal</item>
+        <item>@drawable/history_tab_icon_normal</item>
+    </integer-array>
 </resources>

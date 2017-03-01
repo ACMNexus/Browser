@@ -203,6 +203,10 @@
             android:launchMode="singleTop"
             android:theme="@style/swipe_style" />
         <activity
+            android:name=".activitys.MarkHistoryActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/swipe_style" />
+        <activity
             android:name=".activitys.SecurityActivity"
             android:label="@string/menu_bottom_exit"
             android:launchMode="singleTop"

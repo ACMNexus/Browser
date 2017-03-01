@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.Window;
 import android.widget.AbsListView;
@@ -23,7 +24,7 @@ import java.util.Set;
  * Created by Luooh on 2017/2/15.
  */
 
-public class BaseActivity extends Activity implements View.OnClickListener, AbsListView.OnItemClickListener {
+public class BaseActivity extends FragmentActivity implements View.OnClickListener, AbsListView.OnItemClickListener {
 
     protected Activity mActivity;
     protected ActionBar mActionBar;
@@ -31,6 +32,7 @@ public class BaseActivity extends Activity implements View.OnClickListener, AbsL
     protected TextView mRigthTitleView;
     protected ImageView mRightiIcon;
     protected ImageView mLeftIcon;
+    protected View mTitleBarDivider;
     protected SettingValues mSettingValues;
 
     @Override
@@ -54,6 +56,7 @@ public class BaseActivity extends Activity implements View.OnClickListener, AbsL
             View view = View.inflate(this, R.layout.layout_title, null);
             mActionBar.setCustomView(view);
 
+            mTitleBarDivider = view.findViewById(R.id.divider);
             mLeftIcon = (ImageView) view.findViewById(R.id.iv_left_icon);
             mLeftTitleView = (TextView) view.findViewById(R.id.tv_title_left);
             mRightiIcon = (ImageView) view.findViewById(R.id.iv_right_icon);

@@ -51,6 +51,8 @@ import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.preference.PreferenceActivity;
 import android.provider.Browser;
+
+import com.android.browser.activitys.AddBookMarkActivity;
 import com.android.browser.provider.BrowserContract;
 import com.android.browser.provider.BrowserContract.Images;
 import android.provider.ContactsContract;
@@ -1218,8 +1220,7 @@ public class Controller
         }
         Bundle extras = new Bundle();
         // Disable opening in a new window if we have maxed out the windows
-        extras.putBoolean(BrowserBookmarksPage.EXTRA_DISABLE_WINDOW,
-                !mTabControl.canCreateNewTab());
+        extras.putBoolean(BrowserBookmarksPage.EXTRA_DISABLE_WINDOW, !mTabControl.canCreateNewTab());
         mUi.showComboView(startView, extras);
     }
 
@@ -1893,30 +1894,27 @@ public class Controller
         if (w == null) {
             return null;
         }
-        Intent i = new Intent(mActivity,
-                AddBookmarkPage.class);
-        i.putExtra(BrowserContract.Bookmarks.URL, w.getUrl());
-        i.putExtra(BrowserContract.Bookmarks.TITLE, w.getTitle());
+        Intent intent = new Intent(mActivity, AddBookMarkActivity.class);
+        intent.putExtra(BrowserContract.Bookmarks.URL, w.getUrl());
+        intent.putExtra(BrowserContract.Bookmarks.TITLE, w.getTitle());
         String touchIconUrl = ReflectUtils.getTouchIconUrl(w);
         if (touchIconUrl != null) {
-            i.putExtra(AddBookmarkPage.TOUCH_ICON_URL, touchIconUrl);
+            intent.putExtra(AddBookMarkActivity.TOUCH_ICON_URL, touchIconUrl);
             WebSettings settings = w.getSettings();
             if (settings != null) {
-                i.putExtra(AddBookmarkPage.USER_AGENT,
-                        settings.getUserAgentString());
+                intent.putExtra(AddBookmarkPage.USER_AGENT, settings.getUserAgentString());
             }
         }
-        i.putExtra(BrowserContract.Bookmarks.THUMBNAIL,
-                createScreenshot(w, getDesiredThumbnailWidth(mActivity),
-                getDesiredThumbnailHeight(mActivity)));
-        i.putExtra(BrowserContract.Bookmarks.FAVICON, w.getFavicon());
+        //can't use the thumbnail
+//        intent.putExtra(BrowserContract.Bookmarks.THUMBNAIL, createScreenshot(w, getDesiredThumbnailWidth(mActivity), getDesiredThumbnailHeight(mActivity)));
+        intent.putExtra(BrowserContract.Bookmarks.FAVICON, w.getFavicon());
         if (editExisting) {
-            i.putExtra(AddBookmarkPage.CHECK_FOR_DUPE, true);
+            intent.putExtra(AddBookmarkPage.CHECK_FOR_DUPE, true);
         }
         // Put the dialog at the upper right of the screen, covering the
         // star on the title bar.
-        i.putExtra("gravity", Gravity.RIGHT | Gravity.TOP);
-        return i;
+        intent.putExtra("gravity", Gravity.RIGHT | Gravity.TOP);
+        return intent;
     }
 
     // file chooser
@@ -1925,8 +1923,6 @@ public class Controller
         mUploadHandler = new UploadHandler(this);
         mUploadHandler.openFileChooser(uploadMsg, acceptType, capture);
     }
-
-    // thumbnails
 
     /**
      * Return the desired width for thumbnail screenshots, which are stored in
@@ -1951,8 +1947,7 @@ public class Controller
     }
 
     static Bitmap createScreenshot(WebView view, int width, int height) {
-        if (view == null || view.getContentHeight() == 0
-                || ReflectUtils.getContentWidth(view) == 0) {
+        if (view == null || view.getContentHeight() == 0 || ReflectUtils.getContentWidth(view) == 0) {
             return null;
         }
         // We render to a bitmap 2x the desired size so that we can then
@@ -1983,8 +1978,7 @@ public class Controller
         } else {
             view.draw(canvas);
         }
-        Bitmap ret = Bitmap.createScaledBitmap(sThumbnailBitmap,
-                width, height, true);
+        Bitmap ret = Bitmap.createScaledBitmap(sThumbnailBitmap, width, height, true);
         canvas.setBitmap(null);
         return ret;
     }

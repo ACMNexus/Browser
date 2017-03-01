@@ -86,9 +86,9 @@ public abstract class ThreadedCursorAdapter<T> extends BaseAdapter {
             }
 
         };
+
         mSize = mCursorAdapter.getCount();
-        HandlerThread thread = new HandlerThread("threaded_adapter_" + this,
-                Process.THREAD_PRIORITY_BACKGROUND);
+        HandlerThread thread = new HandlerThread("threaded_adapter_" + this, Process.THREAD_PRIORITY_BACKGROUND);
         thread.start();
         mLoadHandler = new Handler(thread.getLooper()) {
             @SuppressWarnings("unchecked")

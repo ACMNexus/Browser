@@ -81,10 +81,8 @@ public class BrowserBookmarksAdapter extends
     void bindGridView(View view, Context context, BrowserBookmarksAdapterItem item) {
         // We need to set this to handle rotation and other configuration change
         // events. If the padding didn't change, this is a no op.
-        int padding = context.getResources()
-                .getDimensionPixelSize(R.dimen.combo_horizontalSpacing);
-        view.setPadding(padding, view.getPaddingTop(),
-                padding, view.getPaddingBottom());
+        int padding = context.getResources().getDimensionPixelSize(R.dimen.combo_horizontalSpacing);
+        view.setPadding(padding, view.getPaddingTop(), padding, view.getPaddingBottom());
         ImageView thumb = (ImageView) view.findViewById(R.id.thumb);
         TextView tv = (TextView) view.findViewById(R.id.label);
 
@@ -106,17 +104,14 @@ public class BrowserBookmarksAdapter extends
     }
 
     @Override
-    public BrowserBookmarksAdapterItem getRowObject(Cursor c,
-            BrowserBookmarksAdapterItem item) {
+    public BrowserBookmarksAdapterItem getRowObject(Cursor c, BrowserBookmarksAdapterItem item) {
         if (item == null) {
             item = new BrowserBookmarksAdapterItem();
         }
         Bitmap thumbnail = item.thumbnail != null ? item.thumbnail.getBitmap() : null;
-        thumbnail = BrowserBookmarksPage.getBitmap(c,
-                BookmarksLoader.COLUMN_INDEX_THUMBNAIL, thumbnail);
+        thumbnail = BrowserBookmarksPage.getBitmap(c, BookmarksLoader.COLUMN_INDEX_THUMBNAIL, thumbnail);
         item.has_thumbnail = thumbnail != null;
-        if (thumbnail != null
-                && (item.thumbnail == null || item.thumbnail.getBitmap() != thumbnail)) {
+        if (thumbnail != null && (item.thumbnail == null || item.thumbnail.getBitmap() != thumbnail)) {
             item.thumbnail = new BitmapDrawable(mContext.getResources(), thumbnail);
         }
         item.is_folder = c.getInt(BookmarksLoader.COLUMN_INDEX_IS_FOLDER) != 0;
