@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dip"
+    android:background="@color/white"
+    android:minHeight="50dip">
+
+    <CheckBox
+        android:id="@+id/checked"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="16dip"
+        android:button="@drawable/bookmark_check_selector"
+        android:checked="false"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/favicon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="16dip"
+        android:layout_marginRight="16dip"
+        android:layout_toRightOf="@+id/checked"
+        android:src="@drawable/website_safe_icon" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dip"
+        android:layout_toRightOf="@id/favicon"
+        android:singleLine="true"
+        android:text="文字标题"
+        android:textSize="16sp" />
+
+    <ImageView
+        android:id="@+id/edit"
+        android:layout_width="50dip"
+        android:layout_height="fill_parent"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:scaleType="center"
+        android:src="@drawable/bookmark_edit_icon"
+        android:visibility="gone" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="0.5dip"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="16dip"
+        android:background="@color/content_divider" />
+
+</RelativeLayout>

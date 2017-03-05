@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     android:background="#F2F2F2"
     android:scrollbars="none">
 
@@ -36,18 +37,18 @@
             app:setting_title="@string/pref_privacy_security_title" />
 
         <com.android.browser.view.BrowserSettingItem
+            android:id="@+id/setting_advance"
+            android:layout_width="fill_parent"
+            android:layout_height="60dip"
+            app:setting_state="-1"
+            app:setting_title="@string/pref_extras_title" />
+
+        <com.android.browser.view.BrowserSettingItem
             android:id="@+id/setting_clear_data"
             android:layout_width="fill_parent"
             android:layout_height="60dip"
             app:setting_state="-1"
             app:setting_title="@string/pref_setting_clear_data_title" />
-
-        <com.android.browser.view.BrowserSettingItem
-            android:id="@+id/setting_filter_ad"
-            android:layout_width="fill_parent"
-            android:layout_height="60dip"
-            app:setting_state="-1"
-            app:setting_title="@string/pref_setting_filter_ad_title" />
 
         <com.android.browser.view.BrowserSettingItem
             android:id="@+id/setting_download_dir"
@@ -87,22 +88,6 @@
             android:layout_height="60dip"
             app:setting_state="4"
             app:setting_title="@string/pref_setting_defalut_browser_title"
-            app:setting_value="UTF-8" />
-
-        <com.android.browser.view.BrowserSettingItem
-            android:id="@+id/setting_exit_confirm"
-            android:layout_width="fill_parent"
-            android:layout_height="60dip"
-            app:setting_state="4"
-            app:setting_title="@string/pref_setting_exitconfirm_title"
-            app:setting_value="UTF-8" />
-
-        <com.android.browser.view.BrowserSettingItem
-            android:id="@+id/setting_force_scale"
-            android:layout_width="fill_parent"
-            android:layout_height="60dip"
-            app:setting_state="4"
-            app:setting_title="@string/pref_force_userscalable"
             app:setting_value="UTF-8" />
 
         <com.android.browser.view.BrowserSettingItem

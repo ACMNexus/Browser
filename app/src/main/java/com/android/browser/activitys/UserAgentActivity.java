@@ -1,9 +1,11 @@
 package com.android.browser.activitys;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
 import com.android.browser.R;
 import com.android.browser.adapter.UserAgentAdapter;
 import com.android.browser.bean.UserAgentInfo;
@@ -32,9 +34,9 @@ public class UserAgentActivity extends BaseActivity {
         mAdapter = new UserAgentAdapter(this);
         int userAgent = mSettingValues.getUserAgent();
         String userAgents[] = getResources().getStringArray(R.array.pref_user_agent_choices);
-        for(int i = 0; i < userAgents.length; i++) {
+        for (int i = 0; i < userAgents.length; i++) {
             userAgentInfo = new UserAgentInfo(userAgents[i], Constants.USER_AGENTS[i], false);
-            if(i == userAgent) {
+            if (i == userAgent) {
                 userAgentInfo.setIsChecked(true);
             }
             mAdapter.addItem(userAgentInfo, false);
@@ -50,6 +52,9 @@ public class UserAgentActivity extends BaseActivity {
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
         mSettingValues.setUserAgent(position);
+        Intent intent = new Intent();
+        intent.putExtra(Constants.USERAGENT, mAdapter.getItem(position).getUserAgentName());
+        setResult(RESULT_OK, intent);
         finish();
     }
 }

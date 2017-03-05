@@ -114,6 +114,10 @@ public class BrowserSettingItem extends RelativeLayout implements View.OnClickLi
         mSettingTitle.setText(title);
     }
 
+    public void setSettingValue(String value) {
+        mSettingValue.setText(value);
+    }
+
     public void setChecked(boolean isChecked) {
         mSettingToggle.setChecked(isChecked);
     }

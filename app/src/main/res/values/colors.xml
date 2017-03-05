@@ -52,5 +52,6 @@
     <color name="clear_data_value_color">#5DA7FD</color>
     <color name="colorSeekBarDefault">#c3c3c3</color>
     <color name="colorAccent">#5DA7FD</color>
+    <color name="statusbar_bg">#B2B2B2</color>
 
 </resources>

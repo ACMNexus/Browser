@@ -34,8 +34,8 @@ public class SecurityActivity extends BaseActivity implements BrowserSettingItem
 
         mDataItem.setCheckedImmediately(mSettingValues.saveFormdata());
         mCookieItem.setCheckedImmediately(mSettingValues.acceptCookies());
-        mLocationItem.setCheckedImmediately(mSettingValues.enableGeolocation());
         mPasswordItem.setCheckedImmediately(mSettingValues.rememberPasswords());
+        mLocationItem.setCheckedImmediately(mSettingValues.enableGeolocation());
         mSecurityWarnItem.setCheckedImmediately(mSettingValues.showSecurityWarnings());
     }
 

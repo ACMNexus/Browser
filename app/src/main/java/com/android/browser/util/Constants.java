@@ -28,4 +28,7 @@ public class Constants {
             IPAD_USERAGENT,
             DESKTOP_USERAGENT
     };
+
+    public static final String USERAGENT = "UserAgent";
+    public static final String TEXTCODING = "TextCoding";
 }

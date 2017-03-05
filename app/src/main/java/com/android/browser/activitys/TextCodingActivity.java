@@ -1,5 +1,6 @@
 package com.android.browser.activitys;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -7,6 +8,8 @@ import android.widget.ListView;
 import com.android.browser.R;
 import com.android.browser.adapter.TextCodingAdapter;
 import com.android.browser.bean.TextCodeInfo;
+import com.android.browser.util.Constants;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,6 +57,9 @@ public class TextCodingActivity extends BaseActivity {
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
         mSettingValues.setDefalutTextCoding(mAdapter.getItem(position).getTextCodeName());
+        Intent intent = new Intent();
+        intent.putExtra(Constants.TEXTCODING, mAdapter.getItem(position).getTextCodeName());
+        setResult(RESULT_OK, intent);
         finish();
     }
 }

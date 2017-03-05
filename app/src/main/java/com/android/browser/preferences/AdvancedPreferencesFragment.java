@@ -64,7 +64,6 @@ public class AdvancedPreferencesFragment extends PreferenceFragment
 
         e = findPreference(PreferenceKeys.PREF_SEARCH_ENGINE);
         e.setOnPreferenceChangeListener(this);
-        Log.i("LOH", (((ListPreference)e).getEntry().toString()));
         Toast.makeText(getActivity(), (((ListPreference)e).getEntry().toString()), Toast.LENGTH_LONG).show();
         updateListPreferenceSummary((ListPreference) e);
 

@@ -78,8 +78,7 @@ public class BookmarkExpandableView extends ExpandableListView
         mContext = context;
         setItemsCanFocus(true);
         setLongClickable(false);
-        mMaxColumnCount = mContext.getResources()
-                .getInteger(R.integer.max_bookmark_columns);
+        mMaxColumnCount = mContext.getResources().getInteger(R.integer.max_bookmark_columns);
         setScrollBarStyle(SCROLLBARS_OUTSIDE_OVERLAY);
         mAdapter = new BookmarkAccountAdapter(mContext);
         super.setAdapter(mAdapter);

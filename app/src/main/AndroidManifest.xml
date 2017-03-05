@@ -204,21 +204,27 @@
             android:theme="@style/swipe_style" />
         <activity
             android:name=".activitys.MarkHistoryActivity"
+            android:label="@string/tab_bookmarks"
             android:launchMode="singleTop"
             android:theme="@style/swipe_style" />
         <activity
             android:name=".activitys.SecurityActivity"
-            android:label="@string/menu_bottom_exit"
+            android:label="@string/pref_privacy_security_title"
+            android:launchMode="singleTop"
+            android:theme="@style/swipe_style" />
+        <activity
+            android:name=".activitys.AdvancedActivity"
+            android:label="@string/pref_extras_title"
             android:launchMode="singleTop"
             android:theme="@style/swipe_style" />
         <activity
             android:name=".activitys.ClearDataActivity"
-            android:label="@string/menu_bottom_exit"
+            android:label="@string/pref_setting_clear_data_title"
             android:launchMode="singleTop"
             android:theme="@style/swipe_style" />
         <activity
             android:name=".activitys.TextCodingActivity"
-            android:label="@string/menu_bottom_exit"
+            android:label="@string/pref_default_text_encoding"
             android:launchMode="singleTop"
             android:theme="@style/swipe_style" />
         <activity

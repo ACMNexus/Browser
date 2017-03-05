@@ -24,4 +24,11 @@ public class IOUtils {
             cursor.close();
         }
     }
+
+    public static boolean isValidCursor(Cursor cursor) {
+        if(cursor != null && !cursor.isClosed() && cursor.getCount() > 0) {
+            return true;
+        }
+        return false;
+    }
 }

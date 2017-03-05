@@ -3,6 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipToPadding="true"
+    android:fitsSystemWindows="true"
     android:orientation="vertical">
 
     <LinearLayout
@@ -21,18 +23,18 @@
             android:id="@+id/seekbar4"
             android:layout_width="match_parent"
             android:layout_height="80dp"
-            app:markTextArray="@array/wordsArray"
-            app:lineColorSelected="@color/colorAccent"
-            app:lineColorEdge="@color/colorSeekBarDefault"
-            app:textPadding="17dp"
+            app:cellMode="other"
             app:cells="4"
             app:hideProgressHint="true"
-            app:textSize="12sp"
             app:hintBGHeight="28dp"
+            app:lineColorEdge="@color/colorSeekBarDefault"
+            app:lineColorSelected="@color/colorAccent"
+            app:markTextArray="@array/wordsArray"
             app:seekBarHeight="8dp"
-            app:thumbSize="26dp"
-            app:cellMode="other"
-            app:seekBarMode="single" />
+            app:seekBarMode="single"
+            app:textPadding="17dp"
+            app:textSize="12sp"
+            app:thumbSize="26dp" />
 
         <TextView
             android:id="@+id/min_font_size"

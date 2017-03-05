@@ -99,20 +99,13 @@ public class BrowserBookmarksPage extends BaseFragment implements View.OnCreateC
     boolean mDisableNewWindow;
     boolean mEnableContextMenu = true;
     View mEmptyView;
-    View mHeader;
     HashMap<Integer, BrowserBookmarksAdapter> mBookmarkAdapters = new HashMap<Integer, BrowserBookmarksAdapter>();
     JSONObject mState;
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        if (id == LOADER_ACCOUNTS) {
-            return new AccountsLoader(getActivity());
-        } else if (id >= LOADER_BOOKMARKS) {
-            String accountType = args.getString(ACCOUNT_TYPE);
-            String accountName = args.getString(ACCOUNT_NAME);
-            BookmarksLoader bl = new BookmarksLoader(getActivity(),
-                    accountType, accountName);
-            return bl;
+        if (id == LOADER_BOOKMARKS) {
+            return new BookmarksLoader(mActivity);
         } else {
             throw new UnsupportedOperationException("Unknown loader id " + id);
         }
@@ -120,45 +113,17 @@ public class BrowserBookmarksPage extends BaseFragment implements View.OnCreateC
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        if (loader.getId() == LOADER_ACCOUNTS) {
-            LoaderManager lm = mActivity.getLoaderManager();
-            int id = LOADER_BOOKMARKS;
-            while (cursor.moveToNext()) {
-                String accountName = cursor.getString(0);
-                String accountType = cursor.getString(1);
-                Bundle args = new Bundle();
-                args.putString(ACCOUNT_NAME, accountName);
-                args.putString(ACCOUNT_TYPE, accountType);
-                ToastUtils.show(mActivity, "acountname。。" + accountName + "...accountType.." + accountType);
-                BrowserBookmarksAdapter adapter = new BrowserBookmarksAdapter(getActivity());
-                mBookmarkAdapters.put(id, adapter);
-                boolean expand = true;
-                try {
-                    expand = mState.getBoolean(accountName != null ? accountName : BookmarkExpandableView.LOCAL_ACCOUNT_NAME);
-                } catch (JSONException e) {} // no state for accountName
-                mGrid.addAccount(accountName, adapter, expand);
-                lm.restartLoader(id, args, this);
-                id++;
-            }
-            // TODO: Figure out what a reload of these means
-            // Currently, a reload is triggered whenever bookmarks change
-            // This is less than ideal
-            // It also causes UI flickering as a new adapter is created
-            // instead of re-using an existing one when the account_name is the
-            // same.
-            // For now, this is a one-shot load
-            getLoaderManager().destroyLoader(LOADER_ACCOUNTS);
-        } else if (loader.getId() >= LOADER_BOOKMARKS) {
-            BrowserBookmarksAdapter adapter = mBookmarkAdapters.get(loader.getId());
-            adapter.changeCursor(cursor);
+        if (loader.getId() == LOADER_BOOKMARKS) {
+//            BrowserBookmarksAdapter adapter = mBookmarkAdapters.get(loader.getId());
+//            adapter.changeCursor(cursor);
         }
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         if (loader.getId() >= LOADER_BOOKMARKS) {
-            BrowserBookmarksAdapter adapter = mBookmarkAdapters.get(loader.getId());
-            adapter.changeCursor(null);
+//            BrowserBookmarksAdapter adapter = mBookmarkAdapters.get(loader.getId());
+//            adapter.changeCursor(null);
         }
     }
 
@@ -355,9 +320,7 @@ public class BrowserBookmarksPage extends BaseFragment implements View.OnCreateC
             mState = mGrid.saveGroupState();
             // Save state
             SharedPreferences prefs = BrowserSettings.getInstance().getPreferences();
-            prefs.edit()
-                    .putString(PREF_GROUP_STATE, mState.toString())
-                    .apply();
+            prefs.edit().putString(PREF_GROUP_STATE, mState.toString()).apply();
         } catch (JSONException e) {
             // Not critical, ignore
         }
@@ -389,8 +352,7 @@ public class BrowserBookmarksPage extends BaseFragment implements View.OnCreateC
     };
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mRoot = inflater.inflate(R.layout.bookmarks, container, false);
         mEmptyView = mRoot.findViewById(android.R.id.empty);
 
@@ -400,10 +362,7 @@ public class BrowserBookmarksPage extends BaseFragment implements View.OnCreateC
         mGrid.setBreadcrumbController(this);
         setEnableContextMenu(mEnableContextMenu);
 
-        // Start the loaders
-        LoaderManager lm = mActivity.getLoaderManager();
-        lm.restartLoader(LOADER_ACCOUNTS, null, this);
-
+        mLoaderManager.restartLoader(LOADER_BOOKMARKS, null, this);
         return mRoot;
     }
 
@@ -412,12 +371,7 @@ public class BrowserBookmarksPage extends BaseFragment implements View.OnCreateC
         super.onDestroyView();
         mGrid.setBreadcrumbController(null);
         mGrid.clearAccounts();
-        LoaderManager lm = mActivity.getLoaderManager();
-        lm.destroyLoader(LOADER_ACCOUNTS);
-        for (int id : mBookmarkAdapters.keySet()) {
-            lm.destroyLoader(id);
-        }
-        mBookmarkAdapters.clear();
+        mLoaderManager.destroyLoader(LOADER_ACCOUNTS);
     }
 
     private BrowserBookmarksAdapter getChildAdapter(int groupPosition) {
@@ -642,22 +596,6 @@ public class BrowserBookmarksPage extends BaseFragment implements View.OnCreateC
             } else if (result == 0) {
                 mHeader.setUrl(mContext.getString(R.string.contextheader_folder_empty));
             }
-        }
-    }
-
-    static class AccountsLoader extends CursorLoader {
-
-        static String[] ACCOUNTS_PROJECTION = new String[] {
-            Accounts.ACCOUNT_NAME,
-            Accounts.ACCOUNT_TYPE
-        };
-
-        public AccountsLoader(Context context) {
-            super(context, Accounts.CONTENT_URI
-                    .buildUpon()
-                    .appendQueryParameter(BrowserProvider2.PARAM_ALLOW_EMPTY_ACCOUNTS, "false")
-                    .build(),
-                    ACCOUNTS_PROJECTION, null, null, null);
         }
     }
 }

@@ -2,7 +2,7 @@ package com.android.browser.activitys;
 
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.view.View;
+import android.view.KeyEvent;
 
 import com.android.browser.CombinedBookmarksCallbacks;
 import com.android.browser.R;
@@ -15,7 +15,6 @@ import com.android.browser.view.PagerSlidingTabStrip;
 public class MarkHistoryActivity extends BaseActivity implements CombinedBookmarksCallbacks {
 
     public static final String EXTRA_CURRENT_URL = "url";
-    private static final String STATE_SELECTED_TAB = "tab";
     public static final String EXTRA_COMBO_ARGS = "combo_args";
     public static final String EXTRA_INITIAL_VIEW = "initial_view";
 
@@ -29,6 +28,7 @@ public class MarkHistoryActivity extends BaseActivity implements CombinedBookmar
         this.setContentView(R.layout.activity_bookmark_page);
 
         initView();
+        setListener();
     }
 
     private void initView() {
@@ -38,6 +38,27 @@ public class MarkHistoryActivity extends BaseActivity implements CombinedBookmar
         mHistoryAdapter = new MarkHistoryAdapter(mActivity, getSupportFragmentManager());
         mViewPager.setAdapter(mHistoryAdapter);
         mTabStrip.setViewPager(mViewPager);
+    }
+
+    private void setListener() {
+        mTabStrip.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (position == 0) {
+                    mLeftTitleView.setText(R.string.tab_bookmarks);
+                } else {
+                    mLeftTitleView.setText(R.string.tab_history);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int position) {
+            }
+        });
     }
 
     @Override
@@ -54,5 +75,10 @@ public class MarkHistoryActivity extends BaseActivity implements CombinedBookmar
 
     @Override
     public void close() {
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        return super.onKeyDown(keyCode, event);
     }
 }

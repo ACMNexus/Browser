@@ -236,7 +236,7 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
         settings.setTextZoom(getTextZoom());
         settings.setLayoutAlgorithm(getLayoutAlgorithm());
         settings.setJavaScriptCanOpenWindowsAutomatically(!blockPopupWindows());
-        settings.setLoadsImagesAutomatically(loadImages());
+        settings.setLoadsImagesAutomatically(mSettingValues.loadImages());
         settings.setLoadWithOverviewMode(loadPageInOverviewMode());
         settings.setSavePassword(mSettingValues.rememberPasswords());
         settings.setSaveFormData(mSettingValues.saveFormdata());
@@ -606,10 +606,6 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
         return mPrefs.getBoolean(PREF_BLOCK_POPUP_WINDOWS, true);
     }
 
-    public boolean loadImages() {
-        return mPrefs.getBoolean(PREF_LOAD_IMAGES, true);
-    }
-
     // -----------------------------
     // getter/setters for general_preferences.xml
     // -----------------------------
@@ -619,14 +615,6 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
 
     public void setHomePage(String value) {
         mPrefs.edit().putString(PREF_HOMEPAGE, value).apply();
-    }
-
-    public boolean isAutofillEnabled() {
-        return mPrefs.getBoolean(PREF_AUTOFILL_ENABLED, true);
-    }
-
-    public void setAutofillEnabled(boolean value) {
-        mPrefs.edit().putBoolean(PREF_AUTOFILL_ENABLED, value).apply();
     }
 
     // -----------------------------

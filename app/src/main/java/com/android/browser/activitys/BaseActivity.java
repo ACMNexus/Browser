@@ -3,6 +3,7 @@ package com.android.browser.activitys;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import com.android.browser.BrowserSettings;
 import com.android.browser.R;
 import com.android.browser.util.SettingValues;
+import com.android.browser.view.SystemBarTintManager;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -42,6 +44,7 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
         this.mActivity = this;
         mSettingValues = BrowserSettings.getInstance().getSettingValues();
         initActionBar();
+        setStatusBarColor();
     }
 
     protected void setWindowFeature() {
@@ -66,6 +69,13 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
             mRightiIcon.setOnClickListener(this);
             mRigthTitleView.setOnClickListener(this);
             mLeftTitleView.setText(getTitle());
+        }
+    }
+
+    protected void setStatusBarColor() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            SystemBarTintManager tintManager = new SystemBarTintManager(this);
+            tintManager.setStatusBarColor(getResources().getColor(R.color.statusbar_bg));
         }
     }
 

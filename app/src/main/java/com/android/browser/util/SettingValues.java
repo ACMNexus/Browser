@@ -104,5 +104,21 @@ public class SettingValues implements PreferenceKeys {
     public void setUserAgent(int userAgentIndex) {
         mPrefs.edit().putString(PREF_USER_AGENT, userAgentIndex + "").commit();
     }
+
+    public boolean isAutofillEnabled() {
+        return mPrefs.getBoolean(PREF_AUTOFILL_ENABLED, true);
+    }
+
+    public void setAutofillEnabled(boolean value) {
+        mPrefs.edit().putBoolean(PREF_AUTOFILL_ENABLED, value).apply();
+    }
+
+    public boolean loadImages() {
+        return mPrefs.getBoolean(PREF_LOAD_IMAGES, true);
+    }
+
+    public void setLoadImagesState(boolean state) {
+        mPrefs.edit().putBoolean(PREF_LOAD_IMAGES, state).apply();
+    }
 }
 

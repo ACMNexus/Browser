@@ -1,5 +1,6 @@
 package com.android.browser.util;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
@@ -26,5 +27,10 @@ public class ActivityUtils {
 
     public static void startNextPager(Context context, Class<?> clazz) {
         startNextPager(context, clazz, null);
+    }
+
+    public static void startNextPagerForResult(Activity activity, Class<?> clazz, int requestCode) {
+        Intent intent = new Intent(activity, clazz);
+        activity.startActivityForResult(intent, requestCode);
     }
 }

@@ -245,7 +245,7 @@
     <string name="pref_default_zoom_dialogtitle" msgid="6095974367125109021">"默认缩放设置"</string>
     <string name="pref_content_load_page" msgid="2219810141690955452">"以概览模式打开网页"</string>
     <string name="pref_content_load_page_summary" msgid="9168803276420332955">"显示新打开网页的概览"</string>
-    <string name="pref_extras_title" msgid="7075456173747370647">"高级"</string>
+    <string name="pref_extras_title" msgid="7075456173747370647">"高级设置"</string>
     <string name="pref_extras_website_settings" msgid="67866640052455549">"网站设置"</string>
     <string name="pref_extras_website_settings_summary" msgid="1656771443223494406">"各网站的高级设置"</string>
     <string name="pref_extras_reset_default_title" msgid="3579760449455761762">"重置默认设置"</string>

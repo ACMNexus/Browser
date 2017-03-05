@@ -22,8 +22,9 @@ import android.net.Uri;
 import com.android.browser.provider.BrowserContract.Bookmarks;
 
 public class BookmarksLoader extends CursorLoader {
-    public static final String ARG_ACCOUNT_TYPE = "acct_type";
-    public static final String ARG_ACCOUNT_NAME = "acct_name";
+
+    private String mAccountType;
+    private String mAccountName;
 
     public static final int COLUMN_INDEX_ID = 0;
     public static final int COLUMN_INDEX_URL = 1;
@@ -35,21 +36,22 @@ public class BookmarksLoader extends CursorLoader {
     public static final int COLUMN_INDEX_PARENT = 8;
     public static final int COLUMN_INDEX_TYPE = 9;
 
-    public static final String[] PROJECTION = new String[] {
-        Bookmarks._ID, // 0
-        Bookmarks.URL, // 1
-        Bookmarks.TITLE, // 2
-        Bookmarks.FAVICON, // 3
-        Bookmarks.THUMBNAIL, // 4
-        Bookmarks.TOUCH_ICON, // 5
-        Bookmarks.IS_FOLDER, // 6
-        Bookmarks.POSITION, // 7
-        Bookmarks.PARENT, // 8
-        Bookmarks.TYPE, // 9
+    public static final String[] PROJECTION = new String[]{
+            Bookmarks._ID, // 0
+            Bookmarks.URL, // 1
+            Bookmarks.TITLE, // 2
+            Bookmarks.FAVICON, // 3
+            Bookmarks.THUMBNAIL, // 4
+            Bookmarks.TOUCH_ICON, // 5
+            Bookmarks.IS_FOLDER, // 6
+            Bookmarks.POSITION, // 7
+            Bookmarks.PARENT, // 8
+            Bookmarks.TYPE, // 9
     };
 
-    String mAccountType;
-    String mAccountName;
+    public BookmarksLoader(Context context) {
+        super(context, Bookmarks.CONTENT_URI, PROJECTION, null, null, null);
+    }
 
     public BookmarksLoader(Context context, String accountType, String accountName) {
         super(context, addAccount(Bookmarks.CONTENT_URI_DEFAULT_FOLDER, accountType, accountName), PROJECTION, null, null, null);

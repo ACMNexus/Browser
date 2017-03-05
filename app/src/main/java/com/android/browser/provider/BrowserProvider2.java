@@ -208,12 +208,8 @@ public class BrowserProvider2 extends SQLiteContentProvider {
         matcher.addURI(authority, "bookmarks/folder", BOOKMARKS_FOLDER);
         matcher.addURI(authority, "bookmarks/folder/#", BOOKMARKS_FOLDER_ID);
         matcher.addURI(authority, "bookmarks/folder/id", BOOKMARKS_DEFAULT_FOLDER_ID);
-        matcher.addURI(authority,
-                SearchManager.SUGGEST_URI_PATH_QUERY,
-                BOOKMARKS_SUGGESTIONS);
-        matcher.addURI(authority,
-                "bookmarks/" + SearchManager.SUGGEST_URI_PATH_QUERY,
-                BOOKMARKS_SUGGESTIONS);
+        matcher.addURI(authority, SearchManager.SUGGEST_URI_PATH_QUERY, BOOKMARKS_SUGGESTIONS);
+        matcher.addURI(authority, "bookmarks/" + SearchManager.SUGGEST_URI_PATH_QUERY, BOOKMARKS_SUGGESTIONS);
         matcher.addURI(authority, "history", HISTORY);
         matcher.addURI(authority, "history/#", HISTORY_ID);
         matcher.addURI(authority, "searches", SEARCHES);
@@ -425,7 +421,6 @@ public class BrowserProvider2 extends SQLiteContentProvider {
                     ");");
 
             // TODO indices
-
             db.execSQL("CREATE TABLE " + TABLE_HISTORY + "(" +
                     History._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                     History.TITLE + " TEXT," +
@@ -896,22 +891,17 @@ public class BrowserProvider2 extends SQLiteContentProvider {
             case BOOKMARKS: {
                 // Only show deleted bookmarks if requested to do so
                 if (!uri.getBooleanQueryParameter(Bookmarks.QUERY_PARAMETER_SHOW_DELETED, false)) {
-                    selection = DatabaseUtils.concatenateWhere(
-                            Bookmarks.IS_DELETED + "=0", selection);
+                    selection = DatabaseUtils.concatenateWhere(Bookmarks.IS_DELETED + "=0", selection);
                 }
 
                 if (match == BOOKMARKS_ID) {
                     // Tack on the ID of the specific bookmark requested
-                    selection = DatabaseUtils.concatenateWhere(selection,
-                            TABLE_BOOKMARKS + "." + Bookmarks._ID + "=?");
-                    selectionArgs = DatabaseUtils.appendSelectionArgs(selectionArgs,
-                            new String[]{Long.toString(ContentUris.parseId(uri))});
+                    selection = DatabaseUtils.concatenateWhere(selection, TABLE_BOOKMARKS + "." + Bookmarks._ID + "=?");
+                    selectionArgs = DatabaseUtils.appendSelectionArgs(selectionArgs, new String[]{Long.toString(ContentUris.parseId(uri))});
                 } else if (match == BOOKMARKS_FOLDER_ID) {
                     // Tack on the ID of the specific folder requested
-                    selection = DatabaseUtils.concatenateWhere(selection,
-                            TABLE_BOOKMARKS + "." + Bookmarks.PARENT + "=?");
-                    selectionArgs = DatabaseUtils.appendSelectionArgs(selectionArgs,
-                            new String[]{Long.toString(ContentUris.parseId(uri))});
+                    selection = DatabaseUtils.concatenateWhere(selection, TABLE_BOOKMARKS + "." + Bookmarks.PARENT + "=?");
+                    selectionArgs = DatabaseUtils.appendSelectionArgs(selectionArgs, new String[]{Long.toString(ContentUris.parseId(uri))});
                 }
 
                 Object[] withAccount = getSelectionWithAccounts(uri, selection, selectionArgs);
@@ -927,7 +917,6 @@ public class BrowserProvider2 extends SQLiteContentProvider {
                         sortOrder = DEFAULT_BOOKMARKS_SORT_ORDER;
                     }
                 }
-
                 qb.setProjectionMap(BOOKMARKS_PROJECTION_MAP);
                 qb.setTables(TABLE_BOOKMARKS_JOIN_IMAGES);
                 break;
@@ -975,8 +964,7 @@ public class BrowserProvider2 extends SQLiteContentProvider {
                     where = DatabaseUtils.concatenateWhere(where, selection);
                     String bookmarksBarQuery = qb.buildQuery(projection,
                             where, null, null, null, null);
-                    args = new String[]{accountType, accountName,
-                            accountType, accountName};
+                    args = new String[]{accountType, accountName, accountType, accountName};
                     if (selectionArgs != null) {
                         args = DatabaseUtils.appendSelectionArgs(args, selectionArgs);
                     }
@@ -988,9 +976,7 @@ public class BrowserProvider2 extends SQLiteContentProvider {
                     String otherBookmarksQuery = qb.buildQuery(projection,
                             where, null, null, null, null);
 
-                    query = qb.buildUnionQuery(
-                            new String[]{bookmarksBarQuery, otherBookmarksQuery},
-                            sortOrder, limit);
+                    query = qb.buildUnionQuery(new String[]{bookmarksBarQuery, otherBookmarksQuery}, sortOrder, limit);
 
                     args = DatabaseUtils.appendSelectionArgs(args, new String[]{
                             accountType, accountName, ChromeSyncColumns.FOLDER_NAME_OTHER_BOOKMARKS,
@@ -1002,8 +988,7 @@ public class BrowserProvider2 extends SQLiteContentProvider {
 
                 Cursor cursor = db.rawQuery(query, args);
                 if (cursor != null) {
-                    cursor.setNotificationUri(getContext().getContentResolver(),
-                            BrowserContract.AUTHORITY_URI);
+                    cursor.setNotificationUri(getContext().getContentResolver(), BrowserContract.AUTHORITY_URI);
                 }
                 return cursor;
             }
@@ -1118,8 +1103,7 @@ public class BrowserProvider2 extends SQLiteContentProvider {
             }
         }
 
-        Cursor cursor = qb.query(db, projection, selection, selectionArgs, groupBy,
-                null, sortOrder, limit);
+        Cursor cursor = qb.query(db, projection, selection, selectionArgs, groupBy, null, sortOrder, limit);
         cursor.setNotificationUri(getContext().getContentResolver(), BrowserContract.AUTHORITY_URI);
         return cursor;
     }
@@ -1393,10 +1377,8 @@ public class BrowserProvider2 extends SQLiteContentProvider {
         if (!isNullAccount(accountName) && !isNullAccount(accountType)) {
             final SQLiteDatabase db = mOpenHelper.getReadableDatabase();
             Cursor c = db.query(TABLE_BOOKMARKS, new String[]{Bookmarks._ID},
-                    ChromeSyncColumns.SERVER_UNIQUE + " = ?" +
-                            " AND account_type = ? AND account_name = ?",
-                    new String[]{ChromeSyncColumns.FOLDER_NAME_BOOKMARKS_BAR,
-                            accountType, accountName}, null, null, null);
+                    ChromeSyncColumns.SERVER_UNIQUE + " = ?" + " AND account_type = ? AND account_name = ?",
+                    new String[]{ChromeSyncColumns.FOLDER_NAME_BOOKMARKS_BAR, accountType, accountName}, null, null, null);
             try {
                 if (c.moveToFirst()) {
                     return c.getLong(0);
@@ -1436,27 +1418,25 @@ public class BrowserProvider2 extends SQLiteContentProvider {
                     values.put(Bookmarks.DATE_MODIFIED, now);
                     values.put(Bookmarks.DIRTY, 1);
 
-                    boolean hasAccounts = values.containsKey(Bookmarks.ACCOUNT_TYPE)
-                            || values.containsKey(Bookmarks.ACCOUNT_NAME);
-                    String accountType = values
-                            .getAsString(Bookmarks.ACCOUNT_TYPE);
-                    String accountName = values
-                            .getAsString(Bookmarks.ACCOUNT_NAME);
+                    //hasAccounts is false
+                    boolean hasAccounts = values.containsKey(Bookmarks.ACCOUNT_TYPE) || values.containsKey(Bookmarks.ACCOUNT_NAME);
+                    String accountType = values.getAsString(Bookmarks.ACCOUNT_TYPE);
+                    String accountName = values.getAsString(Bookmarks.ACCOUNT_NAME);
+                    //hasParent is true
                     boolean hasParent = values.containsKey(Bookmarks.PARENT);
                     if (hasParent && hasAccounts) {
                         // Let's make sure it's valid
                         long parentId = values.getAsLong(Bookmarks.PARENT);
-                        hasParent = isValidParent(
-                                accountType, accountName, parentId);
+                        hasParent = isValidParent(accountType, accountName, parentId);
                     } else if (hasParent && !hasAccounts) {
+                        //parentId is 1
                         long parentId = values.getAsLong(Bookmarks.PARENT);
                         hasParent = setParentValues(parentId, values);
                     }
 
                     // If no parent is set default to the "Bookmarks Bar" folder
                     if (!hasParent) {
-                        values.put(Bookmarks.PARENT,
-                                queryDefaultFolderId(accountName, accountType));
+                        values.put(Bookmarks.PARENT, queryDefaultFolderId(accountName, accountType));
                     }
                 }
 
@@ -1469,10 +1449,8 @@ public class BrowserProvider2 extends SQLiteContentProvider {
                 String url = values.getAsString(Bookmarks.URL);
                 ContentValues imageValues = extractImageValues(values, url);
                 Boolean isFolder = values.getAsBoolean(Bookmarks.IS_FOLDER);
-                if ((isFolder == null || !isFolder)
-                        && imageValues != null && !TextUtils.isEmpty(url)) {
-                    int count = db.update(TABLE_IMAGES, imageValues, Images.URL + "=?",
-                            new String[]{url});
+                if ((isFolder == null || !isFolder) && imageValues != null && !TextUtils.isEmpty(url)) {
+                    int count = db.update(TABLE_IMAGES, imageValues, Images.URL + "=?", new String[]{url});
                     if (count == 0) {
                         db.insertOrThrow(TABLE_IMAGES, Images.FAVICON, imageValues);
                     }
@@ -1545,9 +1523,7 @@ public class BrowserProvider2 extends SQLiteContentProvider {
             return null;
         }
         Uri uri = ContentUris.withAppendedId(Bookmarks.CONTENT_URI, id);
-        Cursor c = query(uri,
-                new String[]{Bookmarks.ACCOUNT_NAME, Bookmarks.ACCOUNT_TYPE},
-                null, null, null);
+        Cursor c = query(uri, new String[]{Bookmarks.ACCOUNT_NAME, Bookmarks.ACCOUNT_TYPE}, null, null, null);
         try {
             if (c.moveToFirst()) {
                 String parentName = c.getString(0);
@@ -2259,7 +2235,7 @@ public class BrowserProvider2 extends SQLiteContentProvider {
                     + "  ORDER BY bookmark DESC, visits DESC, date DESC ";
 
     private static final String SQL_WHERE_ACCOUNT_HAS_BOOKMARKS =
-            "0 < ( "
+                    "0 < ( "
                     + "SELECT count(*) "
                     + "FROM bookmarks "
                     + "WHERE deleted = 0 AND folder = 0 "

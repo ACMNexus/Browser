@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="true"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.android.browser.view.BrowserSettingItem
+            android:id="@+id/auto_fill"
+            android:layout_width="fill_parent"
+            android:layout_height="60dip"
+            app:setting_desc="@string/pref_autofill_enabled_summary"
+            app:setting_state="5"
+            app:setting_title="@string/pref_autofill_enabled" />
+
+        <com.android.browser.view.BrowserSettingItem
+            android:id="@+id/setting_force_scale"
+            android:layout_width="fill_parent"
+            android:layout_height="60dip"
+            app:setting_desc="@string/pref_force_userscalable_summary"
+            app:setting_state="5"
+            app:setting_title="@string/pref_force_userscalable"
+            app:setting_value="UTF-8" />
+
+        <com.android.browser.view.BrowserSettingItem
+            android:id="@+id/auto_fit"
+            android:layout_width="fill_parent"
+            android:layout_height="60dip"
+            app:setting_desc="@string/pref_content_autofit_summary"
+            app:setting_state="5"
+            app:setting_title="@string/pref_content_autofit"
+            app:setting_value="UTF-8" />
+
+        <com.android.browser.view.BrowserSettingItem
+            android:id="@+id/load_image"
+            android:layout_width="fill_parent"
+            android:layout_height="60dip"
+            app:setting_desc="@string/pref_content_load_images_summary"
+            app:setting_state="5"
+            app:setting_title="@string/pref_content_load_images"
+            app:setting_value="UTF-8" />
+
+        <com.android.browser.view.BrowserSettingItem
+            android:id="@+id/setting_filter_ad"
+            android:layout_width="fill_parent"
+            android:layout_height="60dip"
+            app:setting_state="4"
+            app:setting_title="@string/pref_setting_filter_ad_title" />
+
+        <com.android.browser.view.BrowserSettingItem
+            android:id="@+id/plugin_state"
+            android:layout_width="fill_parent"
+            android:layout_height="60dip"
+            app:setting_state="4"
+            app:setting_title="@string/pref_content_plugins"
+            app:setting_value="UTF-8" />
+
+        <com.android.browser.view.BrowserSettingItem
+            android:id="@+id/block_popups"
+            android:layout_width="fill_parent"
+            android:layout_height="60dip"
+            app:setting_state="4"
+            app:setting_title="@string/pref_content_block_popups" />
+
+        <com.android.browser.view.BrowserSettingItem
+            android:id="@+id/enableJavaScript"
+            android:layout_width="fill_parent"
+            android:layout_height="60dip"
+            app:setting_state="4"
+            app:setting_title="@string/pref_content_javascript" />
+
+        <com.android.browser.view.BrowserSettingItem
+            android:id="@+id/setting_exit_confirm"
+            android:layout_width="fill_parent"
+            android:layout_height="60dip"
+            app:setting_state="4"
+            app:setting_title="@string/pref_setting_exitconfirm_title"
+            app:setting_value="UTF-8" />
+
+    </LinearLayout>
+
+</ScrollView>

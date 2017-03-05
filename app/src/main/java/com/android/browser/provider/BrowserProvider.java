@@ -64,15 +64,15 @@ public class BrowserProvider extends ContentProvider {
     private static final String PICASA_URL = "http://picasaweb.google.com/m/" +
             "viewer?source=androidclient";
 
-    static final String[] TABLE_NAMES = new String[] {
-        "bookmarks", "searches"
+    static final String[] TABLE_NAMES = new String[]{
+            "bookmarks", "searches"
     };
-    private static final String[] SUGGEST_PROJECTION = new String[] {
+    private static final String[] SUGGEST_PROJECTION = new String[]{
             "_id", "url", "title", "bookmark", "user_entered"
     };
     private static final String SUGGEST_SELECTION =
             "(url LIKE ? OR url LIKE ? OR url LIKE ? OR url LIKE ?"
-                + " OR title LIKE ?) AND (bookmark = 1 OR user_entered = 1)";
+                    + " OR title LIKE ?) AND (bookmark = 1 OR user_entered = 1)";
     private String[] SUGGEST_ARGS = new String[5];
 
     // shared suggestion array index, make sure to match COLUMNS
@@ -98,7 +98,7 @@ public class BrowserProvider extends ContentProvider {
 
 
     // shared suggestion columns
-    private static final String[] COLUMNS = new String[] {
+    private static final String[] COLUMNS = new String[]{
             "_id",
             SearchManager.SUGGEST_COLUMN_INTENT_ACTION,
             SearchManager.SUGGEST_COLUMN_INTENT_DATA,
@@ -186,12 +186,12 @@ public class BrowserProvider extends ContentProvider {
         // search_client_id includes search prefix, legacy client_id does not include prefix
         try {
             searchClientIdCursor = cr.query(Uri.parse("content://com.google.settings/partner"),
-               new String[] { "value" }, "name='search_client_id'", null, null);
+                    new String[]{"value"}, "name='search_client_id'", null, null);
             if (searchClientIdCursor != null && searchClientIdCursor.moveToNext()) {
                 ret = searchClientIdCursor.getString(0);
             } else {
                 legacyClientIdCursor = cr.query(Uri.parse("content://com.google.settings/partner"),
-                    new String[] { "value" }, "name='client_id'", null, null);
+                        new String[]{"value"}, "name='client_id'", null, null);
                 if (legacyClientIdCursor != null && legacyClientIdCursor.moveToNext()) {
                     ret = "ms-" + legacyClientIdCursor.getString(0);
                 }
@@ -220,7 +220,7 @@ public class BrowserProvider extends ContentProvider {
             if (c == '{') {
                 sb.append(srcString.subSequence(lastCharLoc, i));
                 lastCharLoc = i;
-          inner:
+                inner:
                 for (int j = i; j < srcString.length(); ++j) {
                     char k = srcString.charAt(j);
                     if (k == '}') {
@@ -426,7 +426,7 @@ public class BrowserProvider extends ContentProvider {
     private void fixPicasaBookmark() {
         SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         Cursor cursor = db.rawQuery("SELECT _id FROM bookmarks WHERE " +
-                "bookmark = 1 AND url = ?", new String[] { PICASA_URL });
+                "bookmark = 1 AND url = ?", new String[]{PICASA_URL});
         try {
             if (!cursor.moveToFirst()) {
                 // set "created" so that it will be on the top of the list
@@ -454,17 +454,17 @@ public class BrowserProvider extends ContentProvider {
      *      place.
      */
     private class MySuggestionCursor extends AbstractCursor {
-        private Cursor  mHistoryCursor;
-        private Cursor  mSuggestCursor;
-        private int     mHistoryCount;
-        private int     mSuggestionCount;
+        private Cursor mHistoryCursor;
+        private Cursor mSuggestCursor;
+        private int mHistoryCount;
+        private int mSuggestionCount;
         private boolean mIncludeWebSearch;
-        private String  mString;
-        private int     mSuggestText1Id;
-        private int     mSuggestText2Id;
-        private int     mSuggestText2UrlId;
-        private int     mSuggestQueryId;
-        private int     mSuggestIntentExtraDataId;
+        private String mString;
+        private int mSuggestText1Id;
+        private int mSuggestText2Id;
+        private int mSuggestText2UrlId;
+        private int mSuggestQueryId;
+        private int mSuggestIntentExtraDataId;
 
         public MySuggestionCursor(Cursor hc, Cursor sc, String string) {
             mHistoryCursor = hc;
@@ -488,15 +488,15 @@ public class BrowserProvider extends ContentProvider {
                 mSuggestIntentExtraDataId = -1;
             } else {
                 mSuggestText1Id = mSuggestCursor.getColumnIndex(
-                                SearchManager.SUGGEST_COLUMN_TEXT_1);
+                        SearchManager.SUGGEST_COLUMN_TEXT_1);
                 mSuggestText2Id = mSuggestCursor.getColumnIndex(
-                                SearchManager.SUGGEST_COLUMN_TEXT_2);
+                        SearchManager.SUGGEST_COLUMN_TEXT_2);
                 mSuggestText2UrlId = mSuggestCursor.getColumnIndex(
                         SearchManager.SUGGEST_COLUMN_TEXT_2_URL);
                 mSuggestQueryId = mSuggestCursor.getColumnIndex(
-                                SearchManager.SUGGEST_COLUMN_QUERY);
+                        SearchManager.SUGGEST_COLUMN_QUERY);
                 mSuggestIntentExtraDataId = mSuggestCursor.getColumnIndex(
-                                SearchManager.SUGGEST_COLUMN_INTENT_EXTRA_DATA);
+                        SearchManager.SUGGEST_COLUMN_INTENT_EXTRA_DATA);
             }
         }
 
@@ -559,7 +559,7 @@ public class BrowserProvider extends ContentProvider {
                     type = mPos < mHistoryCount ? 1 : 2;
                 }
 
-                switch(columnIndex) {
+                switch (columnIndex) {
                     case SUGGEST_COLUMN_INTENT_ACTION_ID:
                         if (type == 1) {
                             return Intent.ACTION_VIEW;
@@ -751,7 +751,7 @@ public class BrowserProvider extends ContentProvider {
 
     @Override
     public Cursor query(Uri url, String[] projectionIn, String selection,
-            String[] selectionArgs, String sortOrder)
+                        String[] selectionArgs, String sortOrder)
             throws IllegalStateException {
         int match = URI_MATCHER.match(url);
         if (match == -1) {
@@ -784,7 +784,7 @@ public class BrowserProvider extends ContentProvider {
 
     private Cursor doSuggestQuery(String selection, String[] selectionArgs, boolean bookmarksOnly) {
         String suggestSelection;
-        String [] myArgs;
+        String[] myArgs;
         if (selectionArgs[0] == null || selectionArgs[0].equals("")) {
             return new MySuggestionCursor(null, null, "");
         } else {
@@ -860,11 +860,9 @@ public class BrowserProvider extends ContentProvider {
         switch (match) {
             case URI_MATCH_BOOKMARKS: {
                 // Insert into the bookmarks table
-                long rowID = db.insert(TABLE_NAMES[URI_MATCH_BOOKMARKS], "url",
-                        initialValues);
+                long rowID = db.insert(TABLE_NAMES[URI_MATCH_BOOKMARKS], "url", initialValues);
                 if (rowID > 0) {
-                    uri = ContentUris.withAppendedId(Browser.BOOKMARKS_URI,
-                            rowID);
+                    uri = ContentUris.withAppendedId(Browser.BOOKMARKS_URI, rowID);
                 }
                 isBookmarkTable = true;
                 break;
@@ -872,15 +870,12 @@ public class BrowserProvider extends ContentProvider {
 
             case URI_MATCH_SEARCHES: {
                 // Insert into the searches table
-                long rowID = db.insert(TABLE_NAMES[URI_MATCH_SEARCHES], "url",
-                        initialValues);
+                long rowID = db.insert(TABLE_NAMES[URI_MATCH_SEARCHES], "url", initialValues);
                 if (rowID > 0) {
-                    uri = ContentUris.withAppendedId(Browser.SEARCHES_URI,
-                            rowID);
+                    uri = ContentUris.withAppendedId(Browser.SEARCHES_URI, rowID);
                 }
                 break;
             }
-
             default:
                 throw new IllegalArgumentException("Unknown URL");
         }
@@ -932,7 +927,7 @@ public class BrowserProvider extends ContentProvider {
         // we'lll need to back up the bookmark set if we are about to delete one
         if (isBookmarkTable) {
             Cursor cursor = cr.query(Browser.BOOKMARKS_URI,
-                    new String[] { BookmarkColumns.BOOKMARK },
+                    new String[]{BookmarkColumns.BOOKMARK},
                     "_id = " + id, null, null);
             if (cursor.moveToNext()) {
                 if (cursor.getInt(0) != 0) {
@@ -950,7 +945,7 @@ public class BrowserProvider extends ContentProvider {
 
     @Override
     public int update(Uri url, ContentValues values, String where,
-            String[] whereArgs) {
+                      String[] whereArgs) {
         SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 
         int match = URI_MATCHER.match(url);
@@ -984,15 +979,15 @@ public class BrowserProvider extends ContentProvider {
             if (values.containsKey(BookmarkColumns.BOOKMARK)) {
                 changingBookmarks = true;
             } else if ((values.containsKey(BookmarkColumns.TITLE)
-                     || values.containsKey(BookmarkColumns.URL))
-                     && values.containsKey(BookmarkColumns._ID)) {
+                    || values.containsKey(BookmarkColumns.URL))
+                    && values.containsKey(BookmarkColumns._ID)) {
                 // If a title or URL has been changed, check to see if it is to
                 // a bookmark.  The ID should have been included in the update,
                 // so use it.
                 Cursor cursor = cr.query(Browser.BOOKMARKS_URI,
-                        new String[] { BookmarkColumns.BOOKMARK },
+                        new String[]{BookmarkColumns.BOOKMARK},
                         BookmarkColumns._ID + " = "
-                        + values.getAsString(BookmarkColumns._ID), null, null);
+                                + values.getAsString(BookmarkColumns._ID), null, null);
                 if (cursor.moveToNext()) {
                     changingBookmarks = (cursor.getInt(0) != 0);
                 }
@@ -1014,12 +1009,12 @@ public class BrowserProvider extends ContentProvider {
      * Strips the provided url of preceding "http://" and any trailing "/". Does not
      * strip "https://". If the provided string cannot be stripped, the original string
      * is returned.
-     *
+     * <p>
      * TODO: Put this in TextUtils to be used by other packages doing something similar.
      *
      * @param url a url to strip, like "http://www.google.com/"
      * @return a stripped url like "www.google.com", or the original string if it could
-     *         not be stripped
+     * not be stripped
      */
     private static String stripUrl(String url) {
         if (url == null) return null;
@@ -1034,7 +1029,7 @@ public class BrowserProvider extends ContentProvider {
     public static Cursor getBookmarksSuggestions(ContentResolver cr, String constraint) {
         Uri uri = Uri.parse("content://browser/" + SearchManager.SUGGEST_URI_PATH_QUERY);
         return cr.query(uri, SUGGEST_PROJECTION, SUGGEST_SELECTION,
-            new String[] { constraint }, ORDER_BY);
+                new String[]{constraint}, ORDER_BY);
     }
 
 }

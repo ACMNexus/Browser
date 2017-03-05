@@ -46,8 +46,8 @@ public class MarkHistoryAdapter extends FragmentPagerAdapter implements PagerSli
         if(baseFragment == null) {
             switch (position) {
                 case 0:
-//                    baseFragment = BookMarkFragment.newInstance();
-                    baseFragment = new BrowserBookmarksPage();
+                    baseFragment = BookMarkFragment.newInstance();
+//                    baseFragment = new BrowserBookmarksPage();
                     break;
                 case 1:
                     baseFragment = HistoryFragment.newInstance();

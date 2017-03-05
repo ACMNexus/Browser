@@ -7,6 +7,7 @@ import com.android.browser.BrowserActivity;
 import com.android.browser.BrowserSettings;
 import com.android.browser.R;
 import com.android.browser.util.ActivityUtils;
+import com.android.browser.util.Constants;
 import com.android.browser.view.BrowserSettingItem;
 
 /**
@@ -14,6 +15,8 @@ import com.android.browser.view.BrowserSettingItem;
  */
 public class BrowserSettingActivity extends BaseActivity {
 
+    public static final int TEXTCODING_REQUESTCODE = 10001;
+    public static final int USERAGENT_REQUESTCODE = 20001;
     private BrowserSettingItem mTextCoding;
     private BrowserSettingItem mSearchEngine;
     private BrowserSettingItem mUserAgent;
@@ -38,6 +41,7 @@ public class BrowserSettingActivity extends BaseActivity {
         findViewById(R.id.setting_font_size).setOnClickListener(this);
         findViewById(R.id.setting_clear_data).setOnClickListener(this);
         findViewById(R.id.reset_browser_config).setOnClickListener(this);
+        findViewById(R.id.setting_advance).setOnClickListener(this);
         mUserAgent.setOnClickListener(this);
         mTextCoding.setOnClickListener(this);
         mSearchEngine.setOnClickListener(this);
@@ -60,15 +64,31 @@ public class BrowserSettingActivity extends BaseActivity {
                 ActivityUtils.startNextPager(this, ClearDataActivity.class);
                 break;
             case R.id.setting_text_coding:
-                ActivityUtils.startNextPager(this, TextCodingActivity.class);
+                ActivityUtils.startNextPagerForResult(this, TextCodingActivity.class, TEXTCODING_REQUESTCODE);
                 break;
             case R.id.setting_user_agent:
-                ActivityUtils.startNextPager(this, UserAgentActivity.class);
+                ActivityUtils.startNextPagerForResult(this, UserAgentActivity.class, USERAGENT_REQUESTCODE);
                 break;
             case R.id.reset_browser_config:
                 BrowserSettings.getInstance().resetDefaultPreferences();
                 startActivity(new Intent(BrowserActivity.ACTION_RESTART, null, this, BrowserActivity.class));
                 break;
+            case R.id.setting_advance:
+                ActivityUtils.startNextPager(this, AdvancedActivity.class);
+                break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode == RESULT_OK) {
+            if(requestCode == TEXTCODING_REQUESTCODE) {
+                String coding = data.getStringExtra(Constants.TEXTCODING);
+                mTextCoding.setSettingValue(coding);
+            }else if(requestCode == USERAGENT_REQUESTCODE) {
+                String userAgent = data.getStringExtra(Constants.USERAGENT);
+                mUserAgent.setSettingValue(userAgent);
+            }
         }
     }
 }
