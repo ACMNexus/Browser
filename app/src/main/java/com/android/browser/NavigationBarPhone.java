@@ -87,9 +87,9 @@ public class NavigationBarPhone extends NavigationBarBase implements StateListen
         mLockIcon.setOnClickListener(this);
         mEnterButton.setOnClickListener(this);
         mClearButton.setOnClickListener(this);
+        mCancelButton.setOnClickListener(this);
         mRefreshButton.setOnClickListener(this);
         mWebViewTitles.setOnTouchListener(this);
-        mCancelButton.setOnClickListener(this);
     }
 
     @Override
@@ -113,7 +113,7 @@ public class NavigationBarPhone extends NavigationBarBase implements StateListen
         mLockIcon.setImageDrawable(mSafetySiteDrawable);
         mRefreshButton.setImageDrawable(mRefreshDrawable);
         mRefreshButton.setContentDescription(mRefreshDescription);
-        onStateChanged(mUrlInput.getState());
+        onStateChanged(StateListener.STATE_NORMAL);
     }
 
     /**
@@ -177,8 +177,6 @@ public class NavigationBarPhone extends NavigationBarBase implements StateListen
             case StateListener.STATE_NORMAL:
                 mEditMode.setVisibility(View.GONE);
                 mRequestMode.setVisibility(View.VISIBLE);
-//                mUrlInput.clearFocus();
-//                mUrlInput.setFocusable(false);
                 break;
             case StateListener.STATE_EDITED:
                 mEditMode.setVisibility(View.VISIBLE);
@@ -186,14 +184,14 @@ public class NavigationBarPhone extends NavigationBarBase implements StateListen
                 mCancelButton.setVisibility(View.GONE);
                 mClearButton.setVisibility(View.VISIBLE);
                 mEnterButton.setVisibility(View.VISIBLE);
-                mUrlInput.setFocusable(true);
+                mUrlInput.requestFocus();
+                mUrlInput.setSelectAllOnFocus(true);
+                mUrlInput.showIME();
                 break;
             case StateListener.STATE_CLEAR:
                 mClearButton.setVisibility(View.GONE);
                 mEnterButton.setVisibility(View.GONE);
                 mCancelButton.setVisibility(View.VISIBLE);
-                mUrlInput.clearFocus();
-                mUrlInput.setFocusable(false);
                 break;
         }
     }
@@ -205,7 +203,7 @@ public class NavigationBarPhone extends NavigationBarBase implements StateListen
 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
-        if (view == mWebViewTitles) {
+        if(view == mWebViewTitles) {
             onStateChanged(StateListener.STATE_EDITED);
             return true;
         }

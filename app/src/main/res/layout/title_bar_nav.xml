@@ -107,6 +107,7 @@
                 android:lines="1"
                 android:scrollHorizontally="true"
                 android:singleLine="true"
+                android:textCursorDrawable="@drawable/shape_cursor_background"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/black"
                 android:textSize="16sp"

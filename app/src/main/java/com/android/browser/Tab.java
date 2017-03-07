@@ -59,11 +59,13 @@ import android.webkit.WebStorage;
 import android.webkit.WebView;
 import android.webkit.WebView.PictureListener;
 import android.webkit.WebViewClient;
+
 import com.android.browser.TabControl.OnThumbnailUpdatedListener;
 import com.android.browser.homepages.HomeProvider;
 import com.android.browser.util.ReflectUtils;
 import com.android.browser.webkit.BrowserDownloadListener;
 import com.android.browser.webkit.WebBackForwardListClient;
+
 import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
 import java.util.LinkedList;
@@ -91,6 +93,7 @@ public class Tab implements PictureListener {
     private static Bitmap sDefaultFavicon;
 
     private static Paint sAlphaPaint = new Paint();
+
     static {
         sAlphaPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
         sAlphaPaint.setColor(Color.TRANSPARENT);
@@ -163,8 +166,6 @@ public class Tab implements PictureListener {
     // Listener used to know when we move forward or back in the history list.
     private final WebBackForwardListClient mWebBackForwardListClient;
     private DataController mDataController;
-    // State of the auto-login request.
-    private DeviceAccountLogin mDeviceAccountLogin;
 
     // AsyncTask for downloading touch icons
     DownloadTouchIcon mTouchIconLoader;
@@ -240,6 +241,7 @@ public class Tab implements PictureListener {
         public final int mTitle;
         public final String mDescription;
         public final int mError;
+
         ErrorDialog(int title, String desc, int error) {
             mTitle = title;
             mDescription = desc;
@@ -280,8 +282,8 @@ public class Tab implements PictureListener {
         }
         ErrorDialog errDialog = new ErrorDialog(
                 err == WebViewClient.ERROR_FILE_NOT_FOUND ?
-                R.string.browserFrameFileErrorLabel :
-                R.string.browserFrameNetworkErrorLabel,
+                        R.string.browserFrameFileErrorLabel :
+                        R.string.browserFrameNetworkErrorLabel,
                 desc, err);
         mQueuedErrors.addLast(errDialog);
 
@@ -342,13 +344,6 @@ public class Tab implements PictureListener {
                 }
             }
 
-            // Cancel the auto-login process.
-            if (mDeviceAccountLogin != null) {
-                mDeviceAccountLogin.cancel();
-                mDeviceAccountLogin = null;
-                mWebViewController.hideAutoLogin(Tab.this);
-            }
-
             // finally update the UI in the activity if it is in the foreground
             mWebViewController.onPageStarted(Tab.this, view, favicon);
 
@@ -405,7 +400,7 @@ public class Tab implements PictureListener {
          */
         @Override
         public void onReceivedError(WebView view, int errorCode,
-                String description, String failingUrl) {
+                                    String description, String failingUrl) {
             if (errorCode != WebViewClient.ERROR_HOST_LOOKUP &&
                     errorCode != WebViewClient.ERROR_CONNECT &&
                     errorCode != WebViewClient.ERROR_BAD_URL &&
@@ -416,7 +411,7 @@ public class Tab implements PictureListener {
                 // Don't log URLs when in private browsing mode
                 if (!isPrivateBrowsingEnabled()) {
                     Log.e(LOGTAG, "onReceivedError " + errorCode + " " + failingUrl
-                        + " " + description);
+                            + " " + description);
                 }
             }
         }
@@ -446,7 +441,7 @@ public class Tab implements PictureListener {
                     .setPositiveButton(R.string.ok,
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog,
-                                        int which) {
+                                                    int which) {
                                     if (mResend != null) {
                                         mResend.sendToTarget();
                                         mResend = null;
@@ -454,24 +449,24 @@ public class Tab implements PictureListener {
                                     }
                                 }
                             }).setNegativeButton(R.string.cancel,
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog,
-                                        int which) {
-                                    if (mDontResend != null) {
-                                        mDontResend.sendToTarget();
-                                        mResend = null;
-                                        mDontResend = null;
-                                    }
-                                }
-                            }).setOnCancelListener(new OnCancelListener() {
-                        public void onCancel(DialogInterface dialog) {
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog,
+                                            int which) {
                             if (mDontResend != null) {
                                 mDontResend.sendToTarget();
                                 mResend = null;
                                 mDontResend = null;
                             }
                         }
-                    }).show();
+                    }).setOnCancelListener(new OnCancelListener() {
+                public void onCancel(DialogInterface dialog) {
+                    if (mDontResend != null) {
+                        mDontResend.sendToTarget();
+                        mResend = null;
+                        mDontResend = null;
+                    }
+                }
+            }).show();
         }
 
         /**
@@ -482,7 +477,7 @@ public class Tab implements PictureListener {
          */
         @Override
         public void doUpdateVisitedHistory(WebView view, String url,
-                boolean isReload) {
+                                           boolean isReload) {
             mWebViewController.doUpdateVisitedHistory(Tab.this, isReload);
         }
 
@@ -491,7 +486,7 @@ public class Tab implements PictureListener {
          */
         @Override
         public void onReceivedSslError(final WebView view,
-                final SslErrorHandler handler, final SslError error) {
+                                       final SslErrorHandler handler, final SslError error) {
             if (!mInForeground) {
                 handler.cancel();
                 setSecurityState(SecurityState.SECURITY_STATE_NOT_SECURE);
@@ -499,51 +494,51 @@ public class Tab implements PictureListener {
             }
             if (mSettings.getSettingValues().showSecurityWarnings()) {
                 new AlertDialog.Builder(mContext)
-                    .setTitle(R.string.security_warning)
-                    .setMessage(R.string.ssl_warnings_header)
-                    .setIconAttribute(android.R.attr.alertDialogIcon)
-                    .setPositiveButton(R.string.ssl_continue,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog,
-                                    int whichButton) {
-                                handler.proceed();
-                                handleProceededAfterSslError(error);
-                            }
-                        })
-                    .setNeutralButton(R.string.view_certificate,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog,
-                                    int whichButton) {
-                                mWebViewController.showSslCertificateOnError(
-                                        view, handler, error);
-                            }
-                        })
-                    .setNegativeButton(R.string.ssl_go_back,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog,
-                                    int whichButton) {
-                                dialog.cancel();
-                            }
-                        })
-                    .setOnCancelListener(
-                        new DialogInterface.OnCancelListener() {
-                            @Override
-                            public void onCancel(DialogInterface dialog) {
-                                handler.cancel();
-                                setSecurityState(SecurityState.SECURITY_STATE_NOT_SECURE);
-                                mWebViewController.onUserCanceledSsl(Tab.this);
-                            }
-                        })
-                    .show();
+                        .setTitle(R.string.security_warning)
+                        .setMessage(R.string.ssl_warnings_header)
+                        .setIconAttribute(android.R.attr.alertDialogIcon)
+                        .setPositiveButton(R.string.ssl_continue,
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog,
+                                                        int whichButton) {
+                                        handler.proceed();
+                                        handleProceededAfterSslError(error);
+                                    }
+                                })
+                        .setNeutralButton(R.string.view_certificate,
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog,
+                                                        int whichButton) {
+                                        mWebViewController.showSslCertificateOnError(
+                                                view, handler, error);
+                                    }
+                                })
+                        .setNegativeButton(R.string.ssl_go_back,
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog,
+                                                        int whichButton) {
+                                        dialog.cancel();
+                                    }
+                                })
+                        .setOnCancelListener(
+                                new DialogInterface.OnCancelListener() {
+                                    @Override
+                                    public void onCancel(DialogInterface dialog) {
+                                        handler.cancel();
+                                        setSecurityState(SecurityState.SECURITY_STATE_NOT_SECURE);
+                                        mWebViewController.onUserCanceledSsl(Tab.this);
+                                    }
+                                })
+                        .show();
             } else {
                 handler.proceed();
             }
         }
 
-       /**
+        /**
          * Handles an HTTP authentication request.
          *
          * @param handler The authentication handler
@@ -552,14 +547,14 @@ public class Tab implements PictureListener {
          */
         @Override
         public void onReceivedHttpAuthRequest(WebView view,
-                final HttpAuthHandler handler, final String host,
-                final String realm) {
+                                              final HttpAuthHandler handler, final String host,
+                                              final String realm) {
             mWebViewController.onReceivedHttpAuthRequest(Tab.this, view, handler, host, realm);
         }
 
         @Override
         public WebResourceResponse shouldInterceptRequest(WebView view,
-                String url) {
+                                                          String url) {
             WebResourceResponse res = HomeProvider.shouldInterceptRequest(
                     mContext, url);
             return res;
@@ -584,12 +579,8 @@ public class Tab implements PictureListener {
         }
 
         @Override
-        public void onReceivedLoginRequest(WebView view, String realm,
-                String account, String args) {
-            new DeviceAccountLogin(mWebViewController.getActivity(), view, Tab.this, mWebViewController)
-                    .handleLogin(realm, account, args);
+        public void onReceivedLoginRequest(WebView view, String realm, String account, String args) {
         }
-
     };
 
     private void syncCurrentState(WebView view, String url) {
@@ -610,21 +601,9 @@ public class Tab implements PictureListener {
         mCurrentState.mIncognito = view.isPrivateBrowsingEnabled();
     }
 
-    // Called by DeviceAccountLogin when the Tab needs to have the auto-login UI
-    // displayed.
-    void setDeviceAccountLogin(DeviceAccountLogin login) {
-        mDeviceAccountLogin = login;
-    }
-
-    // Returns non-null if the title bar should display the auto-login UI.
-    DeviceAccountLogin getDeviceAccountLogin() {
-        return mDeviceAccountLogin;
-    }
-
     // -------------------------------------------------------------------------
     // WebChromeClient implementation for the main WebView
     // -------------------------------------------------------------------------
-
     private final WebChromeClient mWebChromeClient = new WebChromeClient() {
         // Helper method to create a new tab or sub window.
         private void createWindow(final boolean dialog, final Message msg) {
@@ -644,7 +623,7 @@ public class Tab implements PictureListener {
 
         @Override
         public boolean onCreateWindow(WebView view, final boolean dialog,
-                final boolean userGesture, final Message resultMsg) {
+                                      final boolean userGesture, final Message resultMsg) {
             // only allow new window or sub window for the foreground case
             if (!mInForeground) {
                 return false;
@@ -678,7 +657,7 @@ public class Tab implements PictureListener {
             final AlertDialog.OnClickListener allowListener =
                     new AlertDialog.OnClickListener() {
                         public void onClick(DialogInterface d,
-                                int which) {
+                                            int which) {
                             createWindow(dialog, resultMsg);
                         }
                     };
@@ -694,12 +673,12 @@ public class Tab implements PictureListener {
             // Build a confirmation dialog to display to the user.
             final AlertDialog d =
                     new AlertDialog.Builder(mContext)
-                    .setIconAttribute(android.R.attr.alertDialogIcon)
-                    .setMessage(R.string.popup_window_attempt)
-                    .setPositiveButton(R.string.allow, allowListener)
-                    .setNegativeButton(R.string.block, blockListener)
-                    .setCancelable(false)
-                    .create();
+                            .setIconAttribute(android.R.attr.alertDialogIcon)
+                            .setMessage(R.string.popup_window_attempt)
+                            .setPositiveButton(R.string.allow, allowListener)
+                            .setNegativeButton(R.string.block, blockListener)
+                            .setCancelable(false)
+                            .create();
 
             // Show the confirmation dialog.
             d.show();
@@ -750,7 +729,7 @@ public class Tab implements PictureListener {
 
         @Override
         public void onReceivedTouchIconUrl(WebView view, String url,
-                boolean precomposed) {
+                                           boolean precomposed) {
             final ContentResolver cr = mContext.getContentResolver();
             // Let precomposed icons take precedence over non-composed
             // icons.
@@ -768,7 +747,7 @@ public class Tab implements PictureListener {
 
         @Override
         public void onShowCustomView(View view,
-                WebChromeClient.CustomViewCallback callback) {
+                                     WebChromeClient.CustomViewCallback callback) {
             Activity activity = mWebViewController.getActivity();
             if (activity != null) {
                 onShowCustomView(view, activity.getRequestedOrientation(), callback);
@@ -777,7 +756,7 @@ public class Tab implements PictureListener {
 
         @Override
         public void onShowCustomView(View view, int requestedOrientation,
-                WebChromeClient.CustomViewCallback callback) {
+                                     WebChromeClient.CustomViewCallback callback) {
             if (mInForeground) mWebViewController.showCustomView(Tab.this, view,
                     requestedOrientation, callback);
         }
@@ -800,8 +779,8 @@ public class Tab implements PictureListener {
          */
         @Override
         public void onExceededDatabaseQuota(String url,
-            String databaseIdentifier, long currentQuota, long estimatedSize,
-            long totalUsedQuota, WebStorage.QuotaUpdater quotaUpdater) {
+                                            String databaseIdentifier, long currentQuota, long estimatedSize,
+                                            long totalUsedQuota, WebStorage.QuotaUpdater quotaUpdater) {
             mSettings.getWebStorageSizeManager()
                     .onExceededDatabaseQuota(url, databaseIdentifier,
                             currentQuota, estimatedSize, totalUsedQuota,
@@ -820,7 +799,7 @@ public class Tab implements PictureListener {
          */
         @Override
         public void onReachedMaxAppCacheSize(long spaceNeeded,
-                long totalUsedQuota, WebStorage.QuotaUpdater quotaUpdater) {
+                                             long totalUsedQuota, WebStorage.QuotaUpdater quotaUpdater) {
             mSettings.getWebStorageSizeManager()
                     .onReachedMaxAppCacheSize(spaceNeeded, totalUsedQuota,
                             quotaUpdater);
@@ -836,7 +815,7 @@ public class Tab implements PictureListener {
          */
         @Override
         public void onGeolocationPermissionsShowPrompt(String origin,
-                GeolocationPermissions.Callback callback) {
+                                                       GeolocationPermissions.Callback callback) {
             if (mInForeground) {
                 getGeolocationPermissionsPrompt().show(origin, callback);
             }
@@ -865,7 +844,7 @@ public class Tab implements PictureListener {
                 errorConsole.addErrorMessage(consoleMessage);
                 if (mWebViewController.shouldShowErrorConsole()
                         && errorConsole.getShowState() !=
-                            ErrorConsoleView.SHOW_MAXIMIZED) {
+                        ErrorConsoleView.SHOW_MAXIMIZED) {
                     errorConsole.showConsole(ErrorConsoleView.SHOW_MINIMIZED);
                 }
             }
@@ -874,7 +853,7 @@ public class Tab implements PictureListener {
             if (isPrivateBrowsingEnabled()) return true;
 
             String message = "Console: " + consoleMessage.message() + " "
-                    + consoleMessage.sourceId() +  ":"
+                    + consoleMessage.sourceId() + ":"
                     + consoleMessage.lineNumber();
 
             switch (consoleMessage.messageLevel()) {
@@ -957,6 +936,7 @@ public class Tab implements PictureListener {
             mClient = client;
             mController = controller;
         }
+
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             // Unlike the others, do not call mClient's version, which would
@@ -964,43 +944,51 @@ public class Tab implements PictureListener {
             // find or select dialog.
             mController.endActionMode();
         }
+
         @Override
         public void doUpdateVisitedHistory(WebView view, String url,
-                boolean isReload) {
+                                           boolean isReload) {
             mClient.doUpdateVisitedHistory(view, url, isReload);
         }
+
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             return mClient.shouldOverrideUrlLoading(view, url);
         }
+
         @Override
         public void onReceivedSslError(WebView view, SslErrorHandler handler,
-                SslError error) {
+                                       SslError error) {
             mClient.onReceivedSslError(view, handler, error);
         }
+
         @Override
         public void onReceivedHttpAuthRequest(WebView view,
-                HttpAuthHandler handler, String host, String realm) {
+                                              HttpAuthHandler handler, String host, String realm) {
             mClient.onReceivedHttpAuthRequest(view, handler, host, realm);
         }
+
         @Override
         public void onFormResubmission(WebView view, Message dontResend,
-                Message resend) {
+                                       Message resend) {
             mClient.onFormResubmission(view, dontResend, resend);
         }
+
         @Override
         public void onReceivedError(WebView view, int errorCode,
-                String description, String failingUrl) {
+                                    String description, String failingUrl) {
             mClient.onReceivedError(view, errorCode, description, failingUrl);
         }
+
         @Override
         public boolean shouldOverrideKeyEvent(WebView view,
-                android.view.KeyEvent event) {
+                                              android.view.KeyEvent event) {
             return mClient.shouldOverrideKeyEvent(view, event);
         }
+
         @Override
         public void onUnhandledKeyEvent(WebView view,
-                android.view.KeyEvent event) {
+                                        android.view.KeyEvent event) {
             mClient.onUnhandledKeyEvent(view, event);
         }
     }
@@ -1016,15 +1004,18 @@ public class Tab implements PictureListener {
         SubWindowChromeClient(WebChromeClient client) {
             mClient = client;
         }
+
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
             mClient.onProgressChanged(view, newProgress);
         }
+
         @Override
         public boolean onCreateWindow(WebView view, boolean dialog,
-                boolean userGesture, android.os.Message resultMsg) {
+                                      boolean userGesture, android.os.Message resultMsg) {
             return mClient.onCreateWindow(view, dialog, userGesture, resultMsg);
         }
+
         @Override
         public void onCloseWindow(WebView window) {
             if (window != mSubView) {
@@ -1056,8 +1047,8 @@ public class Tab implements PictureListener {
 
         mDownloadListener = new BrowserDownloadListener() {
             public void onDownloadStart(String url, String userAgent,
-                    String contentDisposition, String mimetype, String referer,
-                    long contentLength) {
+                                        String contentDisposition, String mimetype, String referer,
+                                        long contentLength) {
                 mWebViewController.onDownloadStart(Tab.this, url, userAgent, contentDisposition,
                         mimetype, referer, contentLength);
             }
@@ -1067,7 +1058,7 @@ public class Tab implements PictureListener {
             public void onNewHistoryItem(WebHistoryItem item) {
                 if (mClearHistoryUrlPattern != null) {
                     boolean match =
-                        mClearHistoryUrlPattern.matcher(item.getOriginalUrl()).matches();
+                            mClearHistoryUrlPattern.matcher(item.getOriginalUrl()).matches();
                     if (LOGD_ENABLED) {
                         Log.d(LOGTAG, "onNewHistoryItem: match=" + match + "\n\t"
                                 + item.getUrl() + "\n\t"
@@ -1095,9 +1086,9 @@ public class Tab implements PictureListener {
             @Override
             public void handleMessage(Message m) {
                 switch (m.what) {
-                case MSG_CAPTURE:
-                    capture();
-                    break;
+                    case MSG_CAPTURE:
+                        capture();
+                        break;
                 }
             }
         };
@@ -1221,7 +1212,7 @@ public class Tab implements PictureListener {
     void removeFromTree() {
         // detach the children
         if (mChildren != null) {
-            for(Tab t : mChildren) {
+            for (Tab t : mChildren) {
                 t.setParent(null);
             }
         }
@@ -1234,6 +1225,7 @@ public class Tab implements PictureListener {
 
     /**
      * Create a new subwindow unless a subwindow already exists.
+     *
      * @return True if a new subwindow was created. False if one already exists.
      */
     boolean createSubWindow() {
@@ -1247,8 +1239,8 @@ public class Tab implements PictureListener {
             // just need to dismiss the mSubView, rather than close the Tab
             mSubView.setDownloadListener(new BrowserDownloadListener() {
                 public void onDownloadStart(String url, String userAgent,
-                        String contentDisposition, String mimetype, String referer,
-                        long contentLength) {
+                                            String contentDisposition, String mimetype, String referer,
+                                            long contentLength) {
                     mWebViewController.onDownloadStart(Tab.this, url, userAgent,
                             contentDisposition, mimetype, referer, contentLength);
                     if (mSubView.copyBackForwardList().getSize() == 0) {
@@ -1311,6 +1303,7 @@ public class Tab implements PictureListener {
     /**
      * If this Tab was created through another Tab, then this method returns
      * that Tab.
+     *
      * @return the Tab parent or null
      */
     public Tab getParent() {
@@ -1320,6 +1313,7 @@ public class Tab implements PictureListener {
     /**
      * When a Tab is created through the content of another Tab, then we
      * associate the Tabs.
+     *
      * @param child the Tab that was created from this Tab
      */
     public void addChildTab(Tab child) {
@@ -1375,7 +1369,7 @@ public class Tab implements PictureListener {
             mSubView.setOnCreateContextMenuListener(activity);
         }
         // Show the pending error dialog if the queue is not empty
-        if (mQueuedErrors != null && mQueuedErrors.size() >  0) {
+        if (mQueuedErrors != null && mQueuedErrors.size() > 0) {
             showError(mQueuedErrors.getFirst());
         }
         mWebViewController.bookmarkedStatusHasChanged(this);
@@ -1401,6 +1395,7 @@ public class Tab implements PictureListener {
     /**
      * Return the top window of this tab; either the subwindow if it is not
      * null or the main window.
+     *
      * @return The top window of this tab.
      */
     public WebView getTopWindow() {
@@ -1414,6 +1409,7 @@ public class Tab implements PictureListener {
      * Return the main window of this tab. Note: if a tab is freed in the
      * background, this can return null. It is only guaranteed to be
      * non-null for the current tab.
+     *
      * @return The main WebView of this tab.
      */
     public WebView getWebView() {
@@ -1431,6 +1427,7 @@ public class Tab implements PictureListener {
     /**
      * Return whether private browsing is enabled for the main window of
      * this tab.
+     *
      * @return True if private browsing is enabled.
      */
     boolean isPrivateBrowsingEnabled() {
@@ -1439,6 +1436,7 @@ public class Tab implements PictureListener {
 
     /**
      * Return the subwindow of this tab or null if there is no subwindow.
+     *
      * @return The subwindow of this tab or null.
      */
     WebView getSubWebView() {
@@ -1477,6 +1475,7 @@ public class Tab implements PictureListener {
 
     /**
      * Set the application id string
+     *
      * @param id
      */
     void setAppId(String id) {
@@ -1529,10 +1528,11 @@ public class Tab implements PictureListener {
     /**
      * Return the tab's error console. Creates the console if createIfNEcessary
      * is true and we haven't already created the console.
+     *
      * @param createIfNecessary Flag to indicate if the console should be
-     *            created if it has not been already.
+     *                          created if it has not been already.
      * @return The tab's error console, or null if one has not been created and
-     *         createIfNecessary is false.
+     * createIfNecessary is false.
      */
     ErrorConsoleView getErrorConsole(boolean createIfNecessary) {
         if (createIfNecessary && mErrorConsole == null) {
@@ -1577,7 +1577,7 @@ public class Tab implements PictureListener {
 
     /**
      * @return TRUE if onPageStarted is called while onPageFinished is not
-     *         called yet.
+     * called yet.
      */
     boolean inPageLoad() {
         return mInPageLoad;
@@ -1745,7 +1745,7 @@ public class Tab implements PictureListener {
         float scale = mCaptureWidth / (float) mMainView.getWidth();
         c.scale(scale, scale, left, top);
         if (mMainView instanceof BrowserWebView) {
-            ((BrowserWebView)mMainView).drawContent(c);
+            ((BrowserWebView) mMainView).drawContent(c);
         } else {
             mMainView.draw(c);
         }
@@ -1804,7 +1804,7 @@ public class Tab implements PictureListener {
     /**
      * Causes the tab back/forward stack to be cleared once, if the given URL is the next URL
      * to be added to the stack.
-     *
+     * <p>
      * This is used to ensure that preloaded URLs that are not subsequently seen by the user do
      * not appear in the back stack.
      */

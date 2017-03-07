@@ -21,6 +21,7 @@ import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.util.Log;
@@ -34,6 +35,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import com.android.browser.stub.NullController;
+import com.android.browser.view.SystemBarTintManager;
 
 public class BrowserActivity extends Activity {
 
@@ -55,6 +57,7 @@ public class BrowserActivity extends Activity {
             Log.v(LOGTAG, this + " onStart, has state: " + (icicle == null ? "false" : "true"));
         }
         super.onCreate(icicle);
+        setStatusBarColor();
 
         if (shouldIgnoreIntents()) {
             finish();
@@ -77,10 +80,17 @@ public class BrowserActivity extends Activity {
         return context.getResources().getBoolean(R.bool.isTablet);
     }
 
+    protected void setStatusBarColor() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            SystemBarTintManager tintManager = new SystemBarTintManager(this);
+            tintManager.setStatusBarColor(getResources().getColor(R.color.statusbar_bg));
+        }
+    }
+
     private Controller createController() {
         Controller controller = new Controller(this);
         boolean xlarge = isTablet(this);
-        UI ui = null;
+        UI ui;
         if (xlarge) {
             ui = new XLargeUi(this, controller);
         } else {
@@ -215,8 +225,7 @@ public class BrowserActivity extends Activity {
     }
 
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v,
-            ContextMenuInfo menuInfo) {
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
         mController.onCreateContextMenu(menu, v, menuInfo);
     }
 
@@ -227,20 +236,17 @@ public class BrowserActivity extends Activity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        return mController.onKeyDown(keyCode, event) ||
-            super.onKeyDown(keyCode, event);
+        return mController.onKeyDown(keyCode, event) || super.onKeyDown(keyCode, event);
     }
 
     @Override
     public boolean onKeyLongPress(int keyCode, KeyEvent event) {
-        return mController.onKeyLongPress(keyCode, event) ||
-            super.onKeyLongPress(keyCode, event);
+        return mController.onKeyLongPress(keyCode, event) || super.onKeyLongPress(keyCode, event);
     }
 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
-        return mController.onKeyUp(keyCode, event) ||
-            super.onKeyUp(keyCode, event);
+        return mController.onKeyUp(keyCode, event) || super.onKeyUp(keyCode, event);
     }
 
     @Override
@@ -256,8 +262,7 @@ public class BrowserActivity extends Activity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode,
-            Intent intent) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         mController.onActivityResult(requestCode, resultCode, intent);
     }
 
@@ -268,31 +273,26 @@ public class BrowserActivity extends Activity {
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
-        return mController.dispatchKeyEvent(event)
-                || super.dispatchKeyEvent(event);
+        return mController.dispatchKeyEvent(event) || super.dispatchKeyEvent(event);
     }
 
     @Override
     public boolean dispatchKeyShortcutEvent(KeyEvent event) {
-        return mController.dispatchKeyShortcutEvent(event)
-                || super.dispatchKeyShortcutEvent(event);
+        return mController.dispatchKeyShortcutEvent(event) || super.dispatchKeyShortcutEvent(event);
     }
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        return mController.dispatchTouchEvent(ev)
-                || super.dispatchTouchEvent(ev);
+        return mController.dispatchTouchEvent(ev) || super.dispatchTouchEvent(ev);
     }
 
     @Override
     public boolean dispatchTrackballEvent(MotionEvent ev) {
-        return mController.dispatchTrackballEvent(ev)
-                || super.dispatchTrackballEvent(ev);
+        return mController.dispatchTrackballEvent(ev) || super.dispatchTrackballEvent(ev);
     }
 
     @Override
     public boolean dispatchGenericMotionEvent(MotionEvent ev) {
-        return mController.dispatchGenericMotionEvent(ev) ||
-                super.dispatchGenericMotionEvent(ev);
+        return mController.dispatchGenericMotionEvent(ev) || super.dispatchGenericMotionEvent(ev);
     }
 }

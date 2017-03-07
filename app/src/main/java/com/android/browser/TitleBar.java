@@ -25,16 +25,11 @@ import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewStub;
-import android.view.animation.Animation;
-import android.view.animation.Animation.AnimationListener;
-import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import com.android.browser.util.ReflectUtils;
-
 
 /**
  * Base class for a title bar used by the browser.
@@ -49,7 +44,6 @@ public class TitleBar extends RelativeLayout {
     private FrameLayout mContentView;
     private PageProgressView mProgress;
 
-    private AutologinBar mAutoLogin;
     private NavigationBarBase mNavBar;
     private boolean mUseQuickControls;
 
@@ -75,16 +69,6 @@ public class TitleBar extends RelativeLayout {
         mProgress = (PageProgressView) findViewById(R.id.progress);
         mNavBar = (NavigationBarBase) findViewById(R.id.taburlbar);
         mNavBar.setTitleBar(this);
-    }
-
-    private void inflateAutoLoginBar() {
-        if (mAutoLogin != null) {
-            return;
-        }
-
-        ViewStub stub = (ViewStub) findViewById(R.id.autologin_stub);
-        mAutoLogin = (AutologinBar) stub.inflate();
-        mAutoLogin.setTitleBar(this);
     }
 
     @Override
@@ -281,66 +265,16 @@ public class TitleBar extends RelativeLayout {
 
     private int calculateEmbeddedHeight() {
         int height = mNavBar.getHeight();
-        if (mAutoLogin != null && mAutoLogin.getVisibility() == View.VISIBLE) {
-            height += mAutoLogin.getHeight();
-        }
         return height;
     }
 
     public void updateAutoLogin(Tab tab, boolean animate) {
-        if (mAutoLogin == null) {
-            if (tab.getDeviceAccountLogin() == null) {
-                return;
-            }
-            inflateAutoLoginBar();
-        }
-        mAutoLogin.updateAutoLogin(tab, animate);
     }
 
     public void showAutoLogin(boolean animate) {
-        if (mUseQuickControls) {
-            mBaseUi.showTitleBar();
-        }
-        if (mAutoLogin == null) {
-            inflateAutoLoginBar();
-        }
-        mAutoLogin.setVisibility(View.VISIBLE);
-        if (animate) {
-            mAutoLogin.startAnimation(AnimationUtils.loadAnimation(
-                    getContext(), R.anim.autologin_enter));
-        }
     }
 
     public void hideAutoLogin(boolean animate) {
-        if (mUseQuickControls) {
-            mBaseUi.hideTitleBar();
-            mAutoLogin.setVisibility(View.GONE);
-            mBaseUi.refreshWebView();
-        } else {
-            if (animate) {
-                Animation anim = AnimationUtils.loadAnimation(getContext(),
-                        R.anim.autologin_exit);
-                anim.setAnimationListener(new AnimationListener() {
-                    @Override
-                    public void onAnimationEnd(Animation a) {
-                        mAutoLogin.setVisibility(View.GONE);
-                        mBaseUi.refreshWebView();
-                    }
-
-                    @Override
-                    public void onAnimationStart(Animation a) {
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animation a) {
-                    }
-                });
-                mAutoLogin.startAnimation(anim);
-            } else if (mAutoLogin.getAnimation() == null) {
-                mAutoLogin.setVisibility(View.GONE);
-                mBaseUi.refreshWebView();
-            }
-        }
     }
 
     public boolean wantsToBeVisible() {
@@ -348,7 +282,7 @@ public class TitleBar extends RelativeLayout {
     }
 
     private boolean inAutoLogin() {
-        return mAutoLogin != null && mAutoLogin.getVisibility() == View.VISIBLE;
+        return false;
     }
 
     public boolean isEditingUrl() {

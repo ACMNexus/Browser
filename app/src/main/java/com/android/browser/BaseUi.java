@@ -128,6 +128,7 @@ public abstract class BaseUi implements UI {
         mLockIconSecure = res.getDrawable(R.drawable.ic_secure_holo_dark);
         mLockIconMixed = res.getDrawable(R.drawable.ic_secure_partial_holo_dark);
         FrameLayout frameLayout = (FrameLayout) mActivity.getWindow().getDecorView().findViewById(android.R.id.content);
+        frameLayout.setFitsSystemWindows(true);
         LayoutInflater.from(mActivity).inflate(R.layout.custom_screen, frameLayout);
         mFixedTitlebarContainer = (FrameLayout) frameLayout.findViewById(R.id.fixed_titlebar_container);
         mHomePagerContainer = (FrameLayout) frameLayout.findViewById(R.id.homepage_container);

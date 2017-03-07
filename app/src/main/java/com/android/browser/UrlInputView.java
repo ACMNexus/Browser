@@ -131,7 +131,7 @@ public class UrlInputView extends EditText implements OnEditorActionListener,
 
     @Override
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-        finishInput(getText().toString(), null, TYPED);
+//        finishInput(getText().toString(), null, TYPED);
         return true;
     }
 
@@ -209,6 +209,8 @@ public class UrlInputView extends EditText implements OnEditorActionListener,
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent evt) {
+        //首先隐藏输入法
+        hideIME();
         if (keyCode == KeyEvent.KEYCODE_ESCAPE && !isInTouchMode()) {
             finishInput(null, null, null);
             return true;

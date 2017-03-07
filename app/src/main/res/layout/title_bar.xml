@@ -30,14 +30,6 @@
         android:layout_height="@dimen/toolbar_height"
         android:layout="@layout/title_bar_snapshot" />
 
-    <ViewStub
-        android:id="@+id/autologin_stub"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/taburlbar"
-        android:layout="@layout/title_bar_autologin"
-        android:paddingTop="3dip" />
-
     <com.android.browser.PageProgressView
         android:id="@+id/progress"
         android:layout_width="match_parent"

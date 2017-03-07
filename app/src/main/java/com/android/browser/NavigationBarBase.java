@@ -127,11 +127,11 @@ public class NavigationBarBase extends LinearLayout implements OnClickListener, 
         }
     }
 
-    void setIncognitoMode(boolean incognito) {
+    public void setIncognitoMode(boolean incognito) {
         mUrlInput.setIncognitoMode(incognito);
     }
 
-    void clearCompletions() {
+    public void clearCompletions() {
     }
 
     /**

@@ -20,6 +20,6 @@
         android:layout_gravity="center"
         android:textColor="@color/black"
         android:singleLine="true"
-        android:textSize="15sp" />
+        android:textSize="13sp" />
 
 </merge>
