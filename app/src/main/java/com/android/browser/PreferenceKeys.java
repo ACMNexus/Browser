@@ -45,6 +45,7 @@ public interface PreferenceKeys {
     static final String PREF_PLUGIN_STATE = "plugin_state";
     static final String PREF_RESET_DEFAULT_PREFERENCES = "reset_default_preferences";
     static final String PREF_SEARCH_ENGINE = "search_engine";
+    static final String PREF_SEARCH_ICON = "search_engine_icon";
     static final String PREF_WEBSITE_SETTINGS = "website_settings";
     static final String PREF_ALLOW_APP_TABS = "allow_apptabs";
 

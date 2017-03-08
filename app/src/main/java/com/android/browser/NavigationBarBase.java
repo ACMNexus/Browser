@@ -174,12 +174,21 @@ public class NavigationBarBase extends LinearLayout implements OnClickListener, 
         mBaseUi.hideTitleBar();
         post(new Runnable() {
             public void run() {
-                clearFocus();
                 if (currentTab != null) {
                     setDisplayTitle(currentTab.getUrl());
                 }
             }
         });
+    }
+
+    public boolean onBackKey() {
+        if(mUrlInput.getState() != 0) {
+            stopEditingUrl();
+            mUrlInput.hideIME();
+            mUrlInput.changeState(0);
+            return true;
+        }
+        return false;
     }
 
     /**

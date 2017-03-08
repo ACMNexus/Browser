@@ -194,6 +194,7 @@ public class NavigationBarPhone extends NavigationBarBase implements StateListen
                 mCancelButton.setVisibility(View.VISIBLE);
                 break;
         }
+        mUrlInput.setUrlInputState(state);
     }
 
     @Override

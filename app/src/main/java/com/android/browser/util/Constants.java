@@ -29,6 +29,7 @@ public class Constants {
             DESKTOP_USERAGENT
     };
 
+    public static final String SEARCHICON = "searchIcon";
     public static final String USERAGENT = "UserAgent";
     public static final String TEXTCODING = "TextCoding";
 }

@@ -247,8 +247,7 @@ public class TitleBar extends RelativeLayout {
                 mInLoad = true;
                 mNavBar.onProgressStarted();
             }
-            mProgress.setProgress(newProgress * PageProgressView.MAX_PROGRESS
-                    / PROGRESS_MAX);
+            mProgress.setProgress(newProgress * PageProgressView.MAX_PROGRESS / PROGRESS_MAX);
             if (mUseQuickControls && !isEditingUrl()) {
                 setShowProgressOnly(true);
             }
@@ -266,15 +265,6 @@ public class TitleBar extends RelativeLayout {
     private int calculateEmbeddedHeight() {
         int height = mNavBar.getHeight();
         return height;
-    }
-
-    public void updateAutoLogin(Tab tab, boolean animate) {
-    }
-
-    public void showAutoLogin(boolean animate) {
-    }
-
-    public void hideAutoLogin(boolean animate) {
     }
 
     public boolean wantsToBeVisible() {

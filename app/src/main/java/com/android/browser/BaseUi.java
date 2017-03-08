@@ -205,7 +205,7 @@ public abstract class BaseUi implements UI {
             mBottomMenuPopup.showPopMenu(View.GONE);
             return true;
         }
-        return false;
+        return mNavigationBar.onBackKey();
     }
 
     @Override
@@ -594,7 +594,6 @@ public abstract class BaseUi implements UI {
     }
 
     protected void updateAutoLogin(Tab tab, boolean animate) {
-        mTitleBar.updateAutoLogin(tab, animate);
     }
 
     /**
@@ -730,8 +729,7 @@ public abstract class BaseUi implements UI {
     @Override
     public Bitmap getDefaultVideoPoster() {
         if (mDefaultVideoPoster == null) {
-            mDefaultVideoPoster = BitmapFactory.decodeResource(
-                    mActivity.getResources(), R.drawable.default_video_poster);
+            mDefaultVideoPoster = BitmapFactory.decodeResource(mActivity.getResources(), R.drawable.default_video_poster);
         }
         return mDefaultVideoPoster;
     }
@@ -740,8 +738,7 @@ public abstract class BaseUi implements UI {
     public View getVideoLoadingProgressView() {
         if (mVideoProgressView == null) {
             LayoutInflater inflater = LayoutInflater.from(mActivity);
-            mVideoProgressView = inflater.inflate(
-                    R.layout.video_loading_progress, null);
+            mVideoProgressView = inflater.inflate(R.layout.video_loading_progress, null);
         }
         return mVideoProgressView;
     }

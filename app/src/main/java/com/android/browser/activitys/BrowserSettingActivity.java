@@ -17,6 +17,7 @@ public class BrowserSettingActivity extends BaseActivity {
 
     public static final int TEXTCODING_REQUESTCODE = 10001;
     public static final int USERAGENT_REQUESTCODE = 20001;
+    public static final int SEARCH_REQUESTCODE = 30001;
     private BrowserSettingItem mTextCoding;
     private BrowserSettingItem mSearchEngine;
     private BrowserSettingItem mUserAgent;
@@ -34,6 +35,10 @@ public class BrowserSettingActivity extends BaseActivity {
         mSearchEngine = (BrowserSettingItem) findViewById(R.id.setting_search);
         mUserAgent = (BrowserSettingItem) findViewById(R.id.setting_user_agent);
         mTextCoding = (BrowserSettingItem) findViewById(R.id.setting_text_coding);
+
+        mSearchEngine.setSettingIcon(mSettingValues.getSearchIconResId());
+        mTextCoding.setSettingValue(mSettingValues.getDefaultTextEncoding());
+        mUserAgent.setSettingValue(getUserAgentResId(mSettingValues.getUserAgent()));
     }
 
     private void setListener() {
@@ -52,7 +57,7 @@ public class BrowserSettingActivity extends BaseActivity {
         super.onClick(view);
         switch (view.getId()) {
             case R.id.setting_search:
-                ActivityUtils.startNextPager(this, SearchEngineActivity.class);
+                ActivityUtils.startNextPagerForResult(this, SearchEngineActivity.class, SEARCH_REQUESTCODE);
                 break;
             case R.id.setting_font_size:
                 ActivityUtils.startNextPager(this, FontSizePreviewActivity.class);
@@ -81,15 +86,32 @@ public class BrowserSettingActivity extends BaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(resultCode == RESULT_OK) {
-            if(requestCode == TEXTCODING_REQUESTCODE) {
+        if (resultCode == RESULT_OK) {
+            if(requestCode == SEARCH_REQUESTCODE) {
+                int iconId = data.getIntExtra(Constants.SEARCHICON, R.drawable.ic_browser_engine_baidu);
+                mSearchEngine.setSettingIcon(iconId);
+            } else if (requestCode == TEXTCODING_REQUESTCODE) {
                 String coding = data.getStringExtra(Constants.TEXTCODING);
                 mTextCoding.setSettingValue(coding);
-            }else if(requestCode == USERAGENT_REQUESTCODE) {
+            } else if (requestCode == USERAGENT_REQUESTCODE) {
                 String userAgent = data.getStringExtra(Constants.USERAGENT);
                 mUserAgent.setSettingValue(userAgent);
             }
         }
+    }
+
+    private int getUserAgentResId(int position) {
+        switch (position) {
+            case 0:
+                return R.string.defalut_user_agent;
+            case 1:
+                return R.string.iphone_user_agent;
+            case 2:
+                return R.string.ipad_user_agent;
+            case 3:
+                return R.string.desktop_user_agent;
+        }
+        return R.string.defalut_user_agent;
     }
 }
 

@@ -23,6 +23,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.KeyEvent;
 import android.view.View;
@@ -37,6 +38,7 @@ import com.android.browser.SuggestionsAdapter.SuggestItem;
 import com.android.browser.search.SearchEngine;
 import com.android.browser.search.SearchEngineInfo;
 import com.android.browser.search.SearchEngines;
+import com.android.browser.util.ToastUtils;
 
 /**
  * url/search input view
@@ -107,15 +109,18 @@ public class UrlInputView extends EditText implements OnEditorActionListener,
 
     public void setStateListener(StateListener listener) {
         mStateListener = listener;
-        // update listener
         changeState(mState);
     }
 
-    private void changeState(int newState) {
+    public void changeState(int newState) {
         mState = newState;
         if (mStateListener != null) {
             mStateListener.onStateChanged(mState);
         }
+    }
+
+    public void setUrlInputState(int newState) {
+        mState = newState;
     }
 
     public int getState() {
@@ -131,21 +136,23 @@ public class UrlInputView extends EditText implements OnEditorActionListener,
 
     @Override
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-//        finishInput(getText().toString(), null, TYPED);
+        finishInput(getText().toString(), null, TYPED);
         return true;
     }
 
-    void hideIME() {
-        mInputManager.hideSoftInputFromWindow(getWindowToken(), 0);
+    public void hideIME() {
+        if(mInputManager.isActive()) {
+            mInputManager.hideSoftInputFromWindow(getWindowToken(), 0);
+        }
     }
 
-    void showIME() {
+    public void showIME() {
         mInputManager.showSoftInput(this, 0);
     }
 
     private void finishInput(String url, String extra, String source) {
         mNeedsUpdate = true;
-//        mInputManager.hideSoftInputFromWindow(getWindowToken(), 0);
+        mInputManager.hideSoftInputFromWindow(getWindowToken(), 0);
         if (TextUtils.isEmpty(url)) {
             mListener.onDismiss();
         } else {
@@ -165,7 +172,7 @@ public class UrlInputView extends EditText implements OnEditorActionListener,
         }
     }
 
-    boolean isSearch(String inUrl) {
+    public boolean isSearch(String inUrl) {
         String url = UrlUtils.fixUrl(inUrl).trim();
         if (TextUtils.isEmpty(url)) {
             return false;
@@ -210,7 +217,10 @@ public class UrlInputView extends EditText implements OnEditorActionListener,
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent evt) {
         //首先隐藏输入法
-        hideIME();
+        /*if(keyCode == KeyEvent.KEYCODE_BACK) {
+            hideIME();
+        }*/
+
         if (keyCode == KeyEvent.KEYCODE_ESCAPE && !isInTouchMode()) {
             finishInput(null, null, null);
             return true;
@@ -237,7 +247,7 @@ public class UrlInputView extends EditText implements OnEditorActionListener,
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        if(TextUtils.isEmpty(s)) {
+        if(TextUtils.isEmpty(getText().toString())) {
             changeState(StateListener.STATE_CLEAR);
         }
     }

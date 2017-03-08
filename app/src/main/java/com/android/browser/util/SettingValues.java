@@ -31,6 +31,14 @@ public class SettingValues implements PreferenceKeys {
         mPrefs.edit().putString(PREF_SEARCH_ENGINE, engineName).commit();
     }
 
+    public void setSearchIconResId(int resId) {
+        mPrefs.edit().putInt(PREF_SEARCH_ICON, resId).apply();
+    }
+
+    public int getSearchIconResId() {
+        return mPrefs.getInt(PREF_SEARCH_ICON, R.drawable.ic_browser_engine_baidu);
+    }
+
     public WebSettings.PluginState getPluginState() {
         String state = mPrefs.getString(PREF_PLUGIN_STATE, "ON");
         return WebSettings.PluginState.valueOf(state);

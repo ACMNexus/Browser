@@ -1,5 +1,6 @@
 package com.android.browser.activitys;
 
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -11,6 +12,8 @@ import com.android.browser.adapter.SearchEngineAdapter;
 import com.android.browser.search.SearchEngine;
 import com.android.browser.search.SearchEngineInfo;
 import com.android.browser.search.SearchEngines;
+import com.android.browser.util.Constants;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,7 +72,12 @@ public class SearchEngineActivity extends BaseActivity {
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-        mSettingValues.setSearchEngineName(mAdapter.getItem(position).getName());
+        SearchEngineInfo searchEngineInfo = mAdapter.getItem(position);
+        mSettingValues.setSearchEngineName(searchEngineInfo.getName());
+        mSettingValues.setSearchIconResId(searchEngineInfo.getSeachEngineIcon());
+        Intent intent = new Intent();
+        intent.putExtra(Constants.SEARCHICON, searchEngineInfo.getSeachEngineIcon());
+        setResult(RESULT_OK, intent);
         finish();
     }
 }
