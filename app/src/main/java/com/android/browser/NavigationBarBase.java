@@ -22,6 +22,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
@@ -85,24 +86,6 @@ public class NavigationBarBase extends LinearLayout implements OnClickListener, 
 
     @Override
     public void onFocusChange(View view, boolean hasFocus) {
-        Tab currentTab = mUiController.getTabControl().getCurrentTab();
-        String title = "";
-        if(currentTab != null) {
-            title = currentTab.getUrl() == null ? "" : currentTab.getUrl();
-        }
-        if (hasFocus) {
-            mBaseUi.showTitleBar();
-            mUrlInput.setText(title);
-            mUrlInput.selectAll();
-        } /*else if (!mUrlInput.needsUpdate()) {
-            mUrlInput.hideIME();
-            if(currentTab != null) {
-                title = currentTab.getTitle() == null ? currentTab.getUrl() : currentTab.getTitle();
-            }
-            setDisplayTitle(title == null ? "" : title);
-            mBaseUi.suggestHideTitleBar();
-        }
-        mUrlInput.clearNeedsUpdate();*/
     }
 
     protected void setFocusState(boolean focus) {
@@ -112,18 +95,22 @@ public class NavigationBarBase extends LinearLayout implements OnClickListener, 
         return mUrlInput.hasFocus();
     }
 
-    void stopEditingUrl() {
+    public void stopEditingUrl() {
+        mUrlInput.hideIME();
         WebView currentTopWebView = mUiController.getCurrentTopWebView();
         if (currentTopWebView != null) {
             currentTopWebView.requestFocus();
         }
+        mUrlInput.changeState(0);
     }
 
-    void setDisplayTitle(String title) {
-        if (!isEditingUrl()) {
-            if (!title.equals(mUrlInput.getText().toString())) {
-                mUrlInput.setText(title);
-            }
+    void setDisplayTitle(String title, String url) {
+        if(!TextUtils.isEmpty(url)) {
+            mUrlInput.setText(url);
+            mUrlInput.setTag(url);
+        }else {
+            mUrlInput.setText(R.string.new_tab);
+            mUrlInput.setTag(getContext().getString(R.string.new_tab));
         }
     }
 
@@ -148,7 +135,7 @@ public class NavigationBarBase extends LinearLayout implements OnClickListener, 
             // logic in UrlHandler for other schemas
             if (url != null && t != null && url.startsWith("javascript:")) {
                 mUiController.loadUrl(t, url);
-                setDisplayTitle(text);
+                setDisplayTitle(text, url);
                 return;
             }
         }
@@ -165,7 +152,7 @@ public class NavigationBarBase extends LinearLayout implements OnClickListener, 
             i.putExtra(SearchManager.APP_DATA, appData);
         }
         mUiController.handleNewIntent(i);
-        setDisplayTitle(text);
+        setDisplayTitle(text, "");
     }
 
     @Override
@@ -175,7 +162,7 @@ public class NavigationBarBase extends LinearLayout implements OnClickListener, 
         post(new Runnable() {
             public void run() {
                 if (currentTab != null) {
-                    setDisplayTitle(currentTab.getUrl());
+//                    setDisplayTitle(currentTab.getUrl());
                 }
             }
         });

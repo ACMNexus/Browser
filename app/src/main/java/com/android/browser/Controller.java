@@ -1894,7 +1894,7 @@ public class Controller
         if (w == null) {
             return null;
         }
-        Intent intent = new Intent(mActivity, AddBookmarkPage.class);
+        Intent intent = new Intent(mActivity, AddBookMarkActivity.class);
         intent.putExtra(BrowserContract.Bookmarks.URL, w.getUrl());
         intent.putExtra(BrowserContract.Bookmarks.TITLE, w.getTitle());
         String touchIconUrl = ReflectUtils.getTouchIconUrl(w);

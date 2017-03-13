@@ -68,9 +68,9 @@ public class NavScreen extends RelativeLayout
 
     public NavScreen(Activity activity, UiController ctl, PhoneUi ui) {
         super(activity);
+        mUi = ui;
         mActivity = activity;
         mUiController = ctl;
-        mUi = ui;
         mOrientation = activity.getResources().getConfiguration().orientation;
         init();
     }
@@ -130,11 +130,9 @@ public class NavScreen extends RelativeLayout
         TabControl tc = mUiController.getTabControl();
         mTabViews = new HashMap<Tab, View>(tc.getTabCount());
         mAdapter = new TabAdapter(getContext(), tc);
-        mScroller.setOrientation(mOrientation == Configuration.ORIENTATION_LANDSCAPE
-                ? LinearLayout.HORIZONTAL : LinearLayout.VERTICAL);
+        mScroller.setOrientation(mOrientation == Configuration.ORIENTATION_LANDSCAPE ? LinearLayout.HORIZONTAL : LinearLayout.VERTICAL);
         // update state for active tab
-        mScroller.setAdapter(mAdapter,
-                mUiController.getTabControl().getTabPosition(mUi.getActiveTab()));
+        mScroller.setAdapter(mAdapter,  mUiController.getTabControl().getTabPosition(mUi.getActiveTab()));
         mScroller.setOnRemoveListener(new OnRemoveListener() {
             public void onRemovePosition(int pos) {
                 Tab tab = mAdapter.getItem(pos);

@@ -317,7 +317,7 @@ public class NavigationBarTablet extends NavigationBarBase implements StateListe
             case STATE_NORMAL:
                 mClearButton.setVisibility(View.GONE);
                 break;
-            case STATE_CLEAR:
+            case STATE_CANCEL:
                 mClearButton.setVisibility(View.GONE);
                 if ((mUiController != null) && mUiController.supportsVoice()) {
                     mVoiceButton.setVisibility(View.VISIBLE);

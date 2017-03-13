@@ -77,7 +77,7 @@
             android:label="@string/application_name"
             android:launchMode="singleTask"
             android:theme="@style/BrowserTheme"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.speech.action.VOICE_SEARCH_RESULTS" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -174,23 +174,23 @@
 
         <activity
             android:name=".activitys.DownloadFileActivity"
-            android:label="@string/menu_bottom_exit"
+            android:label="@string/menu_bottom_download"
             android:launchMode="singleTop"
             android:theme="@style/swipe_style" />
 
         <activity
             android:name=".activitys.FileBrowserActivity"
-            android:label="@string/menu_bottom_exit"
+            android:label="@string/file_browser_title"
             android:launchMode="singleTop"
             android:theme="@style/swipe_style" />
         <activity
             android:name=".activitys.BrowserSettingActivity"
-            android:label="@string/menu_bottom_exit"
+            android:label="@string/menu_preferences"
             android:launchMode="singleTop"
             android:theme="@style/swipe_style" />
         <activity
             android:name=".activitys.SearchEngineActivity"
-            android:label="@string/menu_bottom_exit"
+            android:label="@string/pref_content_search_engine"
             android:launchMode="singleTop"
             android:theme="@style/swipe_style" />
         <activity

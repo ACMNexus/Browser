@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/file_download_bg"
+    android:fitsSystemWindows="true"
     android:orientation="vertical">
 
     <ScrollView
@@ -19,7 +20,6 @@
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:orientation="vertical">
-
 
             </LinearLayout>
 
@@ -152,6 +152,12 @@
                     android:textSize="16sp" />
 
             </RelativeLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="0.5dip"
+                android:layout_marginLeft="20dip"
+                android:background="@color/content_divider" />
 
             <RelativeLayout
                 android:layout_width="fill_parent"

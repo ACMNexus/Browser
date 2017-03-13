@@ -208,6 +208,10 @@ public abstract class BaseUi implements UI {
         return mNavigationBar.onBackKey();
     }
 
+    public void setBottomMenuPopup(int state){
+        mBottomMenuPopup.showPopMenu(state);
+    }
+
     @Override
     public boolean onMenuKey() {
         return false;
@@ -628,7 +632,7 @@ public abstract class BaseUi implements UI {
             title = url;
         }
         if (tab.inForeground()) {
-            mNavigationBar.setDisplayTitle(title);
+            mNavigationBar.setDisplayTitle(title, url);
         }
     }
 

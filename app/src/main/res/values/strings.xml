@@ -1042,5 +1042,8 @@
     <string name="pref_privacy_clear_data_operate">清除</string>
     <string name="pref_privacy_clearall">全部清除</string>
     <string name="setting_reset_browser_config">恢复默认设置</string>
+    <string name="file_browser_title">文件浏览</string>
+    <string name="title_bar_button_search_mode">搜索</string>
+    <string name="title_bar_button_request_mode">进入</string>
 
 </resources>

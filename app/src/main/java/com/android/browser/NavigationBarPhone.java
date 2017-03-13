@@ -121,16 +121,9 @@ public class NavigationBarPhone extends NavigationBarBase implements StateListen
      * @param title String to display.  If null, the new tab string will be shown.
      */
     @Override
-    void setDisplayTitle(String title) {
+    void setDisplayTitle(String title, String url) {
+        super.setDisplayTitle(title, url);
         mWebViewTitles.setText(title);
-        if (!isEditingUrl()) {
-            if (title == null) {
-                mUrlInput.setText(R.string.new_tab);
-            } else {
-                mUrlInput.setText(UrlUtils.stripUrl(title));
-            }
-            mUrlInput.setSelection(0);
-        }
     }
 
     @Override
@@ -149,7 +142,7 @@ public class NavigationBarPhone extends NavigationBarBase implements StateListen
                 reloadPage();
                 break;
             case R.id.enter:
-                reloadPage();
+                mUrlInput.finishInput(mUrlInput.getText().toString(), null, UrlInputView.TYPED);
                 break;
         }
     }
@@ -177,6 +170,7 @@ public class NavigationBarPhone extends NavigationBarBase implements StateListen
             case StateListener.STATE_NORMAL:
                 mEditMode.setVisibility(View.GONE);
                 mRequestMode.setVisibility(View.VISIBLE);
+                mEnterButton.setText(R.string.title_bar_button_request_mode);
                 break;
             case StateListener.STATE_EDITED:
                 mEditMode.setVisibility(View.VISIBLE);
@@ -185,13 +179,20 @@ public class NavigationBarPhone extends NavigationBarBase implements StateListen
                 mClearButton.setVisibility(View.VISIBLE);
                 mEnterButton.setVisibility(View.VISIBLE);
                 mUrlInput.requestFocus();
-                mUrlInput.setSelectAllOnFocus(true);
+                mUrlInput.selectAll();
                 mUrlInput.showIME();
+                mBaseUi.showTitleBar();
                 break;
-            case StateListener.STATE_CLEAR:
+            case StateListener.STATE_CANCEL:
                 mClearButton.setVisibility(View.GONE);
                 mEnterButton.setVisibility(View.GONE);
                 mCancelButton.setVisibility(View.VISIBLE);
+                break;
+            case StateListener.STATE_SEARCH:
+                mClearButton.setVisibility(View.VISIBLE);
+                mEnterButton.setVisibility(View.VISIBLE);
+                mCancelButton.setVisibility(View.GONE);
+                mEnterButton.setText(R.string.title_bar_button_search_mode);
                 break;
         }
         mUrlInput.setUrlInputState(state);
@@ -205,6 +206,12 @@ public class NavigationBarPhone extends NavigationBarBase implements StateListen
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
         if(view == mWebViewTitles) {
+            post(new Runnable() {
+                @Override
+                public void run() {
+                    mBaseUi.setBottomMenuPopup(View.GONE);
+                }
+            });
             onStateChanged(StateListener.STATE_EDITED);
             return true;
         }
