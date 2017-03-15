@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <com.android.browser.view.BrowserSettingItem
+        <com.qirui.browser.view.BrowserSettingItem
             android:id="@+id/auto_fill"
             android:layout_width="fill_parent"
             android:layout_height="60dip"
@@ -19,7 +19,7 @@
             app:setting_state="5"
             app:setting_title="@string/pref_autofill_enabled" />
 
-        <com.android.browser.view.BrowserSettingItem
+        <com.qirui.browser.view.BrowserSettingItem
             android:id="@+id/setting_force_scale"
             android:layout_width="fill_parent"
             android:layout_height="60dip"
@@ -28,7 +28,7 @@
             app:setting_title="@string/pref_force_userscalable"
             app:setting_value="UTF-8" />
 
-        <com.android.browser.view.BrowserSettingItem
+        <com.qirui.browser.view.BrowserSettingItem
             android:id="@+id/auto_fit"
             android:layout_width="fill_parent"
             android:layout_height="60dip"
@@ -37,7 +37,7 @@
             app:setting_title="@string/pref_content_autofit"
             app:setting_value="UTF-8" />
 
-        <com.android.browser.view.BrowserSettingItem
+        <com.qirui.browser.view.BrowserSettingItem
             android:id="@+id/load_image"
             android:layout_width="fill_parent"
             android:layout_height="60dip"
@@ -46,14 +46,14 @@
             app:setting_title="@string/pref_content_load_images"
             app:setting_value="UTF-8" />
 
-        <com.android.browser.view.BrowserSettingItem
+        <com.qirui.browser.view.BrowserSettingItem
             android:id="@+id/setting_filter_ad"
             android:layout_width="fill_parent"
             android:layout_height="60dip"
             app:setting_state="4"
             app:setting_title="@string/pref_setting_filter_ad_title" />
 
-        <com.android.browser.view.BrowserSettingItem
+        <com.qirui.browser.view.BrowserSettingItem
             android:id="@+id/plugin_state"
             android:layout_width="fill_parent"
             android:layout_height="60dip"
@@ -61,21 +61,21 @@
             app:setting_title="@string/pref_content_plugins"
             app:setting_value="UTF-8" />
 
-        <com.android.browser.view.BrowserSettingItem
+        <com.qirui.browser.view.BrowserSettingItem
             android:id="@+id/block_popups"
             android:layout_width="fill_parent"
             android:layout_height="60dip"
             app:setting_state="4"
             app:setting_title="@string/pref_content_block_popups" />
 
-        <com.android.browser.view.BrowserSettingItem
+        <com.qirui.browser.view.BrowserSettingItem
             android:id="@+id/enableJavaScript"
             android:layout_width="fill_parent"
             android:layout_height="60dip"
             app:setting_state="4"
             app:setting_title="@string/pref_content_javascript" />
 
-        <com.android.browser.view.BrowserSettingItem
+        <com.qirui.browser.view.BrowserSettingItem
             android:id="@+id/setting_exit_confirm"
             android:layout_width="fill_parent"
             android:layout_height="60dip"

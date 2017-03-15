@@ -25,7 +25,7 @@
         android:paddingRight="5dip"
         android:visibility="gone">
 
-        <com.android.browser.BreadCrumbView
+        <com.qirui.browser.BreadCrumbView
             android:id="@+id/crumbs"
             android:layout_width="0dip"
             android:layout_height="match_parent"
@@ -181,7 +181,7 @@
 
                     <view
                         android:id="@+id/folder"
-                        class="com.android.browser.addbookmark.FolderSpinner"
+                        class="com.qirui.browser.addbookmark.FolderSpinner"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dip"
@@ -199,7 +199,7 @@
 
             <view
                 android:id="@+id/list"
-                class="com.android.browser.AddBookmarkPage$CustomListView"
+                class="com.qirui.browser.AddBookmarkPage$CustomListView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="16dip"

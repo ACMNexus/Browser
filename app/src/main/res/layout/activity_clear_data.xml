@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <com.android.browser.view.BrowserSettingItem
+        <com.qirui.browser.view.BrowserSettingItem
             android:layout_width="fill_parent"
             android:layout_height="60dip"
             app:settingValueColor="@color/clear_data_value_color"
@@ -21,7 +21,7 @@
             app:setting_title="@string/pref_privacy_clear_cache"
             app:setting_value="@string/pref_privacy_clear_data_operate" />
 
-        <com.android.browser.view.BrowserSettingItem
+        <com.qirui.browser.view.BrowserSettingItem
             android:layout_width="fill_parent"
             android:layout_height="60dip"
             app:settingValueColor="@color/clear_data_value_color"
@@ -30,7 +30,7 @@
             app:setting_title="@string/pref_privacy_cookies_title"
             app:setting_value="@string/pref_privacy_clear_data_operate" />
 
-        <com.android.browser.view.BrowserSettingItem
+        <com.qirui.browser.view.BrowserSettingItem
             android:layout_width="fill_parent"
             android:layout_height="60dip"
             app:settingValueColor="@color/clear_data_value_color"
@@ -39,7 +39,7 @@
             app:setting_title="@string/pref_privacy_clear_form_data"
             app:setting_value="@string/pref_privacy_clear_data_operate" />
 
-        <com.android.browser.view.BrowserSettingItem
+        <com.qirui.browser.view.BrowserSettingItem
             android:layout_width="fill_parent"
             android:layout_height="60dip"
             app:settingValueColor="@color/clear_data_value_color"
@@ -48,7 +48,7 @@
             app:setting_title="@string/pref_privacy_clear_history"
             app:setting_value="@string/pref_privacy_clear_data_operate" />
 
-        <com.android.browser.view.BrowserSettingItem
+        <com.qirui.browser.view.BrowserSettingItem
             android:layout_width="fill_parent"
             android:layout_height="60dip"
             app:settingValueColor="@color/clear_data_value_color"
@@ -57,7 +57,7 @@
             app:setting_title="@string/pref_privacy_clear_passwords"
             app:setting_value="@string/pref_privacy_clear_data_operate" />
 
-        <com.android.browser.view.BrowserSettingItem
+        <com.qirui.browser.view.BrowserSettingItem
             android:layout_width="fill_parent"
             android:layout_height="60dip"
             app:settingValueColor="@color/clear_data_value_color"

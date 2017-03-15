@@ -50,8 +50,8 @@
     <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
 
     <application
-        android:name="Browser"
-        android:backupAgent=".BrowserBackupAgent"
+        android:name="com.qirui.browser.Browser"
+        android:backupAgent="com.qirui.browser.BrowserBackupAgent"
         android:hardwareAccelerated="true"
         android:icon="@drawable/ic_launcher_browser"
         android:label="@string/application_name"
@@ -59,8 +59,8 @@
         android:theme="@style/AppTheme">
 
         <provider
-            android:name=".provider.BrowserProvider2"
-            android:authorities="com.android.browser;browser"
+            android:name="com.qirui.browser.provider.BrowserProvider2"
+            android:authorities="com.qirui.browser;browser"
             android:exported="true"
             android:multiprocess="false"
             android:readPermission="com.android.browser.permission.READ_HISTORY_BOOKMARKS"
@@ -71,7 +71,7 @@
         </provider>
 
         <activity
-            android:name="BrowserActivity"
+            android:name="com.qirui.browser.BrowserActivity"
             android:alwaysRetainTaskState="true"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale"
             android:label="@string/application_name"
@@ -173,68 +173,68 @@
         </activity>
 
         <activity
-            android:name=".activitys.DownloadFileActivity"
+            android:name="com.qirui.browser.activitys.DownloadFileActivity"
             android:label="@string/menu_bottom_download"
             android:launchMode="singleTop"
             android:theme="@style/swipe_style" />
 
         <activity
-            android:name=".activitys.FileBrowserActivity"
+            android:name="com.qirui.browser.activitys.FileBrowserActivity"
             android:label="@string/file_browser_title"
             android:launchMode="singleTop"
             android:theme="@style/swipe_style" />
         <activity
-            android:name=".activitys.BrowserSettingActivity"
+            android:name="com.qirui.browser.activitys.BrowserSettingActivity"
             android:label="@string/menu_preferences"
             android:launchMode="singleTop"
             android:theme="@style/swipe_style" />
         <activity
-            android:name=".activitys.SearchEngineActivity"
+            android:name="com.qirui.browser.activitys.SearchEngineActivity"
             android:label="@string/pref_content_search_engine"
             android:launchMode="singleTop"
             android:theme="@style/swipe_style" />
         <activity
-            android:name=".activitys.FontSizePreviewActivity"
+            android:name="com.qirui.browser.activitys.FontSizePreviewActivity"
             android:label="@string/pref_font_size_category"
             android:launchMode="singleTop"
             android:theme="@style/swipe_style" />
         <activity
-            android:name=".activitys.AddBookMarkActivity"
+            android:name="com.qirui.browser.activitys.AddBookMarkActivity"
             android:launchMode="singleTop"
             android:theme="@style/swipe_style" />
         <activity
-            android:name=".activitys.MarkHistoryActivity"
+            android:name="com.qirui.browser.activitys.MarkHistoryActivity"
             android:label="@string/tab_bookmarks"
             android:launchMode="singleTop"
             android:theme="@style/swipe_style" />
         <activity
-            android:name=".activitys.SecurityActivity"
+            android:name="com.qirui.browser.activitys.SecurityActivity"
             android:label="@string/pref_privacy_security_title"
             android:launchMode="singleTop"
             android:theme="@style/swipe_style" />
         <activity
-            android:name=".activitys.AdvancedActivity"
+            android:name="com.qirui.browser.activitys.AdvancedActivity"
             android:label="@string/pref_extras_title"
             android:launchMode="singleTop"
             android:theme="@style/swipe_style" />
         <activity
-            android:name=".activitys.ClearDataActivity"
+            android:name="com.qirui.browser.activitys.ClearDataActivity"
             android:label="@string/pref_setting_clear_data_title"
             android:launchMode="singleTop"
             android:theme="@style/swipe_style" />
         <activity
-            android:name=".activitys.TextCodingActivity"
+            android:name="com.qirui.browser.activitys.TextCodingActivity"
             android:label="@string/pref_default_text_encoding"
             android:launchMode="singleTop"
             android:theme="@style/swipe_style" />
         <activity
-            android:name=".activitys.UserAgentActivity"
+            android:name="com.qirui.browser.activitys.UserAgentActivity"
             android:label="@string/pref_setting_user_agent_title"
             android:launchMode="singleTop"
             android:theme="@style/swipe_style" />
 
         <activity
-            android:name="ShortcutActivity"
+            android:name="com.qirui.browser.ShortcutActivity"
             android:icon="@drawable/ic_launcher_shortcut_browser_bookmark"
             android:label="@string/shortcut_bookmark"
             android:theme="@style/ShortcutTheme">
@@ -247,7 +247,7 @@
         </activity>
 
         <activity
-            android:name="BrowserPreferencesPage"
+            android:name="com.qirui.browser.BrowserPreferencesPage"
             android:label="@string/menu_preferences">
             <intent-filter>
                 <action android:name="android.intent.action.MANAGE_NETWORK_USAGE" />
@@ -256,7 +256,7 @@
         </activity>
 
         <activity
-            android:name="BookmarkSearch"
+            android:name="com.qirui.browser.BookmarkSearch"
             android:excludeFromRecents="true"
             android:label="@string/bookmarks_search"
             android:stateNotNeeded="true"
@@ -271,7 +271,7 @@
         </activity>
 
         <activity
-            android:name="AddBookmarkPage"
+            android:name="com.qirui.browser.AddBookmarkPage"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/bookmarks_add_page"
             android:theme="@style/DialogWhenLarge"
@@ -283,11 +283,11 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="ComboViewActivity"></activity>
+        <activity android:name="com.qirui.browser.ComboViewActivity"></activity>
 
         <!-- Bookmark thumbnail homescreen widget -->
         <receiver
-            android:name=".widget.BookmarkThumbnailWidgetProvider"
+            android:name="com.qirui.browser.widget.BookmarkThumbnailWidgetProvider"
             android:label="@string/bookmarks">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -298,14 +298,14 @@
                 android:resource="@xml/bookmarkthumbnailwidget_info" />
         </receiver>
         <service
-            android:name=".widget.BookmarkThumbnailWidgetService"
+            android:name="com.qirui.browser.widget.BookmarkThumbnailWidgetService"
             android:exported="false"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
         <receiver
-            android:name=".widget.BookmarkWidgetProxy"
+            android:name="com.qirui.browser.widget.BookmarkWidgetProxy"
             android:exported="false" />
         <activity
-            android:name=".widget.BookmarkWidgetConfigure"
+            android:name="com.qirui.browser.widget.BookmarkWidgetConfigure"
             android:theme="@android:style/Theme.Holo.DialogWhenLarge">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
@@ -326,7 +326,7 @@
             android:name="com.google.android.partnersetup.RLZ_ACCESS_POINT"
             android:value="@string/rlz_access_point" />
 
-        <receiver android:name=".OpenDownloadReceiver">
+        <receiver android:name="com.qirui.browser.OpenDownloadReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.DOWNLOAD_NOTIFICATION_CLICKED" />
             </intent-filter>
@@ -334,19 +334,19 @@
 
         <!-- For custom home pages (like most visited) -->
         <provider
-            android:name=".homepages.HomeProvider"
-            android:authorities="com.android.browser.home"
+            android:name="com.qirui.browser.homepages.HomeProvider"
+            android:authorities="com.qirui.browser.home"
             android:exported="false"
             android:readPermission="com.android.browser.permission.READ_HISTORY_BOOKMARKS" />
 
-        <receiver android:name=".receiver.AccountsChangedReceiver">
+        <receiver android:name="com.qirui.browser.receiver.AccountsChangedReceiver">
             <intent-filter>
                 <action android:name="android.accounts.LOGIN_ACCOUNTS_CHANGED" />
             </intent-filter>
         </receiver>
 
         <receiver
-            android:name=".PreloadRequestReceiver"
+            android:name="com.qirui.browser.PreloadRequestReceiver"
             android:permission="com.android.browser.permission.PRELOAD">
             <intent-filter>
                 <action android:name="android.intent.action.PRELOAD" />
@@ -355,8 +355,8 @@
         </receiver>
 
         <provider
-            android:name=".provider.SnapshotProvider"
-            android:authorities="com.android.browser.snapshots"
+            android:name="com.qirui.browser.provider.SnapshotProvider"
+            android:authorities="com.qirui.browser.snapshots"
             android:exported="false" />
 
     </application>

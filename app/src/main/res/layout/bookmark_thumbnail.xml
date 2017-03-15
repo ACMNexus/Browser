@@ -13,7 +13,7 @@
      limitations under the License.
 -->
 
-<com.android.browser.view.BookmarkContainer xmlns:android="http://schemas.android.com/apk/res/android"
+<com.qirui.browser.view.BookmarkContainer xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/bookmark_thumb_selector"
@@ -56,4 +56,4 @@
         android:textSize="14sp"
         android:typeface="sans" />
 
-</com.android.browser.view.BookmarkContainer>
+</com.qirui.browser.view.BookmarkContainer>

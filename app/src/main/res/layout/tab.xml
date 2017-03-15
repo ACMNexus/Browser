@@ -18,7 +18,7 @@
      Currently, the only such element is the Geolocation permissions prompt.
 -->
 
-<com.android.browser.view.CustomTabView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.qirui.browser.view.CustomTabView xmlns:android="http://schemas.android.com/apk/res/android"
     android:fitsSystemWindows="true"
     android:layout_height="match_parent"
     android:layout_width="match_parent">
@@ -36,4 +36,4 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent" />
 
-</com.android.browser.view.CustomTabView>
+</com.qirui.browser.view.CustomTabView>

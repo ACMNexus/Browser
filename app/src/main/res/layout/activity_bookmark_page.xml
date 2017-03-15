@@ -7,7 +7,7 @@
     android:clipToPadding="true"
     android:orientation="vertical">
 
-    <com.android.browser.view.PagerSlidingTabStrip
+    <com.qirui.browser.view.PagerSlidingTabStrip
         android:id="@+id/tabs"
         android:layout_width="fill_parent"
         android:layout_height="48dip"

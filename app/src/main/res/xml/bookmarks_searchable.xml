@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2009 The Android Open Source Project
+<?xml version="1.0" encoding="utf-8"?><!-- Copyright (C) 2009 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -15,16 +14,14 @@
 -->
 
 <searchable xmlns:android="http://schemas.android.com/apk/res/android"
+    android:imeOptions="actionGo"
+    android:includeInGlobalSearch="true"
+    android:inputType="textUri"
     android:label="@string/bookmarks_search"
     android:searchButtonText="@string/search_button_text"
     android:searchMode="queryRewriteFromData"
-    android:inputType="textUri"
-    android:imeOptions="actionGo"
-
-    android:includeInGlobalSearch="true"
     android:searchSettingsDescription="@string/search_settings_description"
-    android:searchSuggestAuthority="browser"
-    android:searchSuggestPath="bookmarks"
-    android:searchSuggestSelection="bookmarks.url LIKE ?"
+    android:searchSuggestAuthority="qirui_browser"
     android:searchSuggestIntentAction="android.intent.action.VIEW"
-/>
+    android:searchSuggestPath="bookmarks"
+    android:searchSuggestSelection="bookmarks.url LIKE ?" />

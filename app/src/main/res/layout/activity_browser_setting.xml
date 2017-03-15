@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <com.android.browser.view.BrowserSettingItem
+        <com.qirui.browser.view.BrowserSettingItem
             android:id="@+id/setting_search"
             android:layout_width="fill_parent"
             android:layout_height="60dip"
@@ -20,7 +20,7 @@
             app:setting_state="2"
             app:setting_title="@string/pref_content_search_engine" />
 
-        <com.android.browser.view.BrowserSettingItem
+        <com.qirui.browser.view.BrowserSettingItem
             android:id="@+id/setting_font_size"
             android:layout_width="fill_parent"
             android:layout_height="60dip"
@@ -28,7 +28,7 @@
             app:setting_state="1"
             app:setting_title="@string/pref_font_size_category" />
 
-        <com.android.browser.view.BrowserSettingItem
+        <com.qirui.browser.view.BrowserSettingItem
             android:id="@+id/setting_security"
             android:layout_width="fill_parent"
             android:layout_height="60dip"
@@ -36,21 +36,21 @@
             app:setting_state="1"
             app:setting_title="@string/pref_privacy_security_title" />
 
-        <com.android.browser.view.BrowserSettingItem
+        <com.qirui.browser.view.BrowserSettingItem
             android:id="@+id/setting_advance"
             android:layout_width="fill_parent"
             android:layout_height="60dip"
             app:setting_state="-1"
             app:setting_title="@string/pref_extras_title" />
 
-        <com.android.browser.view.BrowserSettingItem
+        <com.qirui.browser.view.BrowserSettingItem
             android:id="@+id/setting_clear_data"
             android:layout_width="fill_parent"
             android:layout_height="60dip"
             app:setting_state="-1"
             app:setting_title="@string/pref_setting_clear_data_title" />
 
-        <com.android.browser.view.BrowserSettingItem
+        <com.qirui.browser.view.BrowserSettingItem
             android:id="@+id/setting_download_dir"
             android:layout_width="fill_parent"
             android:layout_height="60dip"
@@ -58,7 +58,7 @@
             app:setting_state="1"
             app:setting_title="@string/pref_setting_download_dir_title" />
 
-        <com.android.browser.view.BrowserSettingItem
+        <com.qirui.browser.view.BrowserSettingItem
             android:id="@+id/setting_user_agent"
             android:layout_width="fill_parent"
             android:layout_height="60dip"
@@ -66,7 +66,7 @@
             app:setting_title="@string/pref_setting_user_agent_title"
             app:setting_value="@string/pref_setting_user_agent_value" />
 
-        <com.android.browser.view.BrowserSettingItem
+        <com.qirui.browser.view.BrowserSettingItem
             android:id="@+id/setting_text_coding"
             android:layout_width="fill_parent"
             android:layout_height="60dip"
@@ -74,7 +74,7 @@
             app:setting_title="@string/pref_default_text_encoding"
             app:setting_value="UTF-8" />
 
-        <com.android.browser.view.BrowserSettingItem
+        <com.qirui.browser.view.BrowserSettingItem
             android:id="@+id/setting_statusbar"
             android:layout_width="fill_parent"
             android:layout_height="60dip"
@@ -82,7 +82,7 @@
             app:setting_title="@string/pref_setting_display_statusbar_title"
             app:setting_value="UTF-8" />
 
-        <com.android.browser.view.BrowserSettingItem
+        <com.qirui.browser.view.BrowserSettingItem
             android:id="@+id/setting_default_browser"
             android:layout_width="fill_parent"
             android:layout_height="60dip"
@@ -90,7 +90,7 @@
             app:setting_title="@string/pref_setting_defalut_browser_title"
             app:setting_value="UTF-8" />
 
-        <com.android.browser.view.BrowserSettingItem
+        <com.qirui.browser.view.BrowserSettingItem
             android:id="@+id/setting_rate_us"
             android:layout_width="fill_parent"
             android:layout_height="60dip"
@@ -98,14 +98,14 @@
             app:setting_state="-1"
             app:setting_title="@string/pref_setting_rate_us_title" />
 
-        <com.android.browser.view.BrowserSettingItem
+        <com.qirui.browser.view.BrowserSettingItem
             android:id="@+id/setting_feedback"
             android:layout_width="fill_parent"
             android:layout_height="60dip"
             app:setting_state="-1"
             app:setting_title="@string/pref_setting_feedback_title" />
 
-        <com.android.browser.view.BrowserSettingItem
+        <com.qirui.browser.view.BrowserSettingItem
             android:id="@+id/setting_about"
             android:layout_width="fill_parent"
             android:layout_height="60dip"

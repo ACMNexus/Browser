@@ -53,7 +53,7 @@
         android:textSize="14sp"
         android:visibility="gone" />
 
-    <com.android.browser.view.SwitchButton
+    <com.qirui.browser.view.SwitchButton
         android:id="@+id/setting_toggle"
         style="@style/SwitchButtonStyleMD"
         android:layout_width="wrap_content"

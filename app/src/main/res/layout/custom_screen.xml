@@ -28,7 +28,7 @@
         android:layout_height="fill_parent"
         android:background="@color/white" />
 
-    <com.android.browser.view.CustomScreenLinearLayout
+    <com.qirui.browser.view.CustomScreenLinearLayout
         android:id="@+id/vertical_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -51,9 +51,9 @@
             android:layout_height="fill_parent"
             android:layout_marginBottom="48.5dip" />
 
-    </com.android.browser.view.CustomScreenLinearLayout>
+    </com.qirui.browser.view.CustomScreenLinearLayout>
 
-    <com.android.browser.view.MenuToolBar
+    <com.qirui.browser.view.MenuToolBar
         android:id="@+id/bottom_pop_tool"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
