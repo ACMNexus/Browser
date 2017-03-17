@@ -236,7 +236,7 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
         settings.setTextZoom(getTextZoom());
         settings.setLayoutAlgorithm(getLayoutAlgorithm());
         settings.setJavaScriptCanOpenWindowsAutomatically(!blockPopupWindows());
-        settings.setLoadsImagesAutomatically(mSettingValues.loadImages());
+        settings.setLoadsImagesAutomatically(mSettingValues.getLoadImagesMode());
         settings.setLoadWithOverviewMode(loadPageInOverviewMode());
         settings.setSavePassword(mSettingValues.rememberPasswords());
         settings.setSaveFormData(mSettingValues.saveFormdata());
@@ -315,7 +315,7 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
             updateSearchEngine(false);
         } else if (PREF_FULLSCREEN.equals(key)) {
             if (mController != null && mController.getUi() != null) {
-                mController.getUi().setFullscreen(useFullscreen());
+                mController.getUi().setFullscreen(mSettingValues.getFullscreenState());
             }
         } else if (PREF_ENABLE_QUICK_CONTROLS.equals(key)) {
             if (mController != null && mController.getUi() != null) {
@@ -719,10 +719,6 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
 
     public boolean useMostVisitedHomepage() {
         return HomeProvider.MOST_VISITED.equals(getHomePage());
-    }
-
-    public boolean useFullscreen() {
-        return mPrefs.getBoolean(PREF_FULLSCREEN, false);
     }
 
     public boolean useInvertedRendering() {

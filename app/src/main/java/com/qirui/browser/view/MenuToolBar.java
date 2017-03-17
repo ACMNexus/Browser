@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.Intent;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import com.qirui.browser.BaseUi;
 import com.android.browser.R;
+import com.qirui.browser.BrowserSettings;
 import com.qirui.browser.UI;
 import com.qirui.browser.UiController;
 import com.qirui.browser.BrowserPreferencesPage;
@@ -19,6 +21,7 @@ import com.qirui.browser.activitys.BrowserSettingActivity;
 import com.qirui.browser.activitys.DownloadFileActivity;
 import com.qirui.browser.util.ActivityUtils;
 import com.qirui.browser.util.DisplayUtils;
+import com.qirui.browser.util.SettingValues;
 
 /**
  * Created by Luooh on 2017/2/15.
@@ -49,14 +52,10 @@ public class MenuToolBar extends RelativeLayout implements View.OnClickListener 
     private AnimatorSet showAnimatorSet;
     private AnimatorSet dismissAimatorSet;
 
+    private SettingValues mSettingValues;
+
     public MenuToolBar(Context context, AttributeSet attrs) {
         super(context, attrs);
-        initView(context);
-        setListener();
-    }
-
-    public MenuToolBar(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
         initView(context);
         setListener();
     }
@@ -70,6 +69,7 @@ public class MenuToolBar extends RelativeLayout implements View.OnClickListener 
     public void init(BaseUi baseUi, UiController uiController) {
         this.mBaseUI = baseUi;
         this.mUiController = uiController;
+        this.mSettingValues = BrowserSettings.getInstance().getSettingValues();
     }
 
     private void initView(Context context) {
@@ -107,6 +107,34 @@ public class MenuToolBar extends RelativeLayout implements View.OnClickListener 
         showAnimatorSet = new AnimatorSet();
         showAnimatorSet.playTogether(menuShadowAnimator, menuToolBarAnimator, menuTranslatYAnimator);
         showAnimatorSet.setDuration(200);
+        showAnimatorSet.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                if (mSettingValues.getFullscreenState()) {
+                    mMenuFullScreen.setImageResource(R.drawable.menu_full_screen_pressed);
+                } else {
+                    mMenuFullScreen.setImageResource(R.drawable.menu_full_screen_normal);
+                }
+
+                if(mSettingValues.getLoadImagesMode()) {
+                    mMenuNoPicture.setImageResource(R.drawable.menu_no_pic_normal);
+                }else {
+                    mMenuNoPicture.setImageResource(R.drawable.menu_no_pic_pressed);
+                }
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+            }
+        });
 
         ObjectAnimator menuShadowDismissAnimator = ObjectAnimator.ofFloat(mMenuShadow, "alpha", 1.0f, 0.0f);
         ObjectAnimator menuToolBarDismissAnimator = ObjectAnimator.ofFloat(this, "alpha", 1.0f, 0.0f);
@@ -157,12 +185,14 @@ public class MenuToolBar extends RelativeLayout implements View.OnClickListener 
         setVisibility(View.GONE);
         switch (view.getId()) {
             case R.id.menu_night_type:
-                mUiController.bookmarkCurrentPage();
-                break;
-            case R.id.menu_pic_type:
+//                mUiController.bookmarkCurrentPage();
                 ActivityUtils.startNextPager(mContext, BrowserPreferencesPage.class);
                 break;
+            case R.id.menu_pic_type:
+                setLoadImageState();
+                break;
             case R.id.menu_fullscreen_type:
+                setFullScreenState();
                 break;
             case R.id.menu_trace_type:
                 break;
@@ -182,6 +212,7 @@ public class MenuToolBar extends RelativeLayout implements View.OnClickListener 
                 ActivityUtils.startNextPager(mContext, BrowserSettingActivity.class);
                 break;
             case R.id.menu_share:
+                shareUrl();
                 break;
             case R.id.menu_tools:
                 break;
@@ -200,6 +231,32 @@ public class MenuToolBar extends RelativeLayout implements View.OnClickListener 
         }else {
             dismissAimatorSet.start();
         }
+    }
+
+    private void setLoadImageState() {
+        if(!mSettingValues.getLoadImagesMode()) {
+            mMenuNoPicture.setImageResource(R.drawable.menu_no_pic_pressed);
+        }else {
+            mMenuNoPicture.setImageResource(R.drawable.menu_no_pic_normal);
+        }
+        mSettingValues.setLoadImagesMode(!mSettingValues.getLoadImagesMode());
+    }
+
+    private void setFullScreenState() {
+        if(mSettingValues.getFullscreenState()) {
+            mMenuFullScreen.setImageResource(R.drawable.menu_full_screen_pressed);
+        }else {
+            mMenuFullScreen.setImageResource(R.drawable.menu_full_screen_normal);
+        }
+        mSettingValues.setFullScreenState(!mSettingValues.getFullscreenState());
+    }
+
+    public void shareUrl() {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_TITLE, "");
+        intent.putExtra(Intent.EXTRA_SUBJECT, "");
+        intent.putExtra(Intent.EXTRA_TEXT, "");
     }
 
     @Override

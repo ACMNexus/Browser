@@ -110,4 +110,10 @@
         </attr>
     </declare-styleable>
 
+    <declare-styleable name="FileType">
+        <attr name="fileicon" format="reference" />
+        <attr name="filetitle" format="string" />
+        <attr name="filecount" format="string" />
+    </declare-styleable>
+
 </resources>

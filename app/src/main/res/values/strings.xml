@@ -1046,4 +1046,13 @@
     <string name="title_bar_button_search_mode">搜索</string>
     <string name="title_bar_button_request_mode">进入</string>
 
+    <string name="file_type_apk">安装包</string>
+    <string name="file_type_pic">图片</string>
+    <string name="file_type_video">视频</string>
+    <string name="file_type_music">音乐</string>
+    <string name="file_type_document">文档</string>
+    <string name="file_type_zip">压缩包</string>
+    <string name="file_type_web">离线网页</string>
+    <string name="file_type_other">其他</string>
+
 </resources>

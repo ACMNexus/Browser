@@ -10,6 +10,7 @@
         android:layout_height="fill_parent"
         android:layout_gravity="center"
         android:layout_weight="1"
+        android:background="@drawable/menu_press_background"
         android:scaleType="center"
         android:src="@drawable/common_titlebar_btn_back" />
 
@@ -19,6 +20,7 @@
         android:layout_height="fill_parent"
         android:layout_gravity="center"
         android:layout_weight="1"
+        android:background="@drawable/menu_press_background"
         android:scaleType="center"
         android:src="@drawable/common_titlebar_forward" />
 
@@ -28,6 +30,7 @@
         android:layout_height="fill_parent"
         android:layout_gravity="center"
         android:layout_weight="1"
+        android:background="@drawable/menu_press_background"
         android:scaleType="center"
         android:src="@drawable/common_titlebar_btn_tools" />
 
@@ -37,6 +40,7 @@
         android:layout_height="fill_parent"
         android:layout_gravity="center"
         android:layout_weight="1"
+        android:background="@drawable/menu_press_background"
         android:scaleType="center"
         android:src="@drawable/common_titlebar_homepage" />
 
@@ -46,6 +50,7 @@
         android:layout_height="fill_parent"
         android:layout_gravity="center"
         android:layout_weight="1"
+        android:background="@drawable/menu_press_background"
         android:gravity="center">
 
         <TextView

@@ -121,12 +121,27 @@ public class SettingValues implements PreferenceKeys {
         mPrefs.edit().putBoolean(PREF_AUTOFILL_ENABLED, value).apply();
     }
 
-    public boolean loadImages() {
+    /**
+     * state true 表示自动加载图片，false表示不加载图片
+     */
+    public boolean getLoadImagesMode() {
         return mPrefs.getBoolean(PREF_LOAD_IMAGES, true);
     }
 
-    public void setLoadImagesState(boolean state) {
+    /**
+     * 设置图片加载的状态， true表示加载图片
+     * @param state
+     */
+    public void setLoadImagesMode(boolean state) {
         mPrefs.edit().putBoolean(PREF_LOAD_IMAGES, state).apply();
+    }
+
+    public boolean getFullscreenState() {
+        return mPrefs.getBoolean(PREF_FULLSCREEN, false);
+    }
+
+    public void setFullScreenState(boolean state) {
+        mPrefs.edit().putBoolean(PREF_FULLSCREEN, state).apply();
     }
 }
 

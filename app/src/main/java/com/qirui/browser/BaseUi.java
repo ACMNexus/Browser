@@ -138,7 +138,7 @@ public abstract class BaseUi implements UI {
         mBottomTools = (LinearLayout) frameLayout.findViewById(R.id.bottom_menu);
         mBottomMenuPopup = (MenuToolBar) frameLayout.findViewById(R.id.bottom_pop_tool);
 
-        setFullscreen(BrowserSettings.getInstance().useFullscreen());
+        setFullscreen(BrowserSettings.getInstance().getSettingValues().getFullscreenState());
         mGenericFavicon = res.getDrawable(R.drawable.app_web_browser_sm);
         mTitleBar = new TitleBar(mActivity, mUiController, this, mContentView);
         mMenuBar = new MenuBar(mActivity, mUiController, this, mBottomTools);

@@ -42,8 +42,7 @@ public class BrowserPreferencesPage extends PreferenceActivity {
 
         ActionBar actionBar = getActionBar();
         if (actionBar != null) {
-            actionBar.setDisplayOptions(
-                    ActionBar.DISPLAY_HOME_AS_UP, ActionBar.DISPLAY_HOME_AS_UP);
+            actionBar.setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP, ActionBar.DISPLAY_HOME_AS_UP);
         }
     }
 

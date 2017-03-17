@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/file_download_bg"
@@ -8,18 +9,102 @@
 
     <ScrollView
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="50dip"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="15dip"
                 android:background="@color/white"
+                android:gravity="center"
                 android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.qirui.browser.view.FileSortItemView
+                        android:layout_width="0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:fileicon="@drawable/filesystem_icon_apk"
+                        app:filetitle="@string/file_type_apk" />
+
+                    <com.qirui.browser.view.FileSortItemView
+                        android:layout_width="0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:fileicon="@drawable/filesystem_icon_photo"
+                        app:filetitle="@string/file_type_pic" />
+
+                    <com.qirui.browser.view.FileSortItemView
+                        android:layout_width="0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:fileicon="@drawable/filesystem_icon_movie"
+                        app:filetitle="@string/file_type_video" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.qirui.browser.view.FileSortItemView
+                        android:layout_width="0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:fileicon="@drawable/filesystem_icon_music"
+                        app:filetitle="@string/file_type_music" />
+
+                    <com.qirui.browser.view.FileSortItemView
+                        android:layout_width="0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:fileicon="@drawable/filesystem_icon_text"
+                        app:filetitle="@string/file_type_document" />
+
+                    <com.qirui.browser.view.FileSortItemView
+                        android:layout_width="0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:fileicon="@drawable/filesystem_icon_rar"
+                        app:filetitle="@string/file_type_zip" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.qirui.browser.view.FileSortItemView
+                        android:layout_width="0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:fileicon="@drawable/filesystem_icon_web"
+                        app:filetitle="@string/file_type_web" />
+
+                    <com.qirui.browser.view.FileSortItemView
+                        android:layout_width="0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:fileicon="@drawable/filesystem_icon_word"
+                        app:filetitle="@string/file_type_other" />
+
+                    <com.qirui.browser.view.FileSortItemView
+                        android:layout_width="0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:visibility="invisible" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -27,7 +112,7 @@
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="50dip"
-                android:layout_marginTop="20dip"
+                android:layout_marginTop="15dip"
                 android:background="@color/white">
 
                 <ImageView
@@ -162,6 +247,7 @@
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="50dip"
+                android:layout_marginBottom="15dip"
                 android:background="@color/white">
 
                 <ImageView
