@@ -143,5 +143,21 @@ public class SettingValues implements PreferenceKeys {
     public void setFullScreenState(boolean state) {
         mPrefs.edit().putBoolean(PREF_FULLSCREEN, state).apply();
     }
+
+    /**
+     * 设置访问的模式， true表示无痕模式，不保存历史记录
+     * @param mode
+     */
+    public void setPrivateVisite(boolean mode) {
+        mPrefs.edit().putBoolean(PREF_VISIT_MODE, mode).apply();
+    }
+
+    /**
+     * 获取访问的模式，true 表示是私有的访问，无痕模式的；否则是保存历史记录的
+     * @return
+     */
+    public boolean getPrivateMode() {
+        return mPrefs.getBoolean(PREF_VISIT_MODE, false);
+    }
 }
 

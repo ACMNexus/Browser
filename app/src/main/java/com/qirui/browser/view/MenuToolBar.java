@@ -117,10 +117,16 @@ public class MenuToolBar extends RelativeLayout implements View.OnClickListener 
                     mMenuFullScreen.setImageResource(R.drawable.menu_full_screen_normal);
                 }
 
-                if(mSettingValues.getLoadImagesMode()) {
+                if (mSettingValues.getLoadImagesMode()) {
                     mMenuNoPicture.setImageResource(R.drawable.menu_no_pic_normal);
-                }else {
+                } else {
                     mMenuNoPicture.setImageResource(R.drawable.menu_no_pic_pressed);
+                }
+
+                if(mSettingValues.getPrivateMode()) {
+                    mMenuTraceMode.setImageResource(R.drawable.menu_no_history_pressed);
+                }else {
+                    mMenuTraceMode.setImageResource(R.drawable.menu_no_history_normal);
                 }
             }
 
@@ -196,6 +202,7 @@ public class MenuToolBar extends RelativeLayout implements View.OnClickListener 
                 setFullScreenState();
                 break;
             case R.id.menu_trace_type:
+                setVisitedMode();
                 break;
             case R.id.menu_addbookmark:
                 mUiController.bookmarkCurrentPage();
@@ -241,6 +248,15 @@ public class MenuToolBar extends RelativeLayout implements View.OnClickListener 
             mMenuNoPicture.setImageResource(R.drawable.menu_no_pic_normal);
         }
         mSettingValues.setLoadImagesMode(!mSettingValues.getLoadImagesMode());
+    }
+
+    private void setVisitedMode() {
+        if(!mSettingValues.getPrivateMode()) {
+            mMenuTraceMode.setImageResource(R.drawable.menu_no_history_normal);
+        }else {
+            mMenuTraceMode.setImageResource(R.drawable.menu_no_history_pressed);
+        }
+        mSettingValues.setPrivateVisite(!mSettingValues.getPrivateMode());
     }
 
     private void setFullScreenState() {
