@@ -44,6 +44,16 @@ public class SettingValues implements PreferenceKeys {
         return WebSettings.PluginState.valueOf(state);
     }
 
+    public void setPluginMode(boolean mode) {
+        String state = mode ? "ON" : "OFF";
+        mPrefs.edit().putString(PREF_PLUGIN_STATE, state);
+    }
+
+    public boolean getPluginMode() {
+        String state = mPrefs.getString(PREF_PLUGIN_STATE, "ON");
+        return "ON".equals(state) ? true : false;
+    }
+
     public WebSettings.ZoomDensity getDefaultZoom() {
         String zoom = mPrefs.getString(PREF_DEFAULT_ZOOM, "MEDIUM");
         return WebSettings.ZoomDensity.valueOf(zoom);
@@ -113,10 +123,34 @@ public class SettingValues implements PreferenceKeys {
         mPrefs.edit().putString(PREF_USER_AGENT, userAgentIndex + "").commit();
     }
 
+    /**
+     * 是否阻止弹出框, true表示阻止弹出框
+     * @return
+     */
+    public boolean isBlockPopupWindows() {
+        return mPrefs.getBoolean(PREF_BLOCK_POPUP_WINDOWS, true);
+    }
+
+    /**
+     * 设置是否阻止弹出框，true表示阻止
+     * @param mode
+     */
+    public void setBlockPopupWindows(boolean mode) {
+        mPrefs.edit().putBoolean(PREF_BLOCK_POPUP_WINDOWS, mode).commit();
+    }
+
+    /**
+     * 表单是否自动填充
+     * @return
+     */
     public boolean isAutofillEnabled() {
         return mPrefs.getBoolean(PREF_AUTOFILL_ENABLED, true);
     }
 
+    /**
+     * 设置表单是否自动填充
+     * @param value
+     */
     public void setAutofillEnabled(boolean value) {
         mPrefs.edit().putBoolean(PREF_AUTOFILL_ENABLED, value).apply();
     }
@@ -158,6 +192,54 @@ public class SettingValues implements PreferenceKeys {
      */
     public boolean getPrivateMode() {
         return mPrefs.getBoolean(PREF_VISIT_MODE, false);
+    }
+
+    /**
+     * 是否自动调整页面
+     * @return
+     */
+    public boolean autofitPages() {
+        return mPrefs.getBoolean(PREF_AUTOFIT_PAGES, true);
+    }
+
+    public void setAutoFitPages(boolean state) {
+        mPrefs.edit().putBoolean(PREF_AUTOFIT_PAGES, state).commit();
+    }
+
+    /**
+     * 是否强制启用缩放
+     * @return
+     */
+    public boolean forceEnableUserScalable() {
+        return mPrefs.getBoolean(PREF_FORCE_USERSCALABLE, false);
+    }
+
+    /**
+     * 设置是否强制启用缩放功能
+     * @param state
+     */
+    public void setForceScaleable(boolean state) {
+        mPrefs.edit().putBoolean(PREF_FORCE_USERSCALABLE, state).commit();
+    }
+
+    public void setConfirmExitMode(boolean mode) {
+        mPrefs.edit().putBoolean(PREF_EXIT_CONFIRM, mode).commit();
+    }
+
+    public boolean getConfirmExitMode() {
+        return mPrefs.getBoolean(PREF_EXIT_CONFIRM, true);
+    }
+
+    /**
+     * 设置是否开启广告拦截
+     * @param state
+     */
+    public void setBlockAdMode(boolean state) {
+        mPrefs.edit().putBoolean(PREF_BLOCK_AD, state).commit();
+    }
+
+    public boolean getBlockAdMode() {
+        return mPrefs.getBoolean(PREF_BLOCK_AD, true);
     }
 }
 

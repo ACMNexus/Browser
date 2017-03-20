@@ -476,8 +476,7 @@ public class Tab implements PictureListener {
          * FIXME: Not sure what to do when reloading the page.
          */
         @Override
-        public void doUpdateVisitedHistory(WebView view, String url,
-                                           boolean isReload) {
+        public void doUpdateVisitedHistory(WebView view, String url, boolean isReload) {
             mWebViewController.doUpdateVisitedHistory(Tab.this, isReload);
         }
 
@@ -1661,8 +1660,7 @@ public class Tab implements PictureListener {
         mDataController.queryBookmarkStatus(getUrl(), mIsBookmarkCallback);
     }
 
-    private DataController.OnQueryUrlIsBookmark mIsBookmarkCallback
-            = new DataController.OnQueryUrlIsBookmark() {
+    private DataController.OnQueryUrlIsBookmark mIsBookmarkCallback = new DataController.OnQueryUrlIsBookmark() {
         @Override
         public void onQueryUrlIsBookmark(String url, boolean isBookmark) {
             if (mCurrentState.mUrl.equals(url)) {

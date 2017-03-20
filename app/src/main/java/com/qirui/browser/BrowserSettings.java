@@ -234,11 +234,13 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
         settings.setPluginState(mSettingValues.getPluginState());
         settings.setTextZoom(getTextZoom());
         settings.setLayoutAlgorithm(getLayoutAlgorithm());
-        settings.setJavaScriptCanOpenWindowsAutomatically(!blockPopupWindows());
+        settings.setJavaScriptCanOpenWindowsAutomatically(!mSettingValues.isBlockPopupWindows());
         settings.setLoadsImagesAutomatically(mSettingValues.getLoadImagesMode());
         settings.setLoadWithOverviewMode(loadPageInOverviewMode());
         settings.setSavePassword(mSettingValues.rememberPasswords());
         settings.setSaveFormData(mSettingValues.saveFormdata());
+        settings.setBuiltInZoomControls(mSettingValues.forceEnableUserScalable());
+        settings.setSupportZoom(mSettingValues.forceEnableUserScalable());
         settings.setUseWideViewPort(isWideViewport());
 
         String ua = mCustomUserAgents.get(settings);
@@ -336,7 +338,7 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
 
     public LayoutAlgorithm getLayoutAlgorithm() {
         LayoutAlgorithm layoutAlgorithm = LayoutAlgorithm.NORMAL;
-        if (autofitPages()) {
+        if (mSettingValues.autofitPages()) {
             layoutAlgorithm = LayoutAlgorithm.NARROW_COLUMNS;
         }
         if (isDebugEnabled()) {
@@ -551,10 +553,6 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
         return getAdjustedMinimumFontSize(minFont);
     }
 
-    public boolean forceEnableUserScalable() {
-        return mPrefs.getBoolean(PREF_FORCE_USERSCALABLE, false);
-    }
-
     public int getTextZoom() {
         requireInitialization();
         int textZoom = mPrefs.getInt(PREF_TEXT_ZOOM, 10);
@@ -597,15 +595,6 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
         return mPrefs.getBoolean(PREF_LOAD_PAGE, true);
     }
 
-    public boolean autofitPages() {
-        return mPrefs.getBoolean(PREF_AUTOFIT_PAGES, true);
-    }
-
-    public boolean blockPopupWindows() {
-        return mPrefs.getBoolean(PREF_BLOCK_POPUP_WINDOWS, true);
-    }
-
-    // -----------------------------
     // getter/setters for general_preferences.xml
     // -----------------------------
     public String getHomePage() {

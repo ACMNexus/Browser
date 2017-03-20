@@ -81,6 +81,7 @@ import android.widget.Toast;
 import com.qirui.browser.provider.BrowserProvider2.Thumbnails;
 import com.qirui.browser.util.Constants;
 import com.qirui.browser.util.ReflectUtils;
+import com.qirui.browser.util.SettingValues;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -212,6 +213,7 @@ public class Controller
     // Tabs' notion of whether they represent bookmarked sites.
     private ContentObserver mBookmarksObserver;
     private CrashRecoveryHandler mCrashRecoveryHandler;
+    private SettingValues mSettingValues;
 
     private boolean mBlockEvents;
 
@@ -225,6 +227,7 @@ public class Controller
         mCrashRecoveryHandler = CrashRecoveryHandler.initialize(this);
         mCrashRecoveryHandler.preloadCrashState();
         mFactory = new BrowserWebViewFactory(browser);
+        mSettingValues = getSettings().getSettingValues();
 
         mUrlHandler = new UrlHandler(this);
         mIntentHandler = new IntentHandler(mActivity, this);
@@ -965,7 +968,7 @@ public class Controller
     @Override
     public void doUpdateVisitedHistory(Tab tab, boolean isReload) {
         // Don't save anything in private browsing mode
-        if (tab.isPrivateBrowsingEnabled()) return;
+        if (tab.isPrivateBrowsingEnabled() || mSettingValues.getPrivateMode()) return;
         String url = tab.getOriginalUrl();
 
         if (TextUtils.isEmpty(url)

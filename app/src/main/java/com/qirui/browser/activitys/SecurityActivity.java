@@ -51,25 +51,25 @@ public class SecurityActivity extends BaseActivity implements BrowserSettingItem
     public void onStateChange(View view, boolean state) {
         switch (view.getId()) {
             case R.id.cookieItem:
-                mCookieItem.setCheckedNoEvent(state);
                 mSettingValues.setAcceptCookiesState(mCookieItem.isChecked());
                 break;
             case R.id.dataItem:
-                mDataItem.setCheckedNoEvent(state);
                 mSettingValues.setFormdata(state);
                 break;
             case R.id.locationItem:
-                mLocationItem.setCheckedNoEvent(state);
                 mSettingValues.setGeolocationState(state);
                 break;
             case R.id.passwordItem:
-                mPasswordItem.setCheckedNoEvent(state);
                 mSettingValues.setRememberPasswordState(state);
                 break;
             case R.id.securityWarnItem:
-                mSecurityWarnItem.setCheckedNoEvent(state);
                 mSettingValues.setSecurityWarnings(state);
                 break;
+        }
+
+        if(view instanceof BrowserSettingItem) {
+            BrowserSettingItem item = (BrowserSettingItem) view;
+            item.setCheckedNoEvent(state);
         }
     }
 }

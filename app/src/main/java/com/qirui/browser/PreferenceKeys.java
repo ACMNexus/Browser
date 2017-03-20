@@ -84,6 +84,8 @@ public interface PreferenceKeys {
     // ----------------------
     static final String PREF_ENABLE_QUICK_CONTROLS = "enable_quick_controls";
     static final String PREF_FULLSCREEN = "fullscreen";
+    static final String PREF_EXIT_CONFIRM = "exit_confirm";
+    static final String PREF_BLOCK_AD = "block_ad";
 
     // ----------------------
     // Keys for privacy_security_preferences.xml

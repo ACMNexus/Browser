@@ -41,7 +41,14 @@ public class AdvancedActivity extends BaseActivity implements BrowserSettingItem
         mExitConfirm = (BrowserSettingItem) findViewById(R.id.setting_exit_confirm);
 
 
+        mAutoFit.setCheckedImmediately(mSettingValues.autofitPages());
+        mAdBlock.setCheckedImmediately(mSettingValues.getBlockAdMode());
+        mPluginState.setCheckedImmediately(mSettingValues.getPluginMode());
+        mLoadImage.setCheckedImmediately(mSettingValues.getLoadImagesMode());
+        mBlockPopup.setCheckedImmediately(mSettingValues.isBlockPopupWindows());
+        mExitConfirm.setCheckedImmediately(mSettingValues.getConfirmExitMode());
         mEnableJavaScript.setCheckedImmediately(mSettingValues.enableJavascript());
+        mForceScale.setCheckedImmediately(mSettingValues.forceEnableUserScalable());
     }
 
     private void setListener() {
@@ -61,6 +68,27 @@ public class AdvancedActivity extends BaseActivity implements BrowserSettingItem
         switch (view.getId()) {
             case R.id.enableJavaScript:
                 mSettingValues.setJavaScriptState(state);
+                break;
+            case R.id.block_popups:
+                mSettingValues.setBlockPopupWindows(state);
+                break;
+            case R.id.load_image:
+                mSettingValues.setLoadImagesMode(state);
+                break;
+            case R.id.auto_fit:
+                mSettingValues.setAutoFitPages(state);
+                break;
+            case R.id.setting_force_scale:
+                mSettingValues.setForceScaleable(state);
+                break;
+            case R.id.plugin_state:
+                mSettingValues.setPluginMode(state);
+                break;
+            case R.id.setting_exit_confirm:
+                mSettingValues.setConfirmExitMode(state);
+                break;
+            case R.id.setting_filter_ad:
+                mSettingValues.setBlockAdMode(state);
                 break;
         }
 

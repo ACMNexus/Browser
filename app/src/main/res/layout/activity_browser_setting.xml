@@ -107,10 +107,10 @@
         <TextView
             android:id="@+id/reset_browser_config"
             android:layout_width="fill_parent"
-            android:layout_height="60dip"
+            android:layout_height="50dip"
             android:layout_marginBottom="15dip"
             android:layout_marginTop="15dip"
-            android:background="@color/white"
+            android:background="@drawable/setting_item_background"
             android:gravity="center"
             android:text="@string/setting_reset_browser_config"
             android:textColor="@color/black"
