@@ -42,7 +42,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import com.android.browser.R;
+import com.qirui.browser.R;
 import com.qirui.browser.util.DisplayUtils;
 import java.util.Locale;
 

@@ -12,7 +12,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 
-
 public interface ActivityController {
 
     void start(Intent intent);
@@ -70,5 +69,4 @@ public interface ActivityController {
     boolean dispatchTrackballEvent(MotionEvent ev);
 
     boolean dispatchGenericMotionEvent(MotionEvent ev);
-
 }

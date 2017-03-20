@@ -39,7 +39,7 @@ import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
 
-import com.android.browser.R;
+import com.qirui.browser.R;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;

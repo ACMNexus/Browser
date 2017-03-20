@@ -8,11 +8,12 @@ import android.content.Intent;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import com.qirui.browser.BaseUi;
-import com.android.browser.R;
+import com.qirui.browser.R;
 import com.qirui.browser.BrowserSettings;
 import com.qirui.browser.UI;
 import com.qirui.browser.UiController;
@@ -254,9 +255,17 @@ public class MenuToolBar extends RelativeLayout implements View.OnClickListener 
     public void shareUrl() {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_TITLE, "");
-        intent.putExtra(Intent.EXTRA_SUBJECT, "");
-        intent.putExtra(Intent.EXTRA_TEXT, "");
+        WebView webView = mBaseUI.getWebView();
+        String title = "";
+        String url = "";
+        if(webView != null) {
+            title = webView.getTitle();
+            url = webView.getUrl();
+        }
+        intent.putExtra(Intent.EXTRA_TITLE, title);
+        intent.putExtra(Intent.EXTRA_TEXT, url);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        mContext.startActivity(Intent.createChooser(intent, mContext.getString(R.string.share_app_title)));
     }
 
     @Override

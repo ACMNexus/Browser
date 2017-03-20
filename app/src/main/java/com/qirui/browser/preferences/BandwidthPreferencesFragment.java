@@ -24,7 +24,7 @@ import android.preference.PreferenceScreen;
 
 import com.qirui.browser.BrowserSettings;
 import com.qirui.browser.PreferenceKeys;
-import com.android.browser.R;
+import com.qirui.browser.R;
 
 public class BandwidthPreferencesFragment extends PreferenceFragment {
 

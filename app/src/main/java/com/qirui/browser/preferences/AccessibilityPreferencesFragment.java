@@ -24,7 +24,7 @@ import android.webkit.WebView;
 
 import com.qirui.browser.BrowserSettings;
 import com.qirui.browser.PreferenceKeys;
-import com.android.browser.R;
+import com.qirui.browser.R;
 
 import java.text.NumberFormat;
 

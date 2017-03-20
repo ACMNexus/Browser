@@ -37,7 +37,7 @@ import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.qirui.browser.BrowserActivity;
-import com.android.browser.R;
+import com.qirui.browser.R;
 import com.qirui.browser.provider.BrowserProvider2;
 import com.qirui.browser.util.ReflectUtils;
 

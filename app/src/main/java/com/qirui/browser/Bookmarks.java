@@ -29,7 +29,6 @@ import android.util.Log;
 import android.webkit.WebIconDatabase;
 import android.widget.Toast;
 
-import com.android.browser.R;
 import com.qirui.browser.provider.BrowserContract;
 import com.qirui.browser.provider.BrowserContract.Combined;
 import com.qirui.browser.provider.BrowserContract.Images;

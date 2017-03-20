@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import com.android.browser.R;
+import com.qirui.browser.R;
 
 /**
  * Created by Luooh on 2017/2/14.
@@ -36,6 +36,7 @@ public class MenuItem extends LinearLayout {
         this.mContext = context;
         setGravity(Gravity.CENTER);
         setOrientation(LinearLayout.VERTICAL);
+        setBackgroundResource(R.drawable.menu_toolbar_press_bg);
         View contentView = LayoutInflater.from(mContext).inflate(R.layout.layout_menu_item, this);
 
         mMenuIcon = (ImageView) contentView.findViewById(R.id.menu_icon);
@@ -46,11 +47,6 @@ public class MenuItem extends LinearLayout {
         mMenuName.setText(menuName);
         mMenuIcon.setImageResource(iconId);
         typedArray.recycle();
-    }
-
-    @Override
-    protected void onFinishInflate() {
-        super.onFinishInflate();
     }
 
     public void setMenuIcon(int resId) {

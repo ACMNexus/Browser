@@ -29,8 +29,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.android.browser.R;
-
 import java.util.ArrayList;
 import java.util.List;
 

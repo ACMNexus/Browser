@@ -60,7 +60,6 @@ import android.webkit.WebView;
 import android.webkit.WebView.PictureListener;
 import android.webkit.WebViewClient;
 
-import com.android.browser.R;
 import com.qirui.browser.TabControl.OnThumbnailUpdatedListener;
 import com.qirui.browser.homepages.HomeProvider;
 import com.qirui.browser.util.ReflectUtils;

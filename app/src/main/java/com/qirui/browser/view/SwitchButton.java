@@ -26,7 +26,7 @@ import android.view.ViewConfiguration;
 import android.view.ViewParent;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.CompoundButton;
-import com.android.browser.R;
+import com.qirui.browser.R;
 
 /**
  * SwitchButton

@@ -19,7 +19,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.text.TextUtils;
 import android.util.Log;
-import com.android.browser.R;
+import com.qirui.browser.R;
 import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.Locale;

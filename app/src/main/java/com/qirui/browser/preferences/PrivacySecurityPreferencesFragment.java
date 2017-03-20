@@ -17,7 +17,7 @@
 package com.qirui.browser.preferences;
 
 import com.qirui.browser.PreferenceKeys;
-import com.android.browser.R;
+import com.qirui.browser.R;
 
 import android.app.Activity;
 import android.content.Intent;

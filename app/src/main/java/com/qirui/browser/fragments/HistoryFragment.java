@@ -14,7 +14,7 @@ import android.widget.ExpandableListView;
 
 import com.qirui.browser.CombinedBookmarksCallbacks;
 import com.qirui.browser.HistoryItem;
-import com.android.browser.R;
+import com.qirui.browser.R;
 import com.qirui.browser.adapter.HistoryAdapter;
 import com.qirui.browser.provider.BrowserContract;
 

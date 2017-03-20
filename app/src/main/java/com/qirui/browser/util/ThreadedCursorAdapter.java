@@ -26,7 +26,7 @@ import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.BaseAdapter;
 import android.widget.CursorAdapter;
-import com.android.browser.R;
+import com.qirui.browser.R;
 import java.lang.ref.WeakReference;
 
 public abstract class ThreadedCursorAdapter<T> extends BaseAdapter {

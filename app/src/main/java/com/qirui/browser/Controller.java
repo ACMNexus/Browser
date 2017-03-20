@@ -46,7 +46,6 @@ import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.provider.Browser;
 
-import com.android.browser.R;
 import com.qirui.browser.activitys.AddBookMarkActivity;
 import com.qirui.browser.provider.BrowserContract;
 import com.qirui.browser.provider.BrowserContract.Images;

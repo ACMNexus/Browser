@@ -26,7 +26,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 
-import com.android.browser.R;
+import com.qirui.browser.R;
 
 public abstract class WebViewPreview extends Preference
         implements OnSharedPreferenceChangeListener {

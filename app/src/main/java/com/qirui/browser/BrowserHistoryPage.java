@@ -39,7 +39,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Browser;
 
-import com.android.browser.R;
 import com.qirui.browser.provider.BrowserContract;
 import com.qirui.browser.provider.BrowserContract.Combined;
 import com.qirui.browser.util.BookmarkUtils;

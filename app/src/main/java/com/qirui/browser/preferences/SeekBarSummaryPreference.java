@@ -22,7 +22,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import com.android.browser.R;
+import com.qirui.browser.R;
 import com.qirui.browser.preference.SeekBarPreference;
 
 public class SeekBarSummaryPreference extends SeekBarPreference {

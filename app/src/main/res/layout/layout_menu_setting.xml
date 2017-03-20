@@ -25,7 +25,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="15dip"
-            android:layout_marginTop="25dip"
+            android:layout_marginTop="15dip"
             android:orientation="horizontal">
 
             <ImageView
@@ -47,8 +47,7 @@
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:src="@drawable/menu_full_screen_normal"
-                />
+                android:src="@drawable/menu_full_screen_normal" />
 
             <ImageView
                 android:id="@+id/menu_trace_type"
@@ -62,44 +61,36 @@
         <View
             android:layout_width="fill_parent"
             android:layout_height="0.5dip"
-            android:layout_marginBottom="15dip"
+            android:layout_marginBottom="5dip"
             android:background="@color/content_divider" />
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="30dip"
+            android:layout_marginBottom="5dip"
             android:orientation="horizontal">
 
             <com.qirui.browser.view.MenuItem
                 android:id="@+id/menu_addbookmark"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                style="@style/menutoolbarStyle"
                 app:menu_icon="@drawable/menu_tool_addbookmark"
                 app:menu_name="@string/menu_bottom_add_bookmark" />
 
             <com.qirui.browser.view.MenuItem
                 android:id="@+id/menu_history"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                style="@style/menutoolbarStyle"
                 app:menu_icon="@drawable/menu_tool_history"
                 app:menu_name="@string/menu_bottom_history" />
 
             <com.qirui.browser.view.MenuItem
                 android:id="@+id/menu_download"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                style="@style/menutoolbarStyle"
                 app:menu_icon="@drawable/menu_tool_download"
                 app:menu_name="@string/menu_bottom_download" />
 
             <com.qirui.browser.view.MenuItem
                 android:id="@+id/menu_refresh"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                style="@style/menutoolbarStyle"
                 app:menu_icon="@drawable/menu_tool_refresh"
                 app:menu_name="@string/menu_bottom_refresh" />
 
@@ -108,38 +99,30 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dip"
+            android:layout_marginBottom="10dip"
             android:orientation="horizontal">
 
             <com.qirui.browser.view.MenuItem
                 android:id="@+id/menu_setting"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                style="@style/menutoolbarStyle"
                 app:menu_icon="@drawable/menu_tool_setting"
                 app:menu_name="@string/menu_bottom_setting" />
 
             <com.qirui.browser.view.MenuItem
                 android:id="@+id/menu_share"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                style="@style/menutoolbarStyle"
                 app:menu_icon="@drawable/menu_tool_share"
                 app:menu_name="@string/menu_bottom_share" />
 
             <com.qirui.browser.view.MenuItem
                 android:id="@+id/menu_tools"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                style="@style/menutoolbarStyle"
                 app:menu_icon="@drawable/menu_tool_tools"
                 app:menu_name="@string/menu_bottom_tools" />
 
             <com.qirui.browser.view.MenuItem
                 android:id="@+id/menu_exit"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                style="@style/menutoolbarStyle"
                 app:menu_icon="@drawable/menu_tool_exit"
                 app:menu_name="@string/menu_bottom_exit" />
 

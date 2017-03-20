@@ -25,7 +25,7 @@ import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import com.qirui.browser.BrowserSettings;
-import com.android.browser.R;
+import com.qirui.browser.R;
 
 public class FontSizePreview extends WebViewPreview {
 

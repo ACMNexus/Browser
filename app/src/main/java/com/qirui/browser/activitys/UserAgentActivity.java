@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.android.browser.R;
+import com.qirui.browser.R;
 import com.qirui.browser.adapter.UserAgentAdapter;
 import com.qirui.browser.bean.UserAgentInfo;
 import com.qirui.browser.util.Constants;

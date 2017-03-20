@@ -10,8 +10,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import com.android.browser.R;
-import com.qirui.browser.util.DisplayUtils;
+import com.qirui.browser.R;
 
 /**
  * Created by Luooh on 2017/3/17.

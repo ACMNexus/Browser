@@ -43,7 +43,7 @@ import android.util.Log;
 import android.util.Patterns;
 
 import com.qirui.browser.BrowserSettings;
-import com.android.browser.R;
+import com.qirui.browser.R;
 import com.qirui.browser.search.SearchEngine;
 
 import java.io.File;

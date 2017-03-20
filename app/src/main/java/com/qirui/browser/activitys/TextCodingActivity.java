@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import com.android.browser.R;
+import com.qirui.browser.R;
 import com.qirui.browser.adapter.TextCodingAdapter;
 import com.qirui.browser.bean.TextCodeInfo;
 import com.qirui.browser.util.Constants;

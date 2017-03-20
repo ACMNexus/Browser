@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.qirui.browser.BaseUi;
 import com.qirui.browser.PhoneUi;
-import com.android.browser.R;
+import com.qirui.browser.R;
 import com.qirui.browser.UiController;
 import com.qirui.browser.util.DisplayUtils;
 

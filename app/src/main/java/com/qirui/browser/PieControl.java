@@ -31,7 +31,6 @@ import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.TextView;
 
-import com.android.browser.R;
 import com.qirui.browser.view.PieItem;
 import com.qirui.browser.view.PieMenu;
 import com.qirui.browser.view.PieMenu.PieView.OnLayoutListener;

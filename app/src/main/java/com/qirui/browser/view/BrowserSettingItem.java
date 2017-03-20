@@ -9,7 +9,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import com.android.browser.R;
+import com.qirui.browser.R;
 import com.qirui.browser.util.DisplayUtils;
 
 /**
@@ -46,7 +46,7 @@ public class BrowserSettingItem extends RelativeLayout implements View.OnClickLi
     private void init(Context context, AttributeSet attrs) {
 
         this.mContext = context;
-        setBackgroundResource(R.color.white);
+        setBackgroundResource(R.drawable.setting_item_background);
         setLayoutParams(new RelativeLayout.LayoutParams(-1, DisplayUtils.dip2px(mContext, 60)));
         View contentView = LayoutInflater.from(mContext).inflate(R.layout.layout_browser_setting_item, this);
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.SettingItemStyle);

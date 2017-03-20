@@ -1,7 +1,7 @@
 package com.qirui.browser.activitys;
 
 import android.os.Bundle;
-import com.android.browser.R;
+import com.qirui.browser.R;
 
 /**
  * Created by lenvo on 2017/2/21.

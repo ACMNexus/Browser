@@ -33,7 +33,6 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
-import com.android.browser.R;
 import com.qirui.browser.UI.ComboViews;
 import com.qirui.browser.UrlInputView.StateListener;
 

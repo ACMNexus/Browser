@@ -447,5 +447,6 @@
     <string name="file_type_zip">压缩包</string>
     <string name="file_type_web">离线网页</string>
     <string name="file_type_other">其他</string>
+    <string name="share_app_title">分享链接</string>
 
 </resources>

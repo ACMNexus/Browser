@@ -7,7 +7,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import com.android.browser.R;
+import com.qirui.browser.R;
 import com.qirui.browser.adapter.SearchEngineAdapter;
 import com.qirui.browser.search.SearchEngine;
 import com.qirui.browser.search.SearchEngineInfo;

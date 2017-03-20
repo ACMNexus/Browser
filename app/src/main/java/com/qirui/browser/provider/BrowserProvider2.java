@@ -44,7 +44,7 @@ import android.provider.ContactsContract.RawContacts;
 import android.provider.SyncStateContract;
 import android.text.TextUtils;
 
-import com.android.browser.R;
+import com.qirui.browser.R;
 import com.qirui.browser.UrlUtils;
 import com.qirui.browser.widget.BookmarkThumbnailWidgetProvider;
 

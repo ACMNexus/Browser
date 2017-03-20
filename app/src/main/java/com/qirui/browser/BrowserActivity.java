@@ -35,7 +35,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 
-import com.android.browser.R;
 import com.qirui.browser.stub.NullController;
 import com.qirui.browser.view.SystemBarTintManager;
 
@@ -55,9 +54,6 @@ public class BrowserActivity extends Activity {
 
     @Override
     public void onCreate(Bundle icicle) {
-        if (LOGV_ENABLED) {
-            Log.v(LOGTAG, this + " onStart, has state: " + (icicle == null ? "false" : "true"));
-        }
         super.onCreate(icicle);
         setStatusBarColor();
 
@@ -140,9 +136,6 @@ public class BrowserActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (LOGV_ENABLED) {
-            Log.v(LOGTAG, "BrowserActivity.onResume: this=" + this);
-        }
         mController.onResume();
     }
 

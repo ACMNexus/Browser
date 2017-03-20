@@ -14,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.qirui.browser.BrowserSettings;
-import com.android.browser.R;
+import com.qirui.browser.R;
 import com.qirui.browser.util.SettingValues;
 import com.qirui.browser.view.SystemBarTintManager;
 

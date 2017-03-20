@@ -47,7 +47,6 @@ import android.widget.ImageView;
 import android.widget.ResourceCursorAdapter;
 import android.widget.TextView;
 
-import com.android.browser.R;
 import com.qirui.browser.provider.SnapshotProvider.Snapshots;
 
 import java.text.DateFormat;

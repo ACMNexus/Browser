@@ -41,7 +41,7 @@ import android.os.Build;
 import android.os.Message;
 import android.provider.Browser;
 
-import com.android.browser.R;
+import com.qirui.browser.R;
 import com.qirui.browser.provider.BrowserContract;
 
 public class BookmarkUtils {

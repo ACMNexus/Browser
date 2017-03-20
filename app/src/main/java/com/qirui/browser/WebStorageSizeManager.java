@@ -16,7 +16,6 @@
 
 package com.qirui.browser;
 
-import com.android.browser.R;
 import com.qirui.browser.preferences.WebsiteSettingsFragment;
 
 import android.app.Notification;

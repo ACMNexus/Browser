@@ -16,7 +16,6 @@
 
 package com.qirui.browser;
 
-import com.android.browser.R;
 import com.qirui.browser.addbookmark.FolderSpinner;
 import com.qirui.browser.addbookmark.FolderSpinnerAdapter;
 import com.qirui.browser.http.WebAddress;

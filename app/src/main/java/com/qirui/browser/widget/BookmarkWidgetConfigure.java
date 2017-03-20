@@ -32,7 +32,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.qirui.browser.AddBookmarkPage.BookmarkAccount;
-import com.android.browser.R;
+import com.qirui.browser.R;
 import com.qirui.browser.provider.BrowserProvider2;
 
 public class BookmarkWidgetConfigure extends ListActivity

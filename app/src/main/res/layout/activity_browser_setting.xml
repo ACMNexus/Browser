@@ -75,14 +75,6 @@
             app:setting_value="UTF-8" />
 
         <com.qirui.browser.view.BrowserSettingItem
-            android:id="@+id/setting_statusbar"
-            android:layout_width="fill_parent"
-            android:layout_height="60dip"
-            app:setting_state="4"
-            app:setting_title="@string/pref_setting_display_statusbar_title"
-            app:setting_value="UTF-8" />
-
-        <com.qirui.browser.view.BrowserSettingItem
             android:id="@+id/setting_default_browser"
             android:layout_width="fill_parent"
             android:layout_height="60dip"

@@ -26,8 +26,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
-import com.android.browser.R;
-
 /**
  * HTTP authentication dialog.
  */

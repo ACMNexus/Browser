@@ -33,7 +33,6 @@ import android.webkit.CookieManager;
 import android.webkit.URLUtil;
 import android.widget.Toast;
 
-import com.android.browser.R;
 import com.qirui.browser.http.WebAddress;
 
 /**

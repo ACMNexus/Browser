@@ -22,7 +22,6 @@ import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.view.MenuItem;
 
-import com.android.browser.R;
 import com.qirui.browser.preferences.BandwidthPreferencesFragment;
 import com.qirui.browser.preferences.DebugPreferencesFragment;
 

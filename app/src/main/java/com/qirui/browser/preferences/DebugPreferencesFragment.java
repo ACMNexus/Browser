@@ -24,7 +24,7 @@ import android.preference.PreferenceFragment;
 import com.qirui.browser.BrowserSettings;
 import com.qirui.browser.GoogleAccountLogin;
 import com.qirui.browser.PreferenceKeys;
-import com.android.browser.R;
+import com.qirui.browser.R;
 
 public class DebugPreferencesFragment extends PreferenceFragment
         implements OnPreferenceClickListener {

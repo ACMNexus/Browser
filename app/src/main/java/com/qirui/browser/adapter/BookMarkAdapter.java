@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.android.browser.R;
+import com.qirui.browser.R;
 import com.qirui.browser.bean.BookMarkInfo;
 
 /**

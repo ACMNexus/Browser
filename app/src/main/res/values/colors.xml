@@ -38,7 +38,7 @@
     <color name="navtab_bg">#80606060</color>
     <color name="content_divider">#E5E5E5</color>
     <color name="file_download_bg">#F0F0F0</color>
-    <color name="menubar_show_background">#99000000</color>
+    <color name="menubar_show_background">#55000000</color>
     <color name="transparent">@android:color/transparent</color>
 
     <color name="ksw_md_ripple_normal">#1E000000</color>
@@ -53,5 +53,6 @@
     <color name="colorSeekBarDefault">#c3c3c3</color>
     <color name="colorAccent">#5DA7FD</color>
     <color name="statusbar_bg">#B2B2B2</color>
+    <color name="ripple_setting_item_bg">#c5c5c5</color>
 
 </resources>

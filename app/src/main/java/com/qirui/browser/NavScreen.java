@@ -39,7 +39,6 @@ import android.widget.TextView;
 
 import com.qirui.browser.NavTabScroller.OnLayoutListener;
 import com.qirui.browser.NavTabScroller.OnRemoveListener;
-import com.android.browser.R;
 
 import java.util.HashMap;
 

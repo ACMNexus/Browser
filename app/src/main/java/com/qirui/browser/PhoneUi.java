@@ -39,7 +39,6 @@ import android.view.accessibility.AccessibilityEvent;
 import android.webkit.WebView;
 import android.widget.ImageView;
 
-import com.android.browser.R;
 import com.qirui.browser.UrlInputView.StateListener;
 import com.qirui.browser.util.DisplayUtils;
 import com.qirui.browser.util.ReflectUtils;

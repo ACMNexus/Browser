@@ -19,7 +19,7 @@ package com.qirui.browser.preferences;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 
-import com.android.browser.R;
+import com.qirui.browser.R;
 
 public class LabPreferencesFragment extends PreferenceFragment {
 

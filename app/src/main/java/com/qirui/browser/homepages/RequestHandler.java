@@ -26,7 +26,7 @@ import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 
-import com.android.browser.R;
+import com.qirui.browser.R;
 import com.qirui.browser.provider.BrowserContract;
 
 import java.io.File;

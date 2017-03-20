@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.util.SparseArray;
 
-import com.android.browser.R;
+import com.qirui.browser.R;
 import com.qirui.browser.fragments.BaseFragment;
 import com.qirui.browser.fragments.BookMarkFragment;
 import com.qirui.browser.fragments.HistoryFragment;

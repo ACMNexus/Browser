@@ -33,7 +33,6 @@ import android.webkit.WebView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.android.browser.R;
 import com.qirui.browser.util.ReflectUtils;
 
 /**

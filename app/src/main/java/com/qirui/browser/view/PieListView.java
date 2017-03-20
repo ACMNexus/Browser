@@ -16,7 +16,7 @@
 
 package com.qirui.browser.view;
 
-import com.android.browser.R;
+import com.qirui.browser.R;
 
 import android.content.Context;
 import android.graphics.Canvas;

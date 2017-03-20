@@ -25,8 +25,6 @@ import android.provider.MediaStore;
 import android.webkit.ValueCallback;
 import android.widget.Toast;
 
-import com.android.browser.R;
-
 import java.io.File;
 
 /**

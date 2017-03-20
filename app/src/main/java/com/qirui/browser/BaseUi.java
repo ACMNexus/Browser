@@ -51,7 +51,6 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.android.browser.R;
 import com.qirui.browser.activitys.MarkHistoryActivity;
 import com.qirui.browser.view.MenuBar;
 import com.qirui.browser.view.MenuToolBar;

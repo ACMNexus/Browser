@@ -7,5 +7,4 @@
     android:divider="@null"
     android:dividerHeight="0dip"
     android:fitsSystemWindows="true"
-    android:listSelector="@color/transparent"
     android:scrollbars="none" />

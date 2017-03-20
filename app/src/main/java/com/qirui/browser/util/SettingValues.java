@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 import android.webkit.WebSettings;
 import com.qirui.browser.BrowserSettings;
 import com.qirui.browser.PreferenceKeys;
-import com.android.browser.R;
+import com.qirui.browser.R;
 import com.qirui.browser.search.SearchEngine;
 
 /**

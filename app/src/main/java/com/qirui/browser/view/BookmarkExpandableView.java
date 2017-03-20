@@ -34,7 +34,7 @@ import android.widget.TextView;
 
 import com.qirui.browser.BreadCrumbView;
 import com.qirui.browser.BrowserBookmarksAdapter;
-import com.android.browser.R;
+import com.qirui.browser.R;
 import com.qirui.internal.view.menu.MenuBuilder;
 
 import org.json.JSONException;

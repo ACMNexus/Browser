@@ -10,7 +10,7 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import com.qirui.browser.BookmarksLoader;
-import com.android.browser.R;
+import com.qirui.browser.R;
 import com.qirui.browser.adapter.BookMarkAdapter;
 import com.qirui.browser.bean.BookMarkInfo;
 import com.qirui.browser.util.IOUtils;

@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginBottom="10dip"
+        android:layout_marginBottom="5dip"
         android:src="@drawable/menu_full_screen_normal" />
 
     <TextView
@@ -20,6 +20,6 @@
         android:layout_gravity="center"
         android:textColor="@color/black"
         android:singleLine="true"
-        android:textSize="13sp" />
+        android:textSize="12.5sp" />
 
 </merge>

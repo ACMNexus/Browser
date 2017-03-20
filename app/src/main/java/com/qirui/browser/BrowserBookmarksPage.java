@@ -35,7 +35,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
-import com.android.browser.R;
 import com.qirui.browser.fragments.BaseFragment;
 import com.qirui.browser.provider.BrowserContract;
 

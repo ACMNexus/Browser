@@ -22,8 +22,6 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 
-import com.android.browser.R;
-
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;

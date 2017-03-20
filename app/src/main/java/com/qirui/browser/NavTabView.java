@@ -26,8 +26,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.android.browser.R;
-
 public class NavTabView extends LinearLayout {
 
     private ViewGroup mContent;

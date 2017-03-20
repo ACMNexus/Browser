@@ -41,7 +41,6 @@ import android.webkit.WebStorage;
 import android.webkit.WebView;
 import android.webkit.WebViewDatabase;
 
-import com.android.browser.R;
 import com.qirui.browser.homepages.HomeProvider;
 import com.qirui.browser.provider.BrowserProvider;
 import com.qirui.browser.search.SearchEngine;

@@ -30,7 +30,7 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.util.TypedValue;
 
-import com.android.browser.R;
+import com.qirui.browser.R;
 
 public class Template {
 

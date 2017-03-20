@@ -33,7 +33,6 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.browser.R;
 import com.qirui.browser.provider.BrowserContract;
 import com.qirui.browser.provider.BrowserProvider2.OmniboxSuggestions;
 import com.qirui.browser.search.SearchEngine;

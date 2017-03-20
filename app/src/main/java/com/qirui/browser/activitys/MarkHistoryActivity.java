@@ -5,7 +5,7 @@ import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
 
 import com.qirui.browser.CombinedBookmarksCallbacks;
-import com.android.browser.R;
+import com.qirui.browser.R;
 import com.qirui.browser.adapter.MarkHistoryAdapter;
 import com.qirui.browser.view.PagerSlidingTabStrip;
 

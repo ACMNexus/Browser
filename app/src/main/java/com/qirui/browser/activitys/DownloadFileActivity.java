@@ -3,7 +3,7 @@ package com.qirui.browser.activitys;
 import android.os.Bundle;
 import android.view.View;
 
-import com.android.browser.R;
+import com.qirui.browser.R;
 
 /**
  * Created by Luooh on 2017/2/15.

@@ -36,7 +36,7 @@ import android.widget.TextView.OnEditorActionListener;
 
 import com.qirui.browser.BrowserPreferencesPage;
 import com.qirui.browser.BrowserSettings;
-import com.android.browser.R;
+import com.qirui.browser.R;
 import com.qirui.browser.UrlUtils;
 import com.qirui.browser.homepages.HomeProvider;
 

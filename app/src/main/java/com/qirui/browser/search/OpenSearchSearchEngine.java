@@ -15,7 +15,7 @@
  */
 package com.qirui.browser.search;
 
-import com.android.browser.R;
+import com.qirui.browser.R;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;

@@ -43,7 +43,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.browser.R;
+import com.qirui.browser.R;
 import com.qirui.browser.WebStorageSizeManager;
 
 import java.util.HashMap;

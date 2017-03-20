@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import com.qirui.browser.BrowserActivity;
 import com.qirui.browser.BrowserSettings;
-import com.android.browser.R;
+import com.qirui.browser.R;
 import com.qirui.browser.util.ActivityUtils;
 import com.qirui.browser.util.Constants;
 import com.qirui.browser.view.BrowserSettingItem;

@@ -28,7 +28,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.android.browser.R;
 import com.qirui.browser.UrlInputView.StateListener;
 
 @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)

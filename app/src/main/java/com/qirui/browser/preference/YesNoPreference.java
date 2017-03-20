@@ -23,7 +23,7 @@ import android.os.Parcelable;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
 
-import com.android.browser.R;
+import com.qirui.browser.R;
 
 /**
  * The {@link YesNoPreference} is a preference to show a dialog with Yes and No
