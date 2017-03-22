@@ -213,6 +213,11 @@
             android:label="@string/pref_setting_user_agent_title"
             android:launchMode="singleTop"
             android:theme="@style/swipe_style" />
+        <activity
+            android:name="com.qirui.browser.activitys.DefaultBrowserActivity"
+            android:label="@string/pref_setting_default_browser_title"
+            android:launchMode="singleTop"
+            android:theme="@style/swipe_style" />
 
         <activity
             android:name="com.qirui.browser.ShortcutActivity"

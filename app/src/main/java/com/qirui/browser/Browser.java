@@ -30,9 +30,12 @@ public class Browser extends Application {
     // Set to true to enable extra debug logging.
     final static boolean LOGD_ENABLED = true;
 
+    public static Browser mInstance;
+
     @Override
     public void onCreate() {
         super.onCreate();
+        mInstance = this;
 
         if (LOGV_ENABLED)
             Log.v(LOGTAG, "Browser.onCreate: this=" + this);
@@ -41,6 +44,10 @@ public class Browser extends Application {
         CookieSyncManager.createInstance(this);
         BrowserSettings.initialize(getApplicationContext());
         Preloader.initialize(getApplicationContext());
+    }
+
+    public static Browser getInstance() {
+        return mInstance;
     }
 }
 

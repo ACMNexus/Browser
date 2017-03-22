@@ -13,60 +13,61 @@
         android:orientation="vertical">
 
         <com.qirui.browser.view.BrowserSettingItem
+            android:id="@+id/clear_cache"
             android:layout_width="fill_parent"
             android:layout_height="60dip"
             app:settingValueColor="@color/clear_data_value_color"
             app:setting_desc="@string/pref_privacy_clear_cache_summary"
             app:setting_state="6"
-            app:setting_title="@string/pref_privacy_clear_cache"
-            app:setting_value="@string/pref_privacy_clear_data_operate" />
+            app:setting_title="@string/pref_privacy_clear_cache" />
 
         <com.qirui.browser.view.BrowserSettingItem
+            android:id="@+id/clear_cookie"
             android:layout_width="fill_parent"
             android:layout_height="60dip"
             app:settingValueColor="@color/clear_data_value_color"
             app:setting_desc="@string/pref_privacy_clear_cookies"
             app:setting_state="6"
-            app:setting_title="@string/pref_privacy_cookies_title"
-            app:setting_value="@string/pref_privacy_clear_data_operate" />
+            app:setting_title="@string/pref_privacy_cookies_title"/>
 
         <com.qirui.browser.view.BrowserSettingItem
+            android:id="@+id/clear_form"
             android:layout_width="fill_parent"
             android:layout_height="60dip"
             app:settingValueColor="@color/clear_data_value_color"
             app:setting_desc="@string/pref_privacy_clear_form_data_summary"
             app:setting_state="6"
-            app:setting_title="@string/pref_privacy_clear_form_data"
-            app:setting_value="@string/pref_privacy_clear_data_operate" />
+            app:setting_title="@string/pref_privacy_clear_form_data"/>
 
         <com.qirui.browser.view.BrowserSettingItem
+            android:id="@+id/clear_history"
             android:layout_width="fill_parent"
             android:layout_height="60dip"
             app:settingValueColor="@color/clear_data_value_color"
             app:setting_desc="@string/pref_privacy_clear_history_summary"
             app:setting_state="6"
-            app:setting_title="@string/pref_privacy_clear_history"
-            app:setting_value="@string/pref_privacy_clear_data_operate" />
+            app:setting_title="@string/pref_privacy_clear_history"/>
 
         <com.qirui.browser.view.BrowserSettingItem
+            android:id="@+id/clear_password"
             android:layout_width="fill_parent"
             android:layout_height="60dip"
             app:settingValueColor="@color/clear_data_value_color"
             app:setting_desc="@string/pref_privacy_clear_passwords_summary"
             app:setting_state="6"
-            app:setting_title="@string/pref_privacy_clear_passwords"
-            app:setting_value="@string/pref_privacy_clear_data_operate" />
+            app:setting_title="@string/pref_privacy_clear_passwords" />
 
         <com.qirui.browser.view.BrowserSettingItem
+            android:id="@+id/clear_position"
             android:layout_width="fill_parent"
             android:layout_height="60dip"
             app:settingValueColor="@color/clear_data_value_color"
             app:setting_desc="@string/pref_privacy_clear_geolocation_access_summary"
             app:setting_state="6"
-            app:setting_title="@string/pref_privacy_clear_geolocation_access"
-            app:setting_value="@string/pref_privacy_clear_data_operate" />
+            app:setting_title="@string/pref_privacy_clear_geolocation_access" />
 
         <TextView
+            android:id="@+id/clearAll"
             android:layout_width="fill_parent"
             android:layout_height="50dip"
             android:layout_marginTop="15dip"

@@ -12,12 +12,10 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.qirui.browser.BrowserSettings;
 import com.qirui.browser.R;
 import com.qirui.browser.util.SettingValues;
 import com.qirui.browser.view.SystemBarTintManager;
-
 import java.io.Serializable;
 import java.util.Map;
 import java.util.Set;
@@ -36,13 +34,15 @@ public class BaseActivity extends FragmentActivity implements View.OnClickListen
     protected ImageView mLeftIcon;
     protected View mTitleBarDivider;
     protected SettingValues mSettingValues;
+    protected BrowserSettings mBrowserSetting;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setWindowFeature();
         this.mActivity = this;
-        mSettingValues = BrowserSettings.getInstance().getSettingValues();
+        mBrowserSetting = BrowserSettings.getInstance();
+        mSettingValues = mBrowserSetting.getSettingValues();
         initActionBar();
         setStatusBarColor();
     }

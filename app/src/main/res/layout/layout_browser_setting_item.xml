@@ -63,6 +63,18 @@
         android:layout_marginRight="2dip"
         android:visibility="gone" />
 
+    <CheckBox
+        android:id="@+id/checked"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="20dip"
+        android:button="@drawable/bookmark_check_selector"
+        android:clickable="false"
+        android:checked="false"
+        android:visibility="gone" />
+
     <View
         android:layout_width="fill_parent"
         android:layout_height="0.5dip"

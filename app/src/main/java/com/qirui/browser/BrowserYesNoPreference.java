@@ -46,12 +46,10 @@ class BrowserYesNoPreference extends YesNoPreference {
                 settings.clearFormData();
             } else if (PreferenceKeys.PREF_PRIVACY_CLEAR_PASSWORDS.equals(getKey())) {
                 settings.clearPasswords();
-            } else if (PreferenceKeys.PREF_RESET_DEFAULT_PREFERENCES.equals(
-                    getKey())) {
+            } else if (PreferenceKeys.PREF_RESET_DEFAULT_PREFERENCES.equals(getKey())) {
                 settings.resetDefaultPreferences();
                 setEnabled(true);
-            } else if (PreferenceKeys.PREF_PRIVACY_CLEAR_GEOLOCATION_ACCESS.equals(
-                    getKey())) {
+            } else if (PreferenceKeys.PREF_PRIVACY_CLEAR_GEOLOCATION_ACCESS.equals(getKey())) {
                 settings.clearLocationAccess();
             }
         }

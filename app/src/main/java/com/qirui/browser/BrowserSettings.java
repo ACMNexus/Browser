@@ -13,18 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.qirui.browser;
 
 import android.annotation.TargetApi;
 import android.app.ActivityManager;
+import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.provider.Browser;
@@ -52,6 +58,7 @@ import com.qirui.browser.util.SettingValues;
 import java.lang.ref.WeakReference;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.WeakHashMap;
 
 /**
@@ -513,8 +520,7 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
     public void updateConnectionType() {
         ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
         String linkPrefetchPreference = getLinkPrefetchEnabled();
-        boolean linkPrefetchAllowed = linkPrefetchPreference.
-                equals(getLinkPrefetchAlwaysPreferenceString(mContext));
+        boolean linkPrefetchAllowed = linkPrefetchPreference.equals(getLinkPrefetchAlwaysPreferenceString(mContext));
         NetworkInfo ni = cm.getActiveNetworkInfo();
         if (ni != null) {
             switch (ni.getType()) {
@@ -537,10 +543,6 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
             syncManagedSettings();
         }
     }
-
-    // -----------------------------
-    // getter/setters for accessibility_preferences.xml
-    // -----------------------------
 
     @Deprecated
     private TextSize getTextSize() {
@@ -573,10 +575,6 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
         mPrefs.edit().putInt(PREF_DOUBLE_TAP_ZOOM, getRawDoubleTapZoom(percent)).apply();
     }
 
-    // -----------------------------
-    // getter/setters for advanced_preferences.xml
-    // -----------------------------
-
     public boolean allowAppTabs() {
         return mPrefs.getBoolean(PREF_ALLOW_APP_TABS, false);
     }
@@ -605,10 +603,6 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
         mPrefs.edit().putString(PREF_HOMEPAGE, value).apply();
     }
 
-    // -----------------------------
-    // getter/setters for debug_preferences.xml
-    // -----------------------------
-
     public boolean isHardwareAccelerated() {
         if (!isDebugEnabled()) {
             return true;
@@ -622,10 +616,6 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
         }
         return mPrefs.getBoolean(PREF_ENABLE_HARDWARE_ACCEL_SKIA, false);
     }
-
-    // -----------------------------
-    // getter/setters for hidden_debug_preferences.xml
-    // -----------------------------
 
     public boolean enableVisualIndicator() {
         if (!isDebugEnabled()) {
@@ -697,10 +687,6 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
         return mPrefs.getString(PREF_JS_ENGINE_FLAGS, "");
     }
 
-    // -----------------------------
-    // getter/setters for lab_preferences.xml
-    // -----------------------------
-
     public boolean useQuickControls() {
         return mPrefs.getBoolean(PREF_ENABLE_QUICK_CONTROLS, false);
     }
@@ -751,12 +737,10 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
         return context.getResources().getString(R.string.pref_link_prefetch_value_always);
     }
 
-    private static final String DEFAULT_LINK_PREFETCH_SECURE_SETTING_KEY =
-            "browser_default_link_prefetch_setting";
+    private static final String DEFAULT_LINK_PREFETCH_SECURE_SETTING_KEY = "browser_default_link_prefetch_setting";
 
     public String getDefaultLinkPrefetchSetting() {
-        String preload = Settings.Secure.getString(mContext.getContentResolver(),
-                DEFAULT_LINK_PREFETCH_SECURE_SETTING_KEY);
+        String preload = Settings.Secure.getString(mContext.getContentResolver(), DEFAULT_LINK_PREFETCH_SECURE_SETTING_KEY);
         if (preload == null) {
             preload = mContext.getResources().getString(R.string.pref_link_prefetch_default_value);
         }
@@ -766,10 +750,6 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
     public String getLinkPrefetchEnabled() {
         return mPrefs.getString(PREF_LINK_PREFETCH, getDefaultLinkPrefetchSetting());
     }
-
-    // -----------------------------
-    // getter/setters for browser recovery
-    // -----------------------------
 
     /**
      * The last time browser was started.
@@ -788,9 +768,7 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
      *             was started. This should be set to 0 if the last tab is closed.
      */
     public void setLastRecovered(long time) {
-        mPrefs.edit()
-                .putLong(KEY_LAST_RECOVERED, time)
-                .apply();
+        mPrefs.edit().putLong(KEY_LAST_RECOVERED, time).apply();
     }
 
     /**
@@ -807,12 +785,9 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
     /**
      * Sets whether or not the last run was a pause or crash.
      *
-     * @param isPaused Set to true When a pause is received or false after
-     *                 resuming.
+     * @param isPaused Set to true When a pause is received or false after resuming.
      */
     public void setLastRunPaused(boolean isPaused) {
-        mPrefs.edit()
-                .putBoolean(KEY_LAST_RUN_PAUSED, isPaused)
-                .apply();
+        mPrefs.edit().putBoolean(KEY_LAST_RUN_PAUSED, isPaused).apply();
     }
 }

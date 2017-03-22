@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -22,6 +23,7 @@ public class BrowserSettingItem extends RelativeLayout implements View.OnClickLi
     private TextView mSettingDesc;
     private ImageView mSettingIcon;
     private TextView mSettingValue;
+    private CheckBox mSettingChecked;
     private SwitchButton mSettingToggle;
     private static final int SETTING_NONE_SHOW = -1;
     private static final int SETTING_ONLY_DESC = 1;
@@ -29,7 +31,7 @@ public class BrowserSettingItem extends RelativeLayout implements View.OnClickLi
     private static final int SETTING_ONLY_VALUE = 3;
     private static final int SETTING_ONLY_TOGGLE = 4;
     private static final int SETTING_DESC_AND_TOGGLE = 5;
-    private static final int SETTING_DESC_AND_VALUE = 6;
+    private static final int SETTING_DESC_AND_CHECKED = 6;
 
     private OnStateChangeListener mOnStateChangeListener;
 
@@ -56,6 +58,7 @@ public class BrowserSettingItem extends RelativeLayout implements View.OnClickLi
         mSettingIcon = (ImageView) contentView.findViewById(R.id.setting_icon);
         mSettingValue = (TextView) contentView.findViewById(R.id.setting_value);
         mSettingToggle = (SwitchButton) contentView.findViewById(R.id.setting_toggle);
+        mSettingChecked = (CheckBox) contentView.findViewById(R.id.checked);
 
         int state = Integer.parseInt(array.getString(R.styleable.SettingItemStyle_setting_state));
         String str_title = array.getString(R.styleable.SettingItemStyle_setting_title);
@@ -90,12 +93,9 @@ public class BrowserSettingItem extends RelativeLayout implements View.OnClickLi
             mSettingToggle.setChecked(checked);
         }
 
-        if (state == SETTING_DESC_AND_VALUE) {
+        if (state == SETTING_DESC_AND_CHECKED) {
             String str_desc = array.getString(R.styleable.SettingItemStyle_setting_desc);
             mSettingDesc.setText(str_desc);
-
-            String str_value = array.getString(R.styleable.SettingItemStyle_setting_value);
-            mSettingValue.setText(str_value);
         }
 
         if(valueColorResId != -1) {
@@ -128,6 +128,14 @@ public class BrowserSettingItem extends RelativeLayout implements View.OnClickLi
 
     public void setChecked(boolean isChecked) {
         mSettingToggle.setChecked(isChecked);
+    }
+
+    public void setCheckedState(boolean isChecked) {
+        mSettingChecked.setChecked(isChecked);
+    }
+
+    public boolean getCheckedState() {
+        return mSettingChecked.isChecked();
     }
 
     public void setCheckedImmediatelyNoEvent(boolean isChecked) {
@@ -170,9 +178,9 @@ public class BrowserSettingItem extends RelativeLayout implements View.OnClickLi
                 mSettingDesc.setVisibility(View.VISIBLE);
                 mSettingToggle.setVisibility(View.VISIBLE);
                 break;
-            case SETTING_DESC_AND_VALUE:
+            case SETTING_DESC_AND_CHECKED:
                 mSettingDesc.setVisibility(View.VISIBLE);
-                mSettingValue.setVisibility(View.VISIBLE);
+                mSettingChecked.setVisibility(View.VISIBLE);
                 break;
         }
     }

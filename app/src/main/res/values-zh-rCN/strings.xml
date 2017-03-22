@@ -434,7 +434,7 @@
     <string name="pref_setting_exitconfirm_title">退出前确认</string>
     <string name="pref_setting_display_statusbar_title">显示状态栏</string>
     <string name="pref_privacy_clear_data_operate">清除</string>
-    <string name="pref_privacy_clearall">全部清除</string>
+    <string name="pref_privacy_clearall">清除选项</string>
     <string name="setting_reset_browser_config">恢复默认设置</string>
     <string name="file_browser_title">文件浏览</string>
     <string name="title_bar_button_search_mode">搜索</string>
@@ -448,5 +448,9 @@
     <string name="file_type_web">离线网页</string>
     <string name="file_type_other">其他</string>
     <string name="share_app_title">分享链接</string>
+    <string name="clear_data_result_tip">恭喜您清除成功</string>
+    <string name="pref_setting_default_browser_title">设置默认浏览器</string>
+    <string name="setting_default_browser_tips">在设置默认浏览器前，请先进入设置页面清除设置信息</string>
+    <string name="default_browser_clear_tips">当前设备存在其他浏览器被设定为默认浏览器，请前往清除默认项</string>
 
 </resources>

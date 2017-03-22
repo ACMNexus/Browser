@@ -1,12 +1,14 @@
 package com.qirui.browser.activitys;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 import com.qirui.browser.BrowserActivity;
 import com.qirui.browser.BrowserSettings;
 import com.qirui.browser.R;
 import com.qirui.browser.util.ActivityUtils;
+import com.qirui.browser.util.AppUtils;
 import com.qirui.browser.util.Constants;
 import com.qirui.browser.view.BrowserSettingItem;
 
@@ -18,9 +20,10 @@ public class BrowserSettingActivity extends BaseActivity {
     public static final int TEXTCODING_REQUESTCODE = 10001;
     public static final int USERAGENT_REQUESTCODE = 20001;
     public static final int SEARCH_REQUESTCODE = 30001;
+    private BrowserSettingItem mUserAgent;
     private BrowserSettingItem mTextCoding;
     private BrowserSettingItem mSearchEngine;
-    private BrowserSettingItem mUserAgent;
+    private BrowserSettingItem mDefaultBrowser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,10 +38,12 @@ public class BrowserSettingActivity extends BaseActivity {
         mSearchEngine = (BrowserSettingItem) findViewById(R.id.setting_search);
         mUserAgent = (BrowserSettingItem) findViewById(R.id.setting_user_agent);
         mTextCoding = (BrowserSettingItem) findViewById(R.id.setting_text_coding);
+        mDefaultBrowser = (BrowserSettingItem) findViewById(R.id.setting_default_browser);
 
         mSearchEngine.setSettingIcon(mSettingValues.getSearchIconResId());
         mTextCoding.setSettingValue(mSettingValues.getDefaultTextEncoding());
         mUserAgent.setSettingValue(getUserAgentResId(mSettingValues.getUserAgent()));
+        mDefaultBrowser.setCheckedNoEvent(AppUtils.getInstance().hasDefaultBrowser());
     }
 
     private void setListener() {
@@ -47,6 +52,7 @@ public class BrowserSettingActivity extends BaseActivity {
         findViewById(R.id.setting_clear_data).setOnClickListener(this);
         findViewById(R.id.reset_browser_config).setOnClickListener(this);
         findViewById(R.id.setting_advance).setOnClickListener(this);
+        findViewById(R.id.setting_default_browser).setOnClickListener(this);
         mUserAgent.setOnClickListener(this);
         mTextCoding.setOnClickListener(this);
         mSearchEngine.setOnClickListener(this);
@@ -80,6 +86,9 @@ public class BrowserSettingActivity extends BaseActivity {
                 break;
             case R.id.setting_advance:
                 ActivityUtils.startNextPager(this, AdvancedActivity.class);
+                break;
+            case R.id.setting_default_browser:
+                ActivityUtils.startNextPager(this, DefaultBrowserActivity.class);
                 break;
         }
     }
