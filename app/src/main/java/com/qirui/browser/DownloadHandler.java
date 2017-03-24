@@ -140,7 +140,7 @@ public class DownloadHandler {
      * @param referer The referer associated with the downloaded url
      * @param privateBrowsing If the request is coming from a private browsing tab.
      */
-    /*package */ static void onDownloadStartNoStream(Activity activity,
+     public static void onDownloadStartNoStream(Activity activity,
             String url, String userAgent, String contentDisposition,
             String mimetype, String referer, boolean privateBrowsing) {
 

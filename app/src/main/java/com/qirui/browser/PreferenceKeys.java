@@ -123,4 +123,5 @@ public interface PreferenceKeys {
      * Key for whether or not the last run was paused.
      */
     static final String KEY_LAST_RUN_PAUSED = "last_paused";
+
 }

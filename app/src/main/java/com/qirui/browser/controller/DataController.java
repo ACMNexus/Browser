@@ -13,9 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-
-package com.qirui.browser;
+package com.qirui.browser.controller;
 
 import android.annotation.TargetApi;
 import android.content.ContentResolver;
@@ -31,17 +29,18 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
+import com.qirui.browser.Tab;
 import com.qirui.browser.provider.BrowserContract;
 import com.qirui.browser.provider.BrowserContract.History;
 import com.qirui.browser.provider.BrowserProvider2.Thumbnails;
 import com.qirui.browser.util.BookmarkUtils;
 import com.qirui.browser.util.IOUtils;
-
 import java.nio.ByteBuffer;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class DataController {
+public class DataController implements Handler.Callback {
+
     private static final String LOGTAG = "DataController";
     // Message IDs
     private static final int HISTORY_UPDATE_VISITED = 100;
@@ -57,7 +56,7 @@ public class DataController {
     private Handler mCbHandler; // To respond on the UI thread
     private ByteBuffer mBuffer; // to capture thumbnails
 
-    /* package */ static interface OnQueryUrlIsBookmark {
+    public static interface OnQueryUrlIsBookmark {
         void onQueryUrlIsBookmark(String url, boolean isBookmark);
     }
     private static class CallbackContainer {
@@ -75,7 +74,7 @@ public class DataController {
         }
     }
 
-    /* package */ static DataController getInstance(Context c) {
+    public static DataController getInstance(Context c) {
         if (sInstance == null) {
             sInstance = new DataController(c);
         }
@@ -86,21 +85,22 @@ public class DataController {
         mContext = c.getApplicationContext();
         mDataHandler = new DataControllerHandler();
         mDataHandler.start();
-        mCbHandler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                CallbackContainer cc = (CallbackContainer) msg.obj;
-                switch (msg.what) {
-                    case QUERY_URL_IS_BOOKMARK: {
-                        OnQueryUrlIsBookmark cb = (OnQueryUrlIsBookmark) cc.replyTo;
-                        String url = (String) cc.args[0];
-                        boolean isBookmark = (Boolean) cc.args[1];
-                        cb.onQueryUrlIsBookmark(url, isBookmark);
-                        break;
-                    }
-                }
+        mCbHandler = new Handler(this);
+    }
+
+    @Override
+    public boolean handleMessage(Message msg) {
+        CallbackContainer cc = (CallbackContainer) msg.obj;
+        switch (msg.what) {
+            case QUERY_URL_IS_BOOKMARK: {
+                OnQueryUrlIsBookmark cb = (OnQueryUrlIsBookmark) cc.replyTo;
+                String url = (String) cc.args[0];
+                boolean isBookmark = (Boolean) cc.args[1];
+                cb.onQueryUrlIsBookmark(url, isBookmark);
+                break;
             }
-        };
+        }
+        return false;
     }
 
     public void updateVisitedHistory(String url) {
@@ -135,8 +135,8 @@ public class DataController {
     // The standard Handler and Message classes don't allow the queue manipulation
     // we want (such as peeking). So we use our own queue.
     class DataControllerHandler extends Thread {
-        private BlockingQueue<DCMessage> mMessageQueue
-                = new LinkedBlockingQueue<DCMessage>();
+
+        private BlockingQueue<DCMessage> mMessageQueue= new LinkedBlockingQueue();
 
         public DataControllerHandler() {
             super("DataControllerHandler");
@@ -186,9 +186,7 @@ public class DataController {
             case TAB_DELETE_THUMBNAIL:
                 ContentResolver cr = mContext.getContentResolver();
                 try {
-                    cr.delete(ContentUris.withAppendedId(
-                            Thumbnails.CONTENT_URI, (Long)msg.obj),
-                            null, null);
+                    cr.delete(ContentUris.withAppendedId(Thumbnails.CONTENT_URI, (Long)msg.obj), null, null);
                 } catch (Throwable t) {}
                 break;
             case TAB_SAVE_THUMBNAIL:
@@ -230,8 +228,7 @@ public class DataController {
             Cursor c = null;
             try {
                 Uri uri = ContentUris.withAppendedId(Thumbnails.CONTENT_URI, tab.getId());
-                c = cr.query(uri, new String[] {Thumbnails._ID,
-                        Thumbnails.THUMBNAIL}, null, null, null);
+                c = cr.query(uri, new String[] {Thumbnails._ID, Thumbnails.THUMBNAIL}, null, null, null);
                 if (c.moveToFirst()) {
                     byte[] data = c.getBlob(1);
                     if (data != null && data.length > 0) {
@@ -323,8 +320,7 @@ public class DataController {
             ContentResolver cr = mContext.getContentResolver();
             ContentValues values = new ContentValues();
             values.put(History.TITLE, title);
-            cr.update(History.CONTENT_URI, values, History.URL + "=?",
-                    new String[] { url });
+            cr.update(History.CONTENT_URI, values, History.URL + "=?", new String[] { url });
         }
     }
 }

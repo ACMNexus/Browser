@@ -22,6 +22,7 @@ import com.qirui.browser.http.WebAddress;
 import com.qirui.browser.provider.BrowserContract;
 import com.qirui.browser.provider.BrowserContract.Accounts;
 import com.qirui.browser.util.BookmarkUtils;
+import com.qirui.browser.util.UrlUtils;
 
 import android.app.Activity;
 import android.app.LoaderManager;

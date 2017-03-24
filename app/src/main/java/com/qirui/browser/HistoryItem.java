@@ -31,7 +31,6 @@ public class HistoryItem extends BookmarkItem implements OnCheckedChangeListener
 
     /**
      * Create a new HistoryItem.
-     *
      * @param context Context for this HistoryItem.
      */
     public HistoryItem(Context context) {

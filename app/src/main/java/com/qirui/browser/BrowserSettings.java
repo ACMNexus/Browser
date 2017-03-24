@@ -17,20 +17,13 @@ package com.qirui.browser;
 
 import android.annotation.TargetApi;
 import android.app.ActivityManager;
-import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
-import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.provider.Browser;
@@ -46,7 +39,6 @@ import android.webkit.WebSettings.ZoomDensity;
 import android.webkit.WebStorage;
 import android.webkit.WebView;
 import android.webkit.WebViewDatabase;
-
 import com.qirui.browser.homepages.HomeProvider;
 import com.qirui.browser.provider.BrowserProvider;
 import com.qirui.browser.search.SearchEngine;
@@ -54,11 +46,9 @@ import com.qirui.browser.search.SearchEngines;
 import com.qirui.browser.util.Constants;
 import com.qirui.browser.util.ReflectUtils;
 import com.qirui.browser.util.SettingValues;
-
 import java.lang.ref.WeakReference;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.WeakHashMap;
 
 /**
@@ -454,8 +444,8 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
 
     public void resetDefaultPreferences() {
         // Preserve autologin setting
-        long gal = mPrefs.getLong(GoogleAccountLogin.PREF_AUTOLOGIN_TIME, -1);
-        mPrefs.edit().clear().putLong(GoogleAccountLogin.PREF_AUTOLOGIN_TIME, gal).apply();
+//        long gal = mPrefs.getLong(GoogleAccountLogin.PREF_AUTOLOGIN_TIME, -1);
+//        mPrefs.edit().clear().putLong(GoogleAccountLogin.PREF_AUTOLOGIN_TIME, gal).apply();
         resetCachedValues();
         syncManagedSettings();
     }

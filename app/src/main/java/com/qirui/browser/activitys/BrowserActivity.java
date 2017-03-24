@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.qirui.browser;
+package com.qirui.browser.activitys;
 
 import android.app.Activity;
 import android.app.KeyguardManager;
@@ -35,6 +35,14 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 
+import com.qirui.browser.ActivityController;
+import com.qirui.browser.Browser;
+import com.qirui.browser.Controller;
+import com.qirui.browser.IntentHandler;
+import com.qirui.browser.PhoneUi;
+import com.qirui.browser.R;
+import com.qirui.browser.UI;
+import com.qirui.browser.XLargeUi;
 import com.qirui.browser.stub.NullController;
 import com.qirui.browser.view.SystemBarTintManager;
 

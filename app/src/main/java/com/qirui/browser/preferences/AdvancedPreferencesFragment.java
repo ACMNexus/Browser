@@ -16,7 +16,7 @@
 
 package com.qirui.browser.preferences;
 
-import com.qirui.browser.BrowserActivity;
+import com.qirui.browser.activitys.BrowserActivity;
 import com.qirui.browser.PreferenceKeys;
 import com.qirui.browser.R;
 

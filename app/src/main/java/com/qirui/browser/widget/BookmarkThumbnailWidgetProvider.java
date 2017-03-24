@@ -25,7 +25,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.widget.RemoteViews;
 
-import com.qirui.browser.BrowserActivity;
+import com.qirui.browser.activitys.BrowserActivity;
 import com.qirui.browser.R;
 
 /**

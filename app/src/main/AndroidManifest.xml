@@ -52,7 +52,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name="com.qirui.browser.BrowserActivity"
+            android:name=".activitys.BrowserActivity"
             android:alwaysRetainTaskState="true"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale"
             android:label="@string/application_name"

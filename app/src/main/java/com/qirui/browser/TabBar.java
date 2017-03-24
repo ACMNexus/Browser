@@ -41,6 +41,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.qirui.browser.util.UrlUtils;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

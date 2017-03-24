@@ -31,7 +31,10 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Patterns;
 
+import com.qirui.browser.activitys.BrowserActivity;
 import com.qirui.browser.search.SearchEngine;
+import com.qirui.browser.util.UrlUtils;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -188,8 +191,7 @@ public class IntentHandler {
         if (intent != null
                 && (intent.getFlags() & Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) == 0) {
             final String action = intent.getAction();
-            if (Intent.ACTION_VIEW.equals(action) ||
-                    NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action)) {
+            if (Intent.ACTION_VIEW.equals(action) || NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action)) {
                 url = UrlUtils.smartUrlFilter(intent.getData());
                 if (url != null && url.startsWith("http")) {
                     final Bundle pairs = intent
@@ -241,7 +243,7 @@ public class IntentHandler {
      * are identified as plain search terms and not URLs/shortcuts.
      * @return true if the intent was handled and web search activity was launched, false if not.
      */
-    static boolean handleWebSearchIntent(Activity activity,
+    public static boolean handleWebSearchIntent(Activity activity,
             Controller controller, Intent intent) {
         if (intent == null) return false;
 

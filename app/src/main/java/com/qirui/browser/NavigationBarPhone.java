@@ -28,7 +28,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.qirui.browser.UrlInputView.StateListener;
+import com.qirui.browser.view.UrlInputView;
+import com.qirui.browser.view.UrlInputView.StateListener;
 
 @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 public class NavigationBarPhone extends NavigationBarBase implements StateListener, View.OnTouchListener {

@@ -45,7 +45,7 @@ import android.provider.SyncStateContract;
 import android.text.TextUtils;
 
 import com.qirui.browser.R;
-import com.qirui.browser.UrlUtils;
+import com.qirui.browser.util.UrlUtils;
 import com.qirui.browser.widget.BookmarkThumbnailWidgetProvider;
 
 import java.io.ByteArrayOutputStream;

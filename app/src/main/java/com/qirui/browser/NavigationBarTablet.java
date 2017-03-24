@@ -34,7 +34,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.qirui.browser.UI.ComboViews;
-import com.qirui.browser.UrlInputView.StateListener;
+import com.qirui.browser.view.UrlInputView.StateListener;
 
 public class NavigationBarTablet extends NavigationBarBase implements StateListener {
 

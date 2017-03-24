@@ -24,6 +24,8 @@ import android.os.Bundle;
 import android.provider.Browser;
 import android.util.Log;
 
+import com.qirui.browser.util.UrlUtils;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;

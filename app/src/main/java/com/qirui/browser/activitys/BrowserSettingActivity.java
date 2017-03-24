@@ -1,10 +1,9 @@
 package com.qirui.browser.activitys;
 
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
-import com.qirui.browser.BrowserActivity;
+
 import com.qirui.browser.BrowserSettings;
 import com.qirui.browser.R;
 import com.qirui.browser.util.ActivityUtils;

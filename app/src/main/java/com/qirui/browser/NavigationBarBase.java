@@ -33,6 +33,9 @@ import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.qirui.browser.util.UrlUtils;
+import com.qirui.browser.view.UrlInputView;
+
 public class NavigationBarBase extends LinearLayout implements OnClickListener, UrlInputView.UrlInputListener, OnFocusChangeListener, TextWatcher {
 
     protected BaseUi mBaseUi;

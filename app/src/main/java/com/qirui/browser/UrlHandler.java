@@ -29,6 +29,9 @@ import android.provider.Browser;
 import android.util.Log;
 import android.webkit.WebView;
 
+import com.qirui.browser.activitys.BrowserActivity;
+import com.qirui.browser.util.UrlUtils;
+
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.regex.Matcher;

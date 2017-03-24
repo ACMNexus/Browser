@@ -42,8 +42,6 @@ public class ShortcutActivity extends Activity
         }
     }
 
-    // BookmarksPageCallbacks
-
     @Override
     public boolean onBookmarkSelected(Cursor c, boolean isFolder) {
         if (isFolder) {

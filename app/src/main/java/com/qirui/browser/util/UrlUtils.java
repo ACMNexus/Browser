@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.qirui.browser;
+package com.qirui.browser.util;
 
 import android.net.Uri;
 import android.util.Patterns;
@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
  */
 public class UrlUtils {
 
-    static final Pattern ACCEPTED_URI_SCHEMA = Pattern.compile(
+    public static final Pattern ACCEPTED_URI_SCHEMA = Pattern.compile(
             "(?i)" + // switch on case insensitive matching
             "(" +    // begin group for schema
             "(?:http|https|file):\\/\\/" +
@@ -69,7 +69,7 @@ public class UrlUtils {
         }
     }
 
-    protected static String smartUrlFilter(Uri inUri) {
+    public static String smartUrlFilter(Uri inUri) {
         if (inUri != null) {
             return smartUrlFilter(inUri.toString());
         }
@@ -162,7 +162,7 @@ public class UrlUtils {
     }
 
     // Returns the filtered URL. Cannot return null, but can return an empty string
-    /* package */ static String filteredUrl(String inUrl) {
+    public static String filteredUrl(String inUrl) {
         if (inUrl == null) {
             return "";
         }
@@ -172,5 +172,4 @@ public class UrlUtils {
         }
         return inUrl;
     }
-
 }

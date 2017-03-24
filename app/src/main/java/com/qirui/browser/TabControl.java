@@ -25,7 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 
-class TabControl {
+public class TabControl {
     // Log Tag
     private static final String LOGTAG = "TabControl";
 
@@ -55,7 +55,7 @@ class TabControl {
     /**
      * Construct a new TabControl object
      */
-    TabControl(Controller controller) {
+    public TabControl(Controller controller) {
         mController = controller;
         mMaxTabs = mController.getMaxTabs();
         mTabs = new ArrayList<Tab>(mMaxTabs);
@@ -127,7 +127,7 @@ class TabControl {
      * Return the current tab.
      * @return The current tab.
      */
-    Tab getCurrentTab() {
+    public Tab getCurrentTab() {
         return getTab(mCurrentTab);
     }
 
@@ -141,10 +141,10 @@ class TabControl {
 
     /**
      * Given a Tab, find it's position
-     * @param Tab to find
+     * @param tab to find
      * @return position of Tab or -1 if not found
      */
-    int getTabPosition(Tab tab) {
+    public int getTabPosition(Tab tab) {
         if (tab == null) {
             return -1;
         }
@@ -600,7 +600,7 @@ class TabControl {
     /**
      * Recreate the main WebView of the given tab.
      */
-    void recreateWebView(Tab t) {
+    public void recreateWebView(Tab t) {
         final WebView w = t.getWebView();
         if (w != null) {
             t.destroy();

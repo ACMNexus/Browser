@@ -22,7 +22,6 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceFragment;
 
 import com.qirui.browser.BrowserSettings;
-import com.qirui.browser.GoogleAccountLogin;
 import com.qirui.browser.PreferenceKeys;
 import com.qirui.browser.R;
 
@@ -42,9 +41,7 @@ public class DebugPreferencesFragment extends PreferenceFragment
     @Override
     public boolean onPreferenceClick(Preference preference) {
         if (PreferenceKeys.PREF_RESET_PRELOGIN.equals(preference.getKey())) {
-            BrowserSettings.getInstance().getPreferences().edit()
-                    .remove(GoogleAccountLogin.PREF_AUTOLOGIN_TIME)
-                    .apply();
+//            BrowserSettings.getInstance().getPreferences().edit().remove(GoogleAccountLogin.PREF_AUTOLOGIN_TIME).apply();
             return true;
         }
         return false;

@@ -20,6 +20,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.qirui.browser.activitys.BrowserActivity;
+
 /**
  * This activity is never started from the browser. Its purpose is to provide bookmark suggestions
  * to global search (through its searchable meta-data), and to handle the intents produced

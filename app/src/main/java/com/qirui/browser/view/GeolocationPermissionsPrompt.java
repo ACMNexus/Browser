@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.qirui.browser;
+package com.qirui.browser.view;
 
 import android.content.Context;
 import android.net.Uri;
@@ -28,7 +28,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.qirui.browser.R;
+
 public class GeolocationPermissionsPrompt extends RelativeLayout {
+
     private TextView mMessage;
     private Button mShareButton;
     private Button mDontShareButton;

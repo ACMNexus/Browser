@@ -24,6 +24,8 @@ import android.os.Message;
 import android.os.Parcel;
 import android.util.Log;
 
+import com.qirui.browser.util.IOUtils;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -143,8 +145,7 @@ public class CrashRecoveryHandler {
     }
 
     private void updateLastRecovered(long time) {
-        BrowserSettings browserSettings = BrowserSettings.getInstance();
-        browserSettings.setLastRecovered(time);
+        BrowserSettings.getInstance().setLastRecovered(time);
     }
 
     synchronized private Bundle loadCrashState() {
@@ -178,11 +179,7 @@ public class CrashRecoveryHandler {
             Log.w(LOGTAG, "Failed to recover state!", e);
         } finally {
             parcel.recycle();
-            if (fin != null) {
-                try {
-                    fin.close();
-                } catch (IOException e) { }
-            }
+            IOUtils.closeStream(fin);
         }
         return null;
     }
@@ -198,8 +195,7 @@ public class CrashRecoveryHandler {
         if (!mDidPreload) {
             mRecoveryState = loadCrashState();
         }
-        updateLastRecovered(mRecoveryState != null
-                ? System.currentTimeMillis() : 0);
+        updateLastRecovered(mRecoveryState != null ? System.currentTimeMillis() : 0);
         mController.doStart(mRecoveryState, intent);
         mRecoveryState = null;
     }

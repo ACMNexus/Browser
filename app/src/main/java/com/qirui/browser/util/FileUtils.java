@@ -16,7 +16,9 @@
 
 package com.qirui.browser.util;
 
-import android.util.Log;
+import android.text.TextUtils;
+import android.util.*;
+
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -26,6 +28,7 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.regex.Pattern;
@@ -268,6 +271,31 @@ public class FileUtils {
                 Log.d(TAG, "Deleting old file " + file);
                 file.delete();
             }
+        }
+    }
+
+    public static boolean GenerateImage(String imgStr, String imgFilePath) {
+        if (TextUtils.isEmpty(imgStr)) {
+            return false;
+        }
+
+        OutputStream out = null;
+        try {
+            out = new FileOutputStream(imgFilePath);
+            byte[] buffer = android.util.Base64.decode(imgStr, android.util.Base64.DEFAULT);
+            for (int i = 0; i < buffer.length; ++i) {
+                if (buffer[i] < 0) {// 调整异常数据
+                    buffer[i] += 256;
+                }
+            }
+            out.write(buffer);
+            out.flush();
+            out.close();
+            return true;
+        } catch (Exception e) {
+            return false;
+        } finally {
+            IOUtils.closeStream(out);
         }
     }
 }

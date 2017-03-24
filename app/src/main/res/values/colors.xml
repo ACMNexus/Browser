@@ -54,5 +54,6 @@
     <color name="colorAccent">#5DA7FD</color>
     <color name="statusbar_bg">#B2B2B2</color>
     <color name="ripple_setting_item_bg">#c5c5c5</color>
+    <color name="longclick_menu_divider_bg">#21ffffff</color>
 
 </resources>

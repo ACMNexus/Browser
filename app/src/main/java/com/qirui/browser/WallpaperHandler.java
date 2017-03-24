@@ -27,7 +27,6 @@ import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
-
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -39,8 +38,7 @@ import java.net.URL;
  * Handle setWallpaper requests
  *
  */
-public class WallpaperHandler extends Thread
-        implements OnMenuItemClickListener, DialogInterface.OnCancelListener {
+public class WallpaperHandler extends Thread implements OnMenuItemClickListener, DialogInterface.OnCancelListener {
 
     private static final String LOGTAG = "WallpaperHandler";
     // This should be large enough for BitmapFactory to decode the header so

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.qirui.browser;
+package com.qirui.browser.adapter;
 
 import android.app.SearchManager;
 import android.content.Context;
@@ -33,6 +33,9 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.qirui.browser.BrowserSettings;
+import com.qirui.browser.R;
+import com.qirui.browser.util.UrlUtils;
 import com.qirui.browser.provider.BrowserContract;
 import com.qirui.browser.provider.BrowserProvider2.OmniboxSuggestions;
 import com.qirui.browser.search.SearchEngine;
@@ -43,8 +46,7 @@ import java.util.List;
 /**
  * adapter to wrap multiple cursors for url/search completions
  */
-public class SuggestionsAdapter extends BaseAdapter implements Filterable,
-        OnClickListener {
+public class SuggestionsAdapter extends BaseAdapter implements Filterable, OnClickListener {
 
     public static final int TYPE_BOOKMARK = 0;
     public static final int TYPE_HISTORY = 1;

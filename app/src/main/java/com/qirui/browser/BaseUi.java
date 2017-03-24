@@ -52,6 +52,8 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.qirui.browser.activitys.MarkHistoryActivity;
+import com.qirui.browser.bean.SecurityState;
+import com.qirui.browser.view.ErrorConsoleView;
 import com.qirui.browser.view.MenuBar;
 import com.qirui.browser.view.MenuToolBar;
 import com.qirui.internal.view.menu.MenuBuilder;
@@ -611,12 +613,12 @@ public abstract class BaseUi implements UI {
     /**
      * Updates the lock-icon image in the title-bar.
      */
-    private void updateLockIconImage(Tab.SecurityState securityState) {
+    private void updateLockIconImage(SecurityState securityState) {
         Drawable d = null;
-        if (securityState == Tab.SecurityState.SECURITY_STATE_SECURE) {
+        if (securityState == SecurityState.SECURITY_STATE_SECURE) {
             d = mLockIconSecure;
-        } else if (securityState == Tab.SecurityState.SECURITY_STATE_MIXED
-                || securityState == Tab.SecurityState.SECURITY_STATE_BAD_CERTIFICATE) {
+        } else if (securityState == SecurityState.SECURITY_STATE_MIXED
+                || securityState == SecurityState.SECURITY_STATE_BAD_CERTIFICATE) {
             // TODO: It would be good to have different icons for insecure vs mixed content.
             // See http://b/5403800
             d = mLockIconMixed;

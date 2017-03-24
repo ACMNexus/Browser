@@ -15,8 +15,10 @@
  */
 package com.qirui.browser;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 import android.webkit.WebView;
@@ -32,8 +34,7 @@ public class BrowserWebViewFactory implements WebViewFactory {
         mContext = context;
     }
 
-    protected WebView instantiateWebView(AttributeSet attrs, int defStyle,
-            boolean privateBrowsing) {
+    protected WebView instantiateWebView(AttributeSet attrs, int defStyle, boolean privateBrowsing) {
         return new BrowserWebView(mContext, attrs, defStyle, privateBrowsing);
     }
 
@@ -49,6 +50,7 @@ public class BrowserWebViewFactory implements WebViewFactory {
         return w;
     }
 
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     protected void initWebViewSettings(WebView w) {
         w.setScrollbarFadingEnabled(true);
         w.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY);
@@ -56,9 +58,8 @@ public class BrowserWebViewFactory implements WebViewFactory {
         // Enable the built-in zoom
         w.getSettings().setBuiltInZoomControls(true);
         final PackageManager pm = mContext.getPackageManager();
-        boolean supportsMultiTouch =
-                pm.hasSystemFeature(PackageManager.FEATURE_TOUCHSCREEN_MULTITOUCH)
-                || pm.hasSystemFeature(PackageManager.FEATURE_FAKETOUCH_MULTITOUCH_DISTINCT);
+        boolean supportsMultiTouch = pm.hasSystemFeature(PackageManager.FEATURE_TOUCHSCREEN_MULTITOUCH)
+                                        || pm.hasSystemFeature(PackageManager.FEATURE_FAKETOUCH_MULTITOUCH_DISTINCT);
         w.getSettings().setDisplayZoomControls(!supportsMultiTouch);
 
         // Add this WebView to the settings observer list and update the
@@ -69,5 +70,4 @@ public class BrowserWebViewFactory implements WebViewFactory {
         // Remote Web Debugging is always enabled
         WebView.setWebContentsDebuggingEnabled(true);
     }
-
 }

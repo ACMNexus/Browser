@@ -51,6 +51,7 @@ import android.widget.Toast;
 
 import com.qirui.browser.util.BookmarkUtils;
 import com.qirui.browser.util.IOUtils;
+import com.qirui.browser.util.Utils;
 import com.qirui.browser.view.BookmarkExpandableView;
 import com.qirui.browser.view.BookmarkExpandableView.BookmarkContextMenuInfo;
 
@@ -164,7 +165,7 @@ public class BrowserBookmarksPage extends BaseFragment implements View.OnCreateC
             break;
         case R.id.share_link_context_menu_id: {
             Cursor cursor = adapter.getItem(childPosition);
-            Controller.sharePage(activity,
+            Utils.sharePage(activity,
                     cursor.getString(BookmarksLoader.COLUMN_INDEX_TITLE),
                     cursor.getString(BookmarksLoader.COLUMN_INDEX_URL),
                     getBitmap(cursor, BookmarksLoader.COLUMN_INDEX_FAVICON),

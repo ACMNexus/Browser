@@ -16,7 +16,7 @@
 
 package com.qirui.browser.widget;
 
-import com.qirui.browser.BrowserActivity;
+import com.qirui.browser.activitys.BrowserActivity;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

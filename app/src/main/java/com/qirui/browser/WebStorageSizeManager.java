@@ -27,9 +27,7 @@ import android.os.StatFs;
 import android.preference.PreferenceActivity;
 import android.util.Log;
 import android.webkit.WebStorage;
-
 import java.io.File;
-
 
 /**
  * Package level class for managing the disk size consumed by the WebDatabase
@@ -85,6 +83,7 @@ import java.io.File;
  * by an origin.
  */
 public class WebStorageSizeManager {
+
     // Logging flags.
     private final static boolean LOGV_ENABLED = Browser.LOGV_ENABLED;
     private final static boolean LOGD_ENABLED = Browser.LOGD_ENABLED;

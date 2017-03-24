@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.qirui.browser;
+package com.qirui.browser.view;
 
 import android.content.Context;
 import android.content.res.Configuration;
@@ -33,6 +33,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
+import com.qirui.browser.BrowserSettings;
+import com.qirui.browser.UiController;
+import com.qirui.browser.UrlSelectionActionMode;
+import com.qirui.browser.util.UrlUtils;
+import com.qirui.browser.adapter.SuggestionsAdapter;
 import com.qirui.browser.search.SearchEngine;
 import com.qirui.browser.search.SearchEngineInfo;
 import com.qirui.browser.search.SearchEngines;
@@ -41,13 +46,12 @@ import com.qirui.browser.search.SearchEngines;
  * url/search input view
  * handling suggestions
  */
-public class UrlInputView extends EditText implements OnEditorActionListener,
-        SuggestionsAdapter.CompletionListener, OnItemClickListener, TextWatcher {
+public class UrlInputView extends EditText implements OnEditorActionListener, OnItemClickListener, TextWatcher {
 
     public static final String TYPED = "browser-type";
     public static final String SUGGESTED = "browser-suggest";
 
-    interface StateListener {
+    public interface StateListener {
         int STATE_NORMAL = 0;
         int STATE_CANCEL = 1;
         int STATE_EDITED = 2;
@@ -74,7 +78,7 @@ public class UrlInputView extends EditText implements OnEditorActionListener,
     private void init(Context ctx) {
         mInputManager = (InputMethodManager) ctx.getSystemService(Context.INPUT_METHOD_SERVICE);
         setOnEditorActionListener(this);
-        mAdapter = new SuggestionsAdapter(ctx, this);
+//        mAdapter = new SuggestionsAdapter(ctx, this);
         onConfigurationChanged(ctx.getResources().getConfiguration());
         mNeedsUpdate = false;
         addTextChangedListener(this);
@@ -95,7 +99,7 @@ public class UrlInputView extends EditText implements OnEditorActionListener,
         mNeedsUpdate = false;
     }
 
-    void setController(UiController controller) {
+    public void setController(UiController controller) {
         UrlSelectionActionMode urlSelectionMode = new UrlSelectionActionMode(controller);
         setCustomSelectionActionModeCallback(urlSelectionMode);
     }
@@ -128,7 +132,7 @@ public class UrlInputView extends EditText implements OnEditorActionListener,
     protected void onConfigurationChanged(Configuration config) {
         super.onConfigurationChanged(config);
         mLandscape = (config.orientation & Configuration.ORIENTATION_LANDSCAPE) != 0;
-        mAdapter.setLandscapeMode(mLandscape);
+//        mAdapter.setLandscapeMode(mLandscape);
     }
 
     @Override
@@ -180,12 +184,10 @@ public class UrlInputView extends EditText implements OnEditorActionListener,
         return true;
     }
 
-    @Override
     public void onSearch(String search) {
         mListener.onCopySuggestion(search);
     }
 
-    @Override
     public void onSelect(String url, int type, String extra) {
         finishInput(url, extra, SUGGESTED);
     }
@@ -193,10 +195,10 @@ public class UrlInputView extends EditText implements OnEditorActionListener,
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         SuggestionsAdapter.SuggestItem item = mAdapter.getItem(position);
-        onSelect(SuggestionsAdapter.getSuggestionUrl(item), item.type, item.extra);
+//        onSelect(SuggestionsAdapter.getSuggestionUrl(item), item.type, item.extra);
     }
 
-    interface UrlInputListener {
+    public interface UrlInputListener {
 
         public void onDismiss();
 
@@ -208,7 +210,7 @@ public class UrlInputView extends EditText implements OnEditorActionListener,
 
     public void setIncognitoMode(boolean incognito) {
         mIncognitoMode = incognito;
-        mAdapter.setIncognitoMode(mIncognitoMode);
+//        mAdapter.setIncognitoMode(mIncognitoMode);
     }
 
     @Override

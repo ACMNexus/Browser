@@ -91,7 +91,7 @@
                 android:padding="4dip"
                 android:src="@drawable/common_icon_site" />
 
-            <com.qirui.browser.UrlInputView
+            <com.qirui.browser.view.UrlInputView
                 android:id="@+id/url"
                 android:layout_width="0dip"
                 android:layout_height="match_parent"

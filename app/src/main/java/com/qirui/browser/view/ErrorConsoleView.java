@@ -13,8 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package com.qirui.browser;
+package com.qirui.browser.view;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -29,10 +28,10 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-
+import com.qirui.browser.R;
 import java.util.Vector;
 
-/* package */ class ErrorConsoleView extends LinearLayout {
+public class ErrorConsoleView extends LinearLayout {
 
     /**
      * Define some constants to describe the visibility of the error console.
