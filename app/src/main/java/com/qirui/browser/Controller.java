@@ -46,7 +46,9 @@ import android.provider.Browser;
 import com.qirui.browser.activitys.AddBookMarkActivity;
 import com.qirui.browser.activitys.BrowserActivity;
 import com.qirui.browser.bean.Download;
+import com.qirui.browser.controller.ContextMenuManager;
 import com.qirui.browser.controller.DataController;
+import com.qirui.browser.dialog.ContextMenuDialog;
 import com.qirui.browser.provider.BrowserContract;
 
 import android.speech.RecognizerIntent;
@@ -101,20 +103,17 @@ public class Controller implements WebViewController, UiController, ActivityCont
     public final static int STOP_LOAD = 1002;
 
     // Message Ids
+    private static final int EMPTY_MENU = -1;
+    private static final int OPEN_BOOKMARKS = 201;
     private static final int FOCUS_NODE_HREF = 102;
     private static final int RELEASE_WAKELOCK = 107;
-
-    static final int UPDATE_BOOKMARK_THUMBNAIL = 108;
-
-    private static final int OPEN_BOOKMARKS = 201;
-
-    private static final int EMPTY_MENU = -1;
+    public static final int UPDATE_BOOKMARK_THUMBNAIL = 108;
 
     // activity requestCode
     final static int COMBO_VIEW = 1;
-    final static int PREFERENCES_PAGE = 3;
-    final static int FILE_SELECTED = 4;
     final static int VOICE_RESULT = 6;
+    final static int FILE_SELECTED = 4;
+    final static int PREFERENCES_PAGE = 3;
 
     private final static int WAKELOCK_TIMEOUT = 5 * 60 * 1000; // 5 minutes
 
@@ -150,9 +149,9 @@ public class Controller implements WebViewController, UiController, ActivityCont
     // FIXME, temp address onPrepareMenu performance problem.
     // When we move everything out of view, we should rewrite this.
     private int mCurrentMenuState = 0;
+    private Menu mCachedMenu;
     private int mMenuState = R.id.MAIN_MENU;
     private int mOldMenuState = EMPTY_MENU;
-    private Menu mCachedMenu;
 
     private boolean mMenuIsDown;
 
@@ -190,6 +189,7 @@ public class Controller implements WebViewController, UiController, ActivityCont
     private ContentObserver mBookmarksObserver;
     private CrashRecoveryHandler mCrashRecoveryHandler;
     private SettingValues mSettingValues;
+    private ContextMenuDialog mContextMenuDialog;
 
     private boolean mBlockEvents;
 
@@ -205,6 +205,7 @@ public class Controller implements WebViewController, UiController, ActivityCont
         mFactory = new BrowserWebViewFactory(browser);
         mSettingValues = getSettings().getSettingValues();
 
+        ContextMenuManager.getInstance().initial(mActivity, this);
         mUrlHandler = new UrlHandler(this);
         mIntentHandler = new IntentHandler(mActivity, this);
         mPageDialogsHandler = new PageDialogsHandler(mActivity, this);
@@ -818,7 +819,7 @@ public class Controller implements WebViewController, UiController, ActivityCont
                                 || !tab.inForeground())) {
                     if (!mHandler.hasMessages(UPDATE_BOOKMARK_THUMBNAIL, tab)) {
                         mHandler.sendMessageDelayed(mHandler.obtainMessage(
-                                        UPDATE_BOOKMARK_THUMBNAIL, 0, 0, tab),
+                                UPDATE_BOOKMARK_THUMBNAIL, 0, 0, tab),
                                 500);
                     }
                 }
@@ -1169,7 +1170,7 @@ public class Controller implements WebViewController, UiController, ActivityCont
     }
 
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo, float touchX, float touchY) {
         if (v instanceof TitleBar) {
             return;
         }
@@ -1197,11 +1198,12 @@ public class Controller implements WebViewController, UiController, ActivityCont
         final String extra = result.getExtra();
         if (extra == null) return;
 
+        ContextMenuManager.getInstance().show(result, (int) touchX, (int) touchY);
+
         /*switch (type) {
             case WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE:
                 menu.setHeaderTitle(extra);
                 // decide whether to show the open link in new tab option
-                boolean showNewTab = mTabControl.canCreateNewTab();
                 MenuItem newTabItem = menu.findItem(R.id.open_newtab_context_menu_id);
                 newTabItem.setTitle(getSettings().openInBackground() ? R.string.contextmenu_openlink_newwindow_background : R.string.contextmenu_openlink_newwindow);
                 newTabItem.setVisible(showNewTab);
@@ -1211,8 +1213,7 @@ public class Controller implements WebViewController, UiController, ActivityCont
                                 new MenuItem.OnMenuItemClickListener() {
                                     @Override
                                     public boolean onMenuItemClick(MenuItem item) {
-                                        final HashMap<String, WebView> hrefMap =
-                                                new HashMap<String, WebView>();
+                                        final HashMap<String, WebView> hrefMap = new HashMap<String, WebView>();
                                         hrefMap.put("webview", webview);
                                         final Message msg = mHandler.obtainMessage(
                                                 FOCUS_NODE_HREF,
@@ -1228,9 +1229,7 @@ public class Controller implements WebViewController, UiController, ActivityCont
                                     @Override
                                     public boolean onMenuItemClick(MenuItem item) {
                                         final Tab parent = mTabControl.getCurrentTab();
-                                        openTab(extra, parent,
-                                                !mSettings.openInBackground(),
-                                                true);
+                                        openTab(extra, parent, !mSettings.openInBackground(), true);
                                         return true;
                                     }
                                 });
@@ -1533,17 +1532,12 @@ public class Controller implements WebViewController, UiController, ActivityCont
     }
 
     @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        // Let the History and Bookmark fragments handle menus they created.
-        if (item.getGroupId() == R.id.CONTEXT_MENU) {
-            return false;
-        }
+    public boolean onContextItemSelected(int id) {
 
-        int id = item.getItemId();
         boolean result = true;
         switch (id) {
-            // -- Browser context menu
             case R.id.open_context_menu_id:
+            case R.id.open_newtab_context_menu_id:
             case R.id.save_link_context_menu_id:
             case R.id.copy_link_context_menu_id:
                 final WebView webView = getCurrentTopWebView();
@@ -1551,17 +1545,13 @@ public class Controller implements WebViewController, UiController, ActivityCont
                     result = false;
                     break;
                 }
-                final HashMap<String, WebView> hrefMap =
-                        new HashMap<String, WebView>();
+                final HashMap<String, WebView> hrefMap = new HashMap();
                 hrefMap.put("webview", webView);
-                final Message msg = mHandler.obtainMessage(
-                        FOCUS_NODE_HREF, id, 0, hrefMap);
+                final Message msg = mHandler.obtainMessage(FOCUS_NODE_HREF, id, 0, hrefMap);
                 webView.requestFocusNodeHref(msg);
                 break;
-
             default:
-                // For other context menus
-                result = onOptionsItemSelected(item);
+                break;
         }
         return result;
     }

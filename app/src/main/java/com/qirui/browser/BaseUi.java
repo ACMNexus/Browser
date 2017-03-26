@@ -16,6 +16,7 @@
 
 package com.qirui.browser;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -28,6 +29,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.PaintDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -50,14 +52,13 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-
 import com.qirui.browser.activitys.MarkHistoryActivity;
 import com.qirui.browser.bean.SecurityState;
+import com.qirui.browser.util.ToastUtils;
 import com.qirui.browser.view.ErrorConsoleView;
 import com.qirui.browser.view.MenuBar;
 import com.qirui.browser.view.MenuToolBar;
 import com.qirui.internal.view.menu.MenuBuilder;
-
 import java.util.List;
 
 /**
@@ -65,18 +66,13 @@ import java.util.List;
  */
 public abstract class BaseUi implements UI {
 
-    private static final String LOGTAG = "BaseUi";
+    private static final String LOGTAG = BaseUi.class.getSimpleName();
 
     protected static final FrameLayout.LayoutParams COVER_SCREEN_PARAMS =
-            new FrameLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT);
+            new FrameLayout.LayoutParams(-1, -1);
 
     protected static final FrameLayout.LayoutParams COVER_SCREEN_GRAVITY_CENTER =
-            new FrameLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    Gravity.CENTER);
+            new FrameLayout.LayoutParams(-1, -1, Gravity.CENTER);
 
     private static final int MSG_HIDE_TITLEBAR = 1;
     public static final int HIDE_TITLEBAR_DELAY = 1500; // in ms
@@ -117,9 +113,9 @@ public abstract class BaseUi implements UI {
     protected TitleBar mTitleBar;
     protected MenuBar mMenuBar;
     private NavigationBarBase mNavigationBar;
-    protected PieControl mPieControl;
     private boolean mBlockFocusAnimations;
 
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     public BaseUi(Activity browser, UiController controller) {
         mActivity = browser;
         mUiController = controller;
@@ -222,14 +218,6 @@ public abstract class BaseUi implements UI {
     public void setUseQuickControls(boolean useQuickControls) {
         mUseQuickControls = useQuickControls;
         mTitleBar.setUseQuickControls(mUseQuickControls);
-        if (useQuickControls) {
-            mPieControl = new PieControl(mActivity, mUiController, this);
-            mPieControl.attachToContainer(mContentView);
-        } else {
-            if (mPieControl != null) {
-                mPieControl.removeFromContainer(mContentView);
-            }
-        }
         updateUrlBarAutoShowManagerTarget();
     }
 
@@ -243,6 +231,7 @@ public abstract class BaseUi implements UI {
         mTitleBar.onTabDataChanged(tab);
         mNavigationBar.onTabDataChanged(tab);
         onProgressChanged(tab);
+        mMenuBar.setTabCounts(mTabControl.getTabCount());
     }
 
     @Override
@@ -299,7 +288,6 @@ public abstract class BaseUi implements UI {
         if (web != null) {
             // Request focus on the top window.
             if (mUseQuickControls) {
-                mPieControl.forceToTop(mContentView);
                 web.setTitleBar(null);
                 mTitleBar.hide();
             } else {
@@ -661,7 +649,6 @@ public abstract class BaseUi implements UI {
     }
 
     // menu handling callbacks
-
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         return true;
@@ -701,7 +688,6 @@ public abstract class BaseUi implements UI {
     }
 
     // error console
-
     @Override
     public void setShouldShowErrorConsole(Tab tab, boolean flag) {
         if (tab == null) return;
@@ -718,10 +704,7 @@ public abstract class BaseUi implements UI {
                 mErrorConsoleContainer.removeView(errorConsole);
             }
             // Now we can add it to the main view.
-            mErrorConsoleContainer.addView(errorConsole,
-                    new LinearLayout.LayoutParams(
-                            ViewGroup.LayoutParams.MATCH_PARENT,
-                            ViewGroup.LayoutParams.WRAP_CONTENT));
+            mErrorConsoleContainer.addView(errorConsole, new LinearLayout.LayoutParams(-1, -2));
         } else {
             mErrorConsoleContainer.removeView(errorConsole);
         }
@@ -730,7 +713,6 @@ public abstract class BaseUi implements UI {
     // -------------------------------------------------------------------------
     // Helper function for WebChromeClient
     // -------------------------------------------------------------------------
-
     @Override
     public Bitmap getDefaultVideoPoster() {
         if (mDefaultVideoPoster == null) {
@@ -750,10 +732,7 @@ public abstract class BaseUi implements UI {
 
     @Override
     public void showMaxTabsWarning() {
-        Toast warning = Toast.makeText(mActivity,
-                mActivity.getString(R.string.max_tabs_warning),
-                Toast.LENGTH_SHORT);
-        warning.show();
+        ToastUtils.shortShow(mActivity, R.string.max_tabs_warning);
     }
 
     public WebView getWebView() {
@@ -829,7 +808,6 @@ public abstract class BaseUi implements UI {
     }
 
     protected Handler mHandler = new Handler() {
-
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == MSG_HIDE_TITLEBAR) {
@@ -858,7 +836,6 @@ public abstract class BaseUi implements UI {
         public boolean onTouchEvent(MotionEvent evt) {
             return true;
         }
-
     }
 
     public void addFixedTitleBar(View view) {
@@ -887,5 +864,4 @@ public abstract class BaseUi implements UI {
     public void onVoiceResult(String result) {
         mNavigationBar.onVoiceResult(result);
     }
-
 }

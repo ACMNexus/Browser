@@ -16,8 +16,6 @@
         <attr name="menu_name" format="reference" />
     </declare-styleable>
 
-    <attr name="yesNoPreferenceStyle" format="reference" />
-
     <attr name="scrollViewStyle" format="reference" />
 
     <declare-styleable name="SettingItemStyle">

@@ -27,7 +27,6 @@ import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.qirui.browser.view.UrlInputView;
 import com.qirui.browser.view.UrlInputView.StateListener;
 

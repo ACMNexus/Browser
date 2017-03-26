@@ -82,13 +82,11 @@ public class NullController implements ActivityController {
     }
 
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v,
-            ContextMenuInfo menuInfo) {
-
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo, float touchX, float touchY) {
     }
 
     @Override
-    public boolean onContextItemSelected(MenuItem item) {
+    public boolean onContextItemSelected(int id) {
         return false;
     }
 

@@ -84,6 +84,10 @@ public class MenuBar extends LinearLayout implements View.OnClickListener {
         }
     }
 
+    public void setTabCounts(int counts) {
+        mTabCounts.setText(counts + "");
+    }
+
     private void backPager() {
         WebView webView = mBaseUi.getActivieWebView();
         if(webView != null && webView.canGoBack()) {

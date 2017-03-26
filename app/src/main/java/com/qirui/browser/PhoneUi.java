@@ -144,7 +144,6 @@ public class PhoneUi extends BaseUi {
         }
         // Request focus on the top window.
         if (mUseQuickControls) {
-            mPieControl.forceToTop(mContentView);
             view.setTitleBar(null);
             mTitleBar.setShowProgressOnly(true);
         } else {

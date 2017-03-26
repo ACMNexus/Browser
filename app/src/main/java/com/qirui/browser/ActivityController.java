@@ -42,9 +42,9 @@ public interface ActivityController {
 
     boolean onOptionsItemSelected(MenuItem item);
 
-    void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo);
+    void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo, float touchX, float touchY);
 
-    boolean onContextItemSelected(MenuItem item);
+    boolean onContextItemSelected(int id);
 
     boolean onKeyDown(int keyCode, KeyEvent event);
 

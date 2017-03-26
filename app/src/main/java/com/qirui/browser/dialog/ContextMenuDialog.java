@@ -16,7 +16,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.qirui.browser.R;
 import com.qirui.browser.BrowserSettings;
-import com.qirui.browser.listener.ContextMenuClickListener;
 import com.qirui.browser.util.DisplayUtils;
 
 /**
@@ -30,6 +29,7 @@ public class ContextMenuDialog extends Dialog {
     private int mMenuItemMaxWidth = 0;
     private WebView.HitTestResult mResult;
     private WindowManager.LayoutParams mLayoutParams;
+    private OnContextMenuClickListener mListener;
     // Only view images using these schemes
     private static final String[] IMAGE_VIEWABLE_SCHEMES = {
             "http",
@@ -38,7 +38,7 @@ public class ContextMenuDialog extends Dialog {
     };
 
     public ContextMenuDialog(Context context) {
-        super(context);
+        super(context, R.style.dialogStyle);
         this.mContext = context;
         Window window = getWindow();
         mLayoutParams = window.getAttributes();
@@ -53,6 +53,10 @@ public class ContextMenuDialog extends Dialog {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(-1, -2);
         params.gravity = Gravity.CENTER_VERTICAL;
         int dividerHeight = mResource.getDimensionPixelOffset(R.dimen.context_menu_dialog_divider_height);
+        int left_margin = mResource.getDimensionPixelOffset(R.dimen.context_menu_dialog_margin_left_right);
+        int right_margin = mResource.getDimensionPixelOffset(R.dimen.context_menu_dialog_margin_left_right);
+        int top_margin = mResource.getDimensionPixelOffset(R.dimen.context_menu_dialog_margin_top_btm);
+        int bottom_margin = mResource.getDimensionPixelOffset(R.dimen.context_menu_dialog_margin_top_btm);
         TextView menuItem;
         int menuInfos[][] = new MenuItemInfo().getMenuItemInfo(type);
         for (int index = 0; index < menuInfos[0].length; index++) {
@@ -62,21 +66,33 @@ public class ContextMenuDialog extends Dialog {
             menuItem.setTextColor(Color.WHITE);
             menuItem.setTextSize(14);
             menuItem.setGravity(Gravity.START);
+            menuItem.setPadding(left_margin, top_margin, right_margin, bottom_margin);
+            menuItem.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    mListener.onMenuClick(v);
+                }
+            });
             menuParent.addView(menuItem, params);
-            menuParent.setOnClickListener(new ContextMenuClickListener(mContext, null, mResult, this));
             TextPaint paint = menuItem.getPaint();
-            float len = paint.measureText(menuItem.getText().toString(), 0, 10);
+            float len = paint.measureText(menuItem.getText().toString());
             if (mMenuItemMaxWidth < len) {
                 mMenuItemMaxWidth = (int) len;
             }
 
-            if (index != 0) {
+            if (index != menuInfos[0].length - 1) {
                 View divider = new View(mContext);
                 LinearLayout.LayoutParams dividerParams = new LinearLayout.LayoutParams(-1, dividerHeight);
                 divider.setBackgroundColor(mResource.getColor(R.color.longclick_menu_divider_bg));
                 menuParent.addView(divider, dividerParams);
             }
         }
+
+        setContentView(mContentView);
+    }
+
+    public void setContextMenuClickListener(OnContextMenuClickListener listener) {
+        this.mListener = listener;
     }
 
     public void show(WebView.HitTestResult result, int... loc) {
@@ -113,6 +129,20 @@ public class ContextMenuDialog extends Dialog {
         show();
     }
 
+    public static boolean isImageViewableUri(Uri uri) {
+        String scheme = uri.getScheme();
+        for (String allowed : IMAGE_VIEWABLE_SCHEMES) {
+            if (allowed.equals(scheme)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public interface OnContextMenuClickListener{
+        void onMenuClick(View view);
+    }
+
     private class MenuItemInfo {
 
         private final int[][] PHONE_MENU = {
@@ -132,22 +162,26 @@ public class ContextMenuDialog extends Dialog {
 
 
         private final int[][] ANCHOR_MENU = {
-                { R.id.open_newtab_context_menu_id, R.id.save_link_context_menu_id, R.id.copy_link_context_menu_id },
-                { R.string.contextmenu_openlink_newwindow, R.string.contextmenu_savelink, R.string.contextmenu_copylink }
+                { R.id.open_context_menu_id, R.id.open_newtab_context_menu_id, R.id.save_link_context_menu_id, R.id.copy_link_context_menu_id },
+                { R.string.contextmenu_openlink, R.string.contextmenu_openlink_newwindow, R.string.contextmenu_savelink, R.string.contextmenu_copylink }
         };
 
         private final int[][] IMAGE_MENU = {
                 { R.id.download_context_menu_id, R.id.view_image_context_menu_id,
-                  R.id.set_wallpaper_context_menu_id, R.id.share_link_context_menu_id },
+                  R.id.set_wallpaper_context_menu_id, R.id.share_link_context_menu_id, R.id.copy_link_context_menu_id },
                 { R.string.contextmenu_download_image, R.string.contextmenu_view_image,
-                  R.string.contextmenu_set_wallpaper, R.string.contextmenu_sharelink }
+                  R.string.contextmenu_set_wallpaper, R.string.contextmenu_sharelink, R.string.contextmenu_copylink }
         };
 
         private final int[][] SELECT_IMAGE_ANCHOR_MENU = {
-                { R.id.open_newtab_context_menu_id, R.id.save_link_context_menu_id, R.id.copy_link_context_menu_id,
-                  R.id.download_context_menu_id, R.id.view_image_context_menu_id, R.id.set_wallpaper_context_menu_id, R.id.share_link_context_menu_id },
-                { R.string.contextmenu_openlink_newwindow, R.string.contextmenu_savelink, R.string.contextmenu_copylink,
-                  R.string.contextmenu_download_image, R.string.contextmenu_view_image, R.string.contextmenu_set_wallpaper, R.string.contextmenu_sharelink }
+                { R.id.open_newtab_context_menu_id,
+                  R.id.save_link_context_menu_id, R.id.copy_link_context_menu_id,
+                  R.id.download_context_menu_id, R.id.view_image_context_menu_id,
+                  R.id.set_wallpaper_context_menu_id, R.id.share_link_context_menu_id },
+                { R.string.contextmenu_openlink_newwindow,
+                  R.string.contextmenu_savelink, R.string.contextmenu_copylink,
+                  R.string.contextmenu_download_image, R.string.contextmenu_view_image,
+                  R.string.contextmenu_set_wallpaper, R.string.contextmenu_sharelink }
         };
 
         private final int[][] SELECT_TEXT_MENU = {
@@ -179,20 +213,5 @@ public class ContextMenuDialog extends Dialog {
             }
             return null;
         }
-    }
-
-    public static boolean isImageViewableUri(Uri uri) {
-        String scheme = uri.getScheme();
-        for (String allowed : IMAGE_VIEWABLE_SCHEMES) {
-            if (allowed.equals(scheme)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public void dismiss() {
-        dismiss();
-        mContentView = null;
     }
 }

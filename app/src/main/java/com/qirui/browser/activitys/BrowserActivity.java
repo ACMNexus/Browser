@@ -55,9 +55,8 @@ public class BrowserActivity extends Activity {
     public static final String EXTRA_DISABLE_URL_OVERRIDE = "disable_url_override";
 
     private final static String LOGTAG = "browser";
-
+    private float mTouchX, mTouchY;
     private final static boolean LOGV_ENABLED = Browser.LOGV_ENABLED;
-
     private ActivityController mController = NullController.INSTANCE;
 
     @Override
@@ -229,12 +228,12 @@ public class BrowserActivity extends Activity {
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
-        mController.onCreateContextMenu(menu, v, menuInfo);
+        mController.onCreateContextMenu(menu, v, menuInfo, mTouchX, mTouchY);
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        return mController.onContextItemSelected(item);
+        return mController.onContextItemSelected(item.getItemId());
     }
 
     @Override
@@ -286,6 +285,8 @@ public class BrowserActivity extends Activity {
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
+        mTouchX = ev.getRawX();
+        mTouchY = ev.getRawY();
         return mController.dispatchTouchEvent(ev) || super.dispatchTouchEvent(ev);
     }
 

@@ -151,7 +151,7 @@ public class TabControl {
         return mTabs.indexOf(tab);
     }
 
-    boolean canCreateNewTab() {
+    public boolean canCreateNewTab() {
         return mMaxTabs > mTabs.size();
     }
 

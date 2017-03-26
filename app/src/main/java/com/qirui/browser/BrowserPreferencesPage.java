@@ -50,8 +50,6 @@ public class BrowserPreferencesPage extends PreferenceActivity {
      */
     @Override
     public void onBuildHeaders(List<Header> target) {
-        loadHeadersFromResource(R.xml.preference_headers, target);
-
         if (BrowserSettings.getInstance().isDebugEnabled()) {
             Header debug = new Header();
             debug.title = getText(R.string.pref_development_title);
@@ -101,7 +99,6 @@ public class BrowserPreferencesPage extends PreferenceActivity {
     }
 
     private static final Set<String> sKnownFragments = new HashSet<String>(Arrays.asList(
-            "GeneralPreferencesFragment",
             "PrivacySecurityPreferencesFragment",
             "AccessibilityPreferencesFragment",
             "AdvancedPreferencesFragment",
