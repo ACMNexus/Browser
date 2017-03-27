@@ -33,7 +33,7 @@ public class NavTabView extends LinearLayout {
     private ImageView mClose;
     private TextView mTitle;
     private View mTitleBar;
-    ImageView mImage;
+    public ImageView mImage;
     private OnClickListener mClickListener;
     private boolean mHighlighted;
 
@@ -127,5 +127,4 @@ public class NavTabView extends LinearLayout {
             mImage.setOnClickListener(mClickListener);
         }
     }
-
 }

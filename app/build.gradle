@@ -43,6 +43,6 @@ android {
 }
 
 dependencies {
-//    compile 'com.android.support:appcompat-v7:19.1.0'
     compile files('lib/android-support-v4.jar')
+    compile project(':stackoverview');
 }

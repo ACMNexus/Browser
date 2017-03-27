@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.qirui.browser;
 
 import android.annotation.TargetApi;
@@ -22,42 +21,31 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupMenu;
-import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
-import com.qirui.browser.NavTabScroller.OnLayoutListener;
+import com.luooh.stackoverview.views.Overview;
 import com.qirui.browser.NavTabScroller.OnRemoveListener;
+import com.qirui.browser.adapter.TabScrollerAdapter;
 import java.util.HashMap;
 
-public class NavScreen extends RelativeLayout implements OnClickListener, OnMenuItemClickListener, TabControl.OnThumbnailUpdatedListener {
+public class NavScreen extends RelativeLayout implements OnClickListener, Overview.RecentsViewCallbacks, TabControl.OnThumbnailUpdatedListener {
 
-    UiController mUiController;
-    PhoneUi mUi;
-    Tab mTab;
-    Activity mActivity;
+    private UiController mUiController;
+    private PhoneUi mUi;
+    private Activity mActivity;
 
-    private ImageButton mBookmarks;
-    private ImageButton mMore;
+    private ImageButton mBack;
     private ImageButton mNewTab;
-    private FrameLayout mHolder;
+    private Overview mTabScroller;
+    private TabScrollerAdapter mTabAdapter;
 
-    private TextView mTitle;
-    private ImageView mFavicon;
-    private ImageButton mCloseTab;
-
-    NavTabScroller mScroller;
-    private TabAdapter mAdapter;
+    public NavTabScroller mScroller;
+//    private TabAdapter mAdapter;
     private int mOrientation;
     private HashMap<Tab, View> mTabViews;
 
@@ -66,28 +54,15 @@ public class NavScreen extends RelativeLayout implements OnClickListener, OnMenu
         mUi = ui;
         mActivity = activity;
         mUiController = ctl;
+        mTabAdapter = new TabScrollerAdapter(mActivity);
         mOrientation = activity.getResources().getConfiguration().orientation;
         init();
-    }
-
-    protected void showMenu() {
-        PopupMenu popup = new PopupMenu(mActivity, mMore);
-        Menu menu = popup.getMenu();
-        popup.getMenuInflater().inflate(R.menu.browser, menu);
-        mUiController.updateMenuState(mUiController.getCurrentTab(), menu);
-        popup.setOnMenuItemClickListener(this);
-        popup.show();
     }
 
     private void showWebView() {
         Tab currentTab = mUi.getActiveTab();
         int pos = mUiController.getTabControl().getTabPosition(currentTab);
         close(pos);
-    }
-
-    @Override
-    public boolean onMenuItemClick(MenuItem item) {
-        return mUiController.onOptionsItemSelected(item);
     }
 
     protected float getToolbarHeight() {
@@ -102,48 +77,44 @@ public class NavScreen extends RelativeLayout implements OnClickListener, OnMenu
             mOrientation = newconfig.orientation;
             init();
             mScroller.setScrollValue(sv);
-            mAdapter.notifyDataSetChanged();
         }
     }
 
     public void refreshAdapter() {
-        mScroller.handleDataChanged(mUiController.getTabControl().getTabPosition(mUi.getActiveTab()));
     }
 
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     private void init() {
         LayoutInflater.from(mActivity).inflate(R.layout.nav_screen, this);
-        setContentDescription(mActivity.getResources().getString(
-                R.string.accessibility_transition_navscreen));
-        mBookmarks = (ImageButton) findViewById(R.id.bookmarks);
+        setContentDescription(mActivity.getResources().getString(R.string.accessibility_transition_navscreen));
+        mBack = (ImageButton) findViewById(R.id.back);
         mNewTab = (ImageButton) findViewById(R.id.newtab);
-        mMore = (ImageButton) findViewById(R.id.more);
-        mBookmarks.setOnClickListener(this);
-        mNewTab.setOnClickListener(this);
-        mMore.setOnClickListener(this);
+        mTabScroller = (Overview) findViewById(R.id.tab_scroller);
         mScroller = (NavTabScroller) findViewById(R.id.scroller);
+        mTabScroller.setCallbacks(this);
+        mTabScroller.setTaskStack(mTabAdapter);
+
+        mBack.setOnClickListener(this);
+        mNewTab.setOnClickListener(this);
         TabControl tc = mUiController.getTabControl();
-        mTabViews = new HashMap<Tab, View>(tc.getTabCount());
-        mAdapter = new TabAdapter(getContext(), tc);
-        mScroller.setOrientation(mOrientation == Configuration.ORIENTATION_LANDSCAPE ? LinearLayout.HORIZONTAL : LinearLayout.VERTICAL);
-        // update state for active tab
-        mScroller.setAdapter(mAdapter,  mUiController.getTabControl().getTabPosition(mUi.getActiveTab()));
-        mScroller.setOnRemoveListener(new OnRemoveListener() {
-            public void onRemovePosition(int pos) {
-                Tab tab = mAdapter.getItem(pos);
-                onCloseTab(tab);
-            }
-        });
+        mTabViews = new HashMap(tc.getTabCount());
+
+        mTabAdapter.setItems(mUiController.getTabControl().getTabs());
+
+//        mAdapter = new TabAdapter(getContext(), tc);
+//        mScroller.setOrientation(mOrientation == Configuration.ORIENTATION_LANDSCAPE ? LinearLayout.HORIZONTAL : LinearLayout.VERTICAL);
+//        mScroller.setAdapter(mAdapter, mUiController.getTabControl().getTabPosition(mUi.getActiveTab()));
     }
 
     @Override
     public void onClick(View v) {
-        if (mBookmarks == v) {
-            mUiController.bookmarksOrHistoryPicker(UI.ComboViews.Bookmarks);
-        } else if (mNewTab == v) {
-            openNewTab();
-        } else if (mMore == v) {
-            showWebView();
+        switch (v.getId()) {
+            case R.id.newtab:
+                openNewTab();
+                break;
+            case R.id.back:
+                showWebView();
+                break;
         }
     }
 
@@ -158,19 +129,21 @@ public class NavScreen extends RelativeLayout implements OnClickListener, OnMenu
     }
 
     private void openNewTab() {
-        // need to call openTab explicitely with setactive false
         final Tab tab = mUiController.openTab(BrowserSettings.getInstance().getHomePage(), false, false, false);
         if (tab != null) {
             mUiController.setBlockEvents(true);
             final int tix = mUi.mTabControl.getTabPosition(tab);
-            mScroller.setOnLayoutListener(new OnLayoutListener() {
+            /*mScroller.setOnLayoutListener(new OnLayoutListener() {
                 @Override
                 public void onLayout(int l, int t, int r, int b) {
                     mUi.hideNavScreen(tix, true);
                     switchToTab(tab);
                 }
             });
-            mScroller.handleDataChanged(tix);
+            mScroller.handleDataChanged(tix);*/
+            mUi.hideNavScreen(tix, true);
+            switchToTab(tab);
+            mTabAdapter.notifyDataSetInserted(tab, 0);
             mUiController.setBlockEvents(false);
         }
     }
@@ -193,7 +166,17 @@ public class NavScreen extends RelativeLayout implements OnClickListener, OnMenu
         return mScroller.getTabView(pos);
     }
 
-    class TabAdapter extends BaseAdapter {
+    @Override
+    public void onCardDismissed(int position) {
+        Tab tab = null;
+        onCloseTab(tab);
+    }
+
+    @Override
+    public void onAllCardsDismissed() {
+    }
+
+    /*class TabAdapter extends BaseAdapter {
 
         Context context;
         TabControl tabControl;
@@ -241,8 +224,7 @@ public class NavScreen extends RelativeLayout implements OnClickListener, OnMenu
             });
             return tabview;
         }
-
-    }
+    }*/
 
     @Override
     public void onThumbnailUpdated(Tab t) {

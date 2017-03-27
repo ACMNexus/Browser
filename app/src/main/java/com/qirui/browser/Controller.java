@@ -48,6 +48,7 @@ import com.qirui.browser.activitys.BrowserActivity;
 import com.qirui.browser.bean.Download;
 import com.qirui.browser.controller.ContextMenuManager;
 import com.qirui.browser.controller.DataController;
+import com.qirui.browser.controller.HomePagerController;
 import com.qirui.browser.dialog.ContextMenuDialog;
 import com.qirui.browser.provider.BrowserContract;
 
@@ -77,6 +78,7 @@ import android.webkit.WebView;
 import android.widget.Toast;
 
 import com.qirui.browser.provider.BrowserProvider2.Thumbnails;
+import com.qirui.browser.util.Constants;
 import com.qirui.browser.util.IOUtils;
 import com.qirui.browser.util.ReflectUtils;
 import com.qirui.browser.util.SettingValues;
@@ -189,7 +191,7 @@ public class Controller implements WebViewController, UiController, ActivityCont
     private ContentObserver mBookmarksObserver;
     private CrashRecoveryHandler mCrashRecoveryHandler;
     private SettingValues mSettingValues;
-    private ContextMenuDialog mContextMenuDialog;
+    private HomePagerController mHomeController;
 
     private boolean mBlockEvents;
 
@@ -204,6 +206,7 @@ public class Controller implements WebViewController, UiController, ActivityCont
         mCrashRecoveryHandler.preloadCrashState();
         mFactory = new BrowserWebViewFactory(browser);
         mSettingValues = getSettings().getSettingValues();
+        mHomeController = new HomePagerController(mActivity, this);
 
         ContextMenuManager.getInstance().initial(mActivity, this);
         mUrlHandler = new UrlHandler(this);
@@ -735,7 +738,6 @@ public class Controller implements WebViewController, UiController, ActivityCont
     }
 
     // WebViewController
-
     @Override
     public void onPageStarted(Tab tab, WebView view, Bitmap favicon) {
 
@@ -743,8 +745,7 @@ public class Controller implements WebViewController, UiController, ActivityCont
         // to save a screenshot then we will now take the new page and save
         // an incorrect screenshot. Therefore, remove any pending thumbnail
         // messages from the queue.
-        mHandler.removeMessages(Controller.UPDATE_BOOKMARK_THUMBNAIL,
-                tab);
+        mHandler.removeMessages(Controller.UPDATE_BOOKMARK_THUMBNAIL, tab);
 
         // reset sync timer to avoid sync starts during loading a page
         CookieSyncManager.getInstance().resetSync();
@@ -994,14 +995,12 @@ public class Controller implements WebViewController, UiController, ActivityCont
      * Update the favorites icon if the private browsing isn't enabled and the
      * icon is valid.
      */
-    private void maybeUpdateFavicon(Tab tab, final String originalUrl,
-                                    final String url, Bitmap favicon) {
+    private void maybeUpdateFavicon(Tab tab, final String originalUrl, final String url, Bitmap favicon) {
         if (favicon == null) {
             return;
         }
         if (!tab.isPrivateBrowsingEnabled()) {
-            Bookmarks.updateFavicon(mActivity
-                    .getContentResolver(), originalUrl, url, favicon);
+            Bookmarks.updateFavicon(mActivity.getContentResolver(), originalUrl, url, favicon);
         }
     }
 
@@ -2110,8 +2109,12 @@ public class Controller implements WebViewController, UiController, ActivityCont
     protected void loadUrl(Tab tab, String url, Map<String, String> headers) {
         if (tab != null) {
             dismissSubWindow(tab);
-            tab.loadUrl(url, headers);
-            mUi.onProgressChanged(tab);
+            if(!TextUtils.isEmpty(url) && url.equals(Constants.NATIVE_PAGE_URL)) {
+
+            }else {
+                tab.loadUrl(url, headers);
+                mUi.onProgressChanged(tab);
+            }
         }
     }
 

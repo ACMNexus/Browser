@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2011 The Android Open Source Project
+<?xml version="1.0" encoding="utf-8"?><!-- Copyright (C) 2011 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -14,49 +13,50 @@
      limitations under the License.
 -->
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/main"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:background="@drawable/nav_tab_bg"
-    android:focusable="false">
+    android:orientation="vertical">
+
     <LinearLayout
         android:id="@+id/titlebar"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="@dimen/nav_tab_titleheight"
         android:layout_gravity="center_horizontal"
-        android:paddingLeft="8dip" >
+        android:orientation="horizontal"
+        android:paddingLeft="8dip">
+
         <TextView
             android:id="@+id/title"
             android:layout_width="0dip"
             android:layout_height="match_parent"
             android:layout_weight="1.0"
-            android:gravity="center_vertical"
-            android:singleLine="true"
+            android:drawablePadding="8dip"
             android:ellipsize="end"
+            android:gravity="center_vertical"
             android:lines="1"
-            android:textAppearance="?android:attr/textAppearanceSmall"
             android:scrollHorizontally="true"
-            android:drawablePadding="8dip" />
+            android:singleLine="true"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
         <ImageView
             android:id="@+id/closetab"
-            android:src="@drawable/ic_tab_close"
-            android:layout_gravity="center_vertical"
+            style="@style/HoloButton"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
             android:paddingRight="16dip"
-            android:contentDescription="@string/accessibility_button_closetab"
-            style="@style/HoloButton" />
+            android:src="@drawable/ic_tab_close" />
     </LinearLayout>
+
     <ImageView
         android:id="@+id/tab_view"
-        android:src="@drawable/ic_stop_holo_dark"
-        android:layout_width="@dimen/nav_tab_width"
-        android:layout_height="@dimen/nav_tab_height"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:focusable="false"
         android:paddingLeft="2dip"
         android:paddingRight="2dip"
-        android:focusable="false" />
+        android:src="@drawable/ic_stop_holo_dark" />
 </LinearLayout>

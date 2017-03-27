@@ -19,7 +19,6 @@ package com.qirui.browser;
 import android.os.Bundle;
 import android.util.Log;
 import android.webkit.WebView;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,7 +34,7 @@ public class TabControl {
     private static final String POSITIONS = "positions";
     private static final String CURRENT = "current";
 
-    public static interface OnThumbnailUpdatedListener {
+    public interface OnThumbnailUpdatedListener {
         void onThumbnailUpdated(Tab t);
     }
 
@@ -58,11 +57,11 @@ public class TabControl {
     public TabControl(Controller controller) {
         mController = controller;
         mMaxTabs = mController.getMaxTabs();
-        mTabs = new ArrayList<Tab>(mMaxTabs);
-        mTabQueue = new ArrayList<Tab>(mMaxTabs);
+        mTabs = new ArrayList(mMaxTabs);
+        mTabQueue = new ArrayList(mMaxTabs);
     }
 
-    synchronized static long getNextId() {
+    public synchronized static long getNextId() {
         return sNextId++;
     }
 
@@ -286,9 +285,8 @@ public class TabControl {
      * position sorted array of tab ids
      * for each tab id, save the tab state
      * @param outState
-     * @param saveImages
      */
-    void saveState(Bundle outState) {
+    public void saveState(Bundle outState) {
         final int numTabs = getTabCount();
         if (numTabs == 0) {
             return;
@@ -631,8 +629,7 @@ public class TabControl {
 
     /**
      * Put the current tab in the background and set newTab as the current tab.
-     * @param newTab The new tab. If newTab is null, the current tab is not
-     *               set.
+     * @param newTab The new tab. If newTab is null, the current tab is not set.
      */
     boolean setCurrentTab(Tab newTab) {
         return setCurrentTab(newTab, false);

@@ -1496,10 +1496,12 @@ public class Tab implements PictureListener {
     }
 
     protected void capture() {
+
         if (mMainView == null || mCapture == null) return;
         if (ReflectUtils.getContentWidth(mMainView) <= 0 || mMainView.getContentHeight() <= 0) {
             return;
         }
+
         Canvas c = new Canvas(mCapture);
         final int left = mMainView.getScrollX();
         final int top = mMainView.getScrollY() + ReflectUtils.getVisibleTitleHeight(mMainView);
@@ -1507,18 +1509,10 @@ public class Tab implements PictureListener {
         c.translate(-left, -top);
         float scale = mCaptureWidth / (float) mMainView.getWidth();
         c.scale(scale, scale, left, top);
-        if (mMainView instanceof BrowserWebView) {
-            ((BrowserWebView) mMainView).drawContent(c);
-        } else {
-            mMainView.draw(c);
-        }
+        mMainView.draw(c);
         c.restoreToCount(state);
-        // manually anti-alias the edges for the tilt
-        c.drawRect(0, 0, 1, mCapture.getHeight(), sAlphaPaint);
-        c.drawRect(mCapture.getWidth() - 1, 0, mCapture.getWidth(), mCapture.getHeight(), sAlphaPaint);
-        c.drawRect(0, 0, mCapture.getWidth(), 1, sAlphaPaint);
-        c.drawRect(0, mCapture.getHeight() - 1, mCapture.getWidth(), mCapture.getHeight(), sAlphaPaint);
         c.setBitmap(null);
+
         mHandler.removeMessages(MSG_CAPTURE);
         persistThumbnail();
         TabControl tc = mWebViewController.getTabControl();
@@ -1590,9 +1584,7 @@ public class Tab implements PictureListener {
             try {
                 mCapture.copyPixelsFromBuffer(buffer);
             } catch (RuntimeException rex) {
-                Log.e(LOGTAG, "Load capture has mismatched sizes; buffer: "
-                        + buffer.capacity() + " blob: " + blob.length
-                        + "capture: " + mCapture.getByteCount());
+                Log.e(LOGTAG, "Load capture has mismatched sizes; buffer: " + buffer.capacity() + " blob: " + blob.length + "capture: " + mCapture.getByteCount());
                 throw rex;
             }
         }

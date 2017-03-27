@@ -236,9 +236,7 @@ public class DataController implements Handler.Callback {
                     }
                 }
             } finally {
-                if (c != null) {
-                    c.close();
-                }
+                IOUtils.closeCursor(c);
             }
         }
 
@@ -251,8 +249,7 @@ public class DataController implements Handler.Callback {
                     ContentValues values = new ContentValues();
                     values.put(History.VISITS, c.getInt(1) + 1);
                     values.put(History.DATE_LAST_VISITED, System.currentTimeMillis());
-                    cr.update(ContentUris.withAppendedId(History.CONTENT_URI, c.getLong(0)),
-                            values, null, null);
+                    cr.update(ContentUris.withAppendedId(History.CONTENT_URI, c.getLong(0)), values, null, null);
                 } else {
                     truncateHistory(cr);
                     ContentValues values = new ContentValues();

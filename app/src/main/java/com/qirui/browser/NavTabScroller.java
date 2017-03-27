@@ -121,8 +121,7 @@ public class NavTabScroller extends ScrollerView {
     public void setOrientation(int orientation) {
         mContentView.setOrientation(orientation);
         if (orientation == LinearLayout.HORIZONTAL) {
-            mContentView.setLayoutParams(
-                    new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
+            mContentView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
         } else {
             mContentView.setLayoutParams(
                     new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
