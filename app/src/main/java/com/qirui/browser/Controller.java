@@ -223,8 +223,7 @@ public class Controller implements WebViewController, UiController, ActivityCont
                 }
             }
         };
-        browser.getContentResolver().registerContentObserver(
-                BrowserContract.Bookmarks.CONTENT_URI, true, mBookmarksObserver);
+        browser.getContentResolver().registerContentObserver(BrowserContract.Bookmarks.CONTENT_URI, true, mBookmarksObserver);
 
         mNetworkHandler = new NetworkStateHandler(mActivity, this);
         // Start watching the default geolocation permissions
@@ -415,6 +414,10 @@ public class Controller implements WebViewController, UiController, ActivityCont
     @Override
     public TabControl getTabControl() {
         return mTabControl;
+    }
+
+    public HomePagerController getHomeController() {
+        return mHomeController;
     }
 
     @Override
@@ -2087,8 +2090,7 @@ public class Controller implements WebViewController, UiController, ActivityCont
         // In case the user enters nothing.
         if (url != null && url.length() != 0 && tab != null && view != null) {
             url = UrlUtils.smartUrlFilter(url);
-            if (!((BrowserWebView) view).getWebViewClient().
-                    shouldOverrideUrlLoading(view, url)) {
+            if (!((BrowserWebView) view).getWebViewClient().shouldOverrideUrlLoading(view, url)) {
                 loadUrl(tab, url);
             }
         }
@@ -2110,8 +2112,10 @@ public class Controller implements WebViewController, UiController, ActivityCont
         if (tab != null) {
             dismissSubWindow(tab);
             if(!TextUtils.isEmpty(url) && url.equals(Constants.NATIVE_PAGE_URL)) {
-
+                ((PhoneUi) mUi).switchNativePage(tab);
             }else {
+//                mUi.hideNavScreen(tix, true);
+                switchToTab(tab);
                 tab.loadUrl(url, headers);
                 mUi.onProgressChanged(tab);
             }

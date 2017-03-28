@@ -9,6 +9,7 @@ public class WebSiteInfo {
     private String name;
     private String url;
     private String iconUrl;
+    private int iconResId;
 
     public String getId() {
         return id;
@@ -40,5 +41,13 @@ public class WebSiteInfo {
 
     public void setIconUrl(String iconUrl) {
         this.iconUrl = iconUrl;
+    }
+
+    public int getIconResId() {
+        return iconResId;
+    }
+
+    public void setIconResId(int iconResId) {
+        this.iconResId = iconResId;
     }
 }

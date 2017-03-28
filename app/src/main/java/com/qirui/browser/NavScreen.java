@@ -29,7 +29,6 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import com.luooh.stackoverview.views.Overview;
-import com.qirui.browser.adapter.TabScrollerAdapter;
 import java.util.HashMap;
 
 public class NavScreen extends RelativeLayout implements OnClickListener, TabControl.OnThumbnailUpdatedListener {
@@ -40,8 +39,6 @@ public class NavScreen extends RelativeLayout implements OnClickListener, TabCon
 
     private ImageButton mBack;
     private ImageButton mNewTab;
-    private Overview mTabScroller;
-    private TabScrollerAdapter mTabAdapter;
 
     public NavTabScroller mScroller;
     private TabAdapter mAdapter;
@@ -53,7 +50,6 @@ public class NavScreen extends RelativeLayout implements OnClickListener, TabCon
         mUi = ui;
         mActivity = activity;
         mUiController = ctl;
-        mTabAdapter = new TabScrollerAdapter(mActivity);
         mOrientation = activity.getResources().getConfiguration().orientation;
         init();
     }
@@ -88,7 +84,6 @@ public class NavScreen extends RelativeLayout implements OnClickListener, TabCon
         LayoutInflater.from(mActivity).inflate(R.layout.nav_screen, this);
         mBack = (ImageButton) findViewById(R.id.back);
         mNewTab = (ImageButton) findViewById(R.id.newtab);
-        mTabScroller = (Overview) findViewById(R.id.tab_scroller);
         mScroller = (NavTabScroller) findViewById(R.id.scroller);
 
         mBack.setOnClickListener(this);
@@ -137,14 +132,13 @@ public class NavScreen extends RelativeLayout implements OnClickListener, TabCon
             mScroller.setOnLayoutListener(new NavTabScroller.OnLayoutListener() {
                 @Override
                 public void onLayout(int l, int t, int r, int b) {
-                    mUi.hideNavScreen(tix, true);
-                    switchToTab(tab);
                 }
             });
+
+//            mUi.hideNavScreen(tix, true);
+//            switchToTab(tab);
+
             mScroller.handleDataChanged(tix);
-            mUi.hideNavScreen(tix, true);
-            switchToTab(tab);
-            mTabAdapter.notifyDataSetInserted(tab, 0);
             mUiController.setBlockEvents(false);
         }
     }

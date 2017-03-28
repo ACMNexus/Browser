@@ -278,10 +278,8 @@ public class XLargeUi extends BaseUi {
         if (mFaviconBackground == null) {
             mFaviconBackground = new PaintDrawable();
             Resources res = mActivity.getResources();
-            mFaviconBackground.getPaint().setColor(
-                    res.getColor(R.color.tabFaviconBackground));
-            mFaviconBackground.setCornerRadius(
-                    res.getDimension(R.dimen.tab_favicon_corner_radius));
+            mFaviconBackground.getPaint().setColor(res.getColor(R.color.tabFaviconBackground));
+            mFaviconBackground.setCornerRadius(res.getDimension(R.dimen.tab_favicon_corner_radius));
         }
         return mFaviconBackground;
     }
@@ -299,5 +297,4 @@ public class XLargeUi extends BaseUi {
         d.setLayerInset(1, 2, 2, 2, 2);
         return d;
     }
-
 }

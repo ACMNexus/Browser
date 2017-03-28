@@ -214,6 +214,23 @@ public class PhoneUi extends BaseUi {
         hideNavScreen(mUiController.getTabControl().getCurrentPosition(), animate);
     }
 
+    public void panelSwitch(Tab tab) {
+    }
+
+    public void switchNativePage(Tab homeTab) {
+        if(homeTab != null && homeTab.getWebView() != null) {
+            homeTab.getWebView().stopLoading();
+            homeTab.getWebView().clearFocus();
+        }
+
+        int tix = mTabControl.getTabPosition(homeTab);
+        //隐藏面板
+        hideNavScreen(tix, true);
+        //显示主页信息
+        switchHomePage();
+        mTabControl.setCurrentTab(homeTab);
+    }
+
     public void showNavScreen() {
         mShowNav = true;
         mUiController.setBlockEvents(true);
@@ -322,6 +339,7 @@ public class PhoneUi extends BaseUi {
             finishAnimateOut();
             return;
         }
+
         mUiController.setBlockEvents(true);
         mUiController.setActiveTab(tab);
         mContentView.setVisibility(View.VISIBLE);

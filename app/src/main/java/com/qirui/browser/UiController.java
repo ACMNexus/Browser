@@ -22,6 +22,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
 
+import com.qirui.browser.controller.HomePagerController;
+
 import java.util.List;
 
 
@@ -39,6 +41,8 @@ public interface UiController {
     Tab getCurrentTab();
 
     TabControl getTabControl();
+
+    HomePagerController getHomeController();
 
     List<Tab> getTabs();
 

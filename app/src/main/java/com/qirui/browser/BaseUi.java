@@ -54,6 +54,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 import com.qirui.browser.activitys.MarkHistoryActivity;
 import com.qirui.browser.bean.SecurityState;
+import com.qirui.browser.controller.HomePagerController;
 import com.qirui.browser.util.ToastUtils;
 import com.qirui.browser.view.ErrorConsoleView;
 import com.qirui.browser.view.MenuBar;
@@ -92,6 +93,7 @@ public abstract class BaseUi implements UI {
     protected FrameLayout mHomePagerContainer;
     protected FrameLayout mCustomViewContainer;
     protected FrameLayout mFullscreenContainer;
+    protected LinearLayout mContentParent;
     protected LinearLayout mBottomTools;
     protected MenuToolBar mBottomMenuPopup;
     private FrameLayout mFixedTitlebarContainer;
@@ -112,6 +114,7 @@ public abstract class BaseUi implements UI {
     protected boolean mUseQuickControls;
     protected TitleBar mTitleBar;
     protected MenuBar mMenuBar;
+    protected HomePagerController mHomePagerController;
     private NavigationBarBase mNavigationBar;
     private boolean mBlockFocusAnimations;
 
@@ -121,6 +124,7 @@ public abstract class BaseUi implements UI {
         mUiController = controller;
         mTabControl = controller.getTabControl();
         Resources res = mActivity.getResources();
+        mHomePagerController = mUiController.getHomeController();
         mInputManager = (InputMethodManager) browser.getSystemService(Activity.INPUT_METHOD_SERVICE);
         mLockIconSecure = res.getDrawable(R.drawable.ic_secure_holo_dark);
         mLockIconMixed = res.getDrawable(R.drawable.ic_secure_partial_holo_dark);
@@ -130,6 +134,7 @@ public abstract class BaseUi implements UI {
         mFixedTitlebarContainer = (FrameLayout) frameLayout.findViewById(R.id.fixed_titlebar_container);
         mHomePagerContainer = (FrameLayout) frameLayout.findViewById(R.id.homepage_container);
         mContentView = (FrameLayout) frameLayout.findViewById(R.id.main_content);
+        mContentParent = (LinearLayout) frameLayout.findViewById(R.id.vertical_layout);
         mCustomViewContainer = (FrameLayout) frameLayout.findViewById(R.id.fullscreen_custom_content);
         mErrorConsoleContainer = (LinearLayout) frameLayout.findViewById(R.id.error_console);
         mBottomTools = (LinearLayout) frameLayout.findViewById(R.id.bottom_menu);
@@ -185,6 +190,15 @@ public abstract class BaseUi implements UI {
         } else {
             mBottomMenuPopup.showPopMenu(View.VISIBLE);
         }
+    }
+
+    public void switchHomePage() {
+        if(mHomePagerContainer.getChildCount() == 0) {
+            mHomePagerContainer.addView(mHomePagerController.getHomePageView());
+        }
+        mCustomViewContainer.setVisibility(View.GONE);
+        mHomePagerContainer.setVisibility(View.VISIBLE);
+        mHomePagerContainer.bringToFront();
     }
 
     public Activity getActivity() {
@@ -301,7 +315,6 @@ public abstract class BaseUi implements UI {
         onTabDataChanged(tab);
         onProgressChanged(tab);
         mNavigationBar.setIncognitoMode(tab.isPrivateBrowsingEnabled());
-        updateAutoLogin(tab, false);
         mBlockFocusAnimations = false;
     }
 
@@ -573,20 +586,13 @@ public abstract class BaseUi implements UI {
 
     @Override
     public void showAutoLogin(Tab tab) {
-        updateAutoLogin(tab, true);
     }
 
     @Override
     public void hideAutoLogin(Tab tab) {
-        updateAutoLogin(tab, true);
     }
-
-    // -------------------------------------------------------------------------
 
     protected void updateNavigationState(Tab tab) {
-    }
-
-    protected void updateAutoLogin(Tab tab, boolean animate) {
     }
 
     /**
