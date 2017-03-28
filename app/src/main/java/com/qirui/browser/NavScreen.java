@@ -29,11 +29,10 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import com.luooh.stackoverview.views.Overview;
-import com.qirui.browser.NavTabScroller.OnRemoveListener;
 import com.qirui.browser.adapter.TabScrollerAdapter;
 import java.util.HashMap;
 
-public class NavScreen extends RelativeLayout implements OnClickListener, Overview.RecentsViewCallbacks, TabControl.OnThumbnailUpdatedListener {
+public class NavScreen extends RelativeLayout implements OnClickListener, TabControl.OnThumbnailUpdatedListener {
 
     private UiController mUiController;
     private PhoneUi mUi;
@@ -45,7 +44,7 @@ public class NavScreen extends RelativeLayout implements OnClickListener, Overvi
     private TabScrollerAdapter mTabAdapter;
 
     public NavTabScroller mScroller;
-//    private TabAdapter mAdapter;
+    private TabAdapter mAdapter;
     private int mOrientation;
     private HashMap<Tab, View> mTabViews;
 
@@ -81,29 +80,31 @@ public class NavScreen extends RelativeLayout implements OnClickListener, Overvi
     }
 
     public void refreshAdapter() {
+        mScroller.handleDataChanged(mUiController.getTabControl().getTabPosition(mUi.getActiveTab()));
     }
 
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     private void init() {
         LayoutInflater.from(mActivity).inflate(R.layout.nav_screen, this);
-        setContentDescription(mActivity.getResources().getString(R.string.accessibility_transition_navscreen));
         mBack = (ImageButton) findViewById(R.id.back);
         mNewTab = (ImageButton) findViewById(R.id.newtab);
         mTabScroller = (Overview) findViewById(R.id.tab_scroller);
         mScroller = (NavTabScroller) findViewById(R.id.scroller);
-        mTabScroller.setCallbacks(this);
-        mTabScroller.setTaskStack(mTabAdapter);
 
         mBack.setOnClickListener(this);
         mNewTab.setOnClickListener(this);
         TabControl tc = mUiController.getTabControl();
         mTabViews = new HashMap(tc.getTabCount());
 
-        mTabAdapter.setItems(mUiController.getTabControl().getTabs());
-
-//        mAdapter = new TabAdapter(getContext(), tc);
-//        mScroller.setOrientation(mOrientation == Configuration.ORIENTATION_LANDSCAPE ? LinearLayout.HORIZONTAL : LinearLayout.VERTICAL);
-//        mScroller.setAdapter(mAdapter, mUiController.getTabControl().getTabPosition(mUi.getActiveTab()));
+        mAdapter = new TabAdapter(getContext(), tc);
+        mScroller.setOrientation(mOrientation == Configuration.ORIENTATION_LANDSCAPE ? LinearLayout.HORIZONTAL : LinearLayout.VERTICAL);
+        mScroller.setAdapter(mAdapter, mUiController.getTabControl().getTabPosition(mUi.getActiveTab()));
+        mScroller.setOnRemoveListener(new NavTabScroller.OnRemoveListener() {
+            public void onRemovePosition(int pos) {
+                Tab tab = mAdapter.getItem(pos);
+                onCloseTab(tab);
+            }
+        });
     }
 
     @Override
@@ -133,14 +134,14 @@ public class NavScreen extends RelativeLayout implements OnClickListener, Overvi
         if (tab != null) {
             mUiController.setBlockEvents(true);
             final int tix = mUi.mTabControl.getTabPosition(tab);
-            /*mScroller.setOnLayoutListener(new OnLayoutListener() {
+            mScroller.setOnLayoutListener(new NavTabScroller.OnLayoutListener() {
                 @Override
                 public void onLayout(int l, int t, int r, int b) {
                     mUi.hideNavScreen(tix, true);
                     switchToTab(tab);
                 }
             });
-            mScroller.handleDataChanged(tix);*/
+            mScroller.handleDataChanged(tix);
             mUi.hideNavScreen(tix, true);
             switchToTab(tab);
             mTabAdapter.notifyDataSetInserted(tab, 0);
@@ -166,17 +167,7 @@ public class NavScreen extends RelativeLayout implements OnClickListener, Overvi
         return mScroller.getTabView(pos);
     }
 
-    @Override
-    public void onCardDismissed(int position) {
-        Tab tab = null;
-        onCloseTab(tab);
-    }
-
-    @Override
-    public void onAllCardsDismissed() {
-    }
-
-    /*class TabAdapter extends BaseAdapter {
+    class TabAdapter extends BaseAdapter {
 
         Context context;
         TabControl tabControl;
@@ -224,7 +215,7 @@ public class NavScreen extends RelativeLayout implements OnClickListener, Overvi
             });
             return tabview;
         }
-    }*/
+    }
 
     @Override
     public void onThumbnailUpdated(Tab t) {
