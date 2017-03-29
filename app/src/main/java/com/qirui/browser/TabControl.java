@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.qirui.browser;
 
 import android.os.Bundle;
@@ -25,9 +24,8 @@ import java.util.List;
 import java.util.Vector;
 
 public class TabControl {
-    // Log Tag
-    private static final String LOGTAG = "TabControl";
 
+    private static final String LOG = TabControl.class.getSimpleName();
     // next Tab ID, starting at 1
     private static long sNextId = 1;
 
@@ -301,7 +299,7 @@ public class TabControl {
                 if (outState.containsKey(key)) {
                     // Dump the tab state for debugging purposes
                     for (Tab dt : mTabs) {
-                        Log.e(LOGTAG, dt.toString());
+                        Log.e(LOG, dt.toString());
                     }
                     throw new IllegalStateException(
                             "Error saving state, duplicate tab ids!");
@@ -452,7 +450,7 @@ public class TabControl {
         // free the least frequently used background tabs
         Vector<Tab> tabs = getHalfLeastUsedTabs(getCurrentTab());
         if (tabs.size() > 0) {
-            Log.w(LOGTAG, "Free " + tabs.size() + " tabs in the browser");
+            Log.w(LOG, "Free " + tabs.size() + " tabs in the browser");
             for (Tab t : tabs) {
                 // store the WebView's state.
                 t.saveState();
@@ -463,7 +461,7 @@ public class TabControl {
         }
 
         // free the WebView's unused memory (this includes the cache)
-        Log.w(LOGTAG, "Free WebView's unused memory and cache");
+        Log.w(LOG, "Free WebView's unused memory and cache");
         WebView view = getCurrentWebView();
         if (view != null) {
             view.freeMemory();
@@ -631,7 +629,7 @@ public class TabControl {
      * Put the current tab in the background and set newTab as the current tab.
      * @param newTab The new tab. If newTab is null, the current tab is not set.
      */
-    boolean setCurrentTab(Tab newTab) {
+    public boolean setCurrentTab(Tab newTab) {
         return setCurrentTab(newTab, false);
     }
 
@@ -684,5 +682,4 @@ public class TabControl {
     public OnThumbnailUpdatedListener getOnThumbnailUpdatedListener() {
         return mOnThumbnailUpdatedListener;
     }
-
 }

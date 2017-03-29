@@ -18,12 +18,9 @@ package com.qirui.browser;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
-
 import com.qirui.browser.controller.HomePagerController;
-
 import java.util.List;
 
 
@@ -50,8 +47,7 @@ public interface UiController {
 
     Tab openIncognitoTab();
 
-    Tab openTab(String url, boolean incognito, boolean setActive,
-            boolean useCurrent);
+    Tab openTab(String url, boolean incognito, boolean setActive, boolean useCurrent);
 
     void setActiveTab(Tab tab);
 
@@ -88,8 +84,6 @@ public interface UiController {
     void endActionMode();
 
     void shareCurrentPage();
-
-    void updateMenuState(Tab tab, Menu menu);
 
     boolean onOptionsItemSelected(MenuItem item);
 

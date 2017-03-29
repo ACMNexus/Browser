@@ -34,7 +34,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -59,24 +58,12 @@ import com.qirui.browser.util.ToastUtils;
 import com.qirui.browser.view.ErrorConsoleView;
 import com.qirui.browser.view.MenuBar;
 import com.qirui.browser.view.MenuToolBar;
-import com.qirui.internal.view.menu.MenuBuilder;
 import java.util.List;
 
 /**
  * UI interface definitions
  */
 public abstract class BaseUi implements UI {
-
-    private static final String LOGTAG = BaseUi.class.getSimpleName();
-
-    protected static final FrameLayout.LayoutParams COVER_SCREEN_PARAMS =
-            new FrameLayout.LayoutParams(-1, -1);
-
-    protected static final FrameLayout.LayoutParams COVER_SCREEN_GRAVITY_CENTER =
-            new FrameLayout.LayoutParams(-1, -1, Gravity.CENTER);
-
-    private static final int MSG_HIDE_TITLEBAR = 1;
-    public static final int HIDE_TITLEBAR_DELAY = 1500; // in ms
 
     Activity mActivity;
     UiController mUiController;
@@ -148,6 +135,7 @@ public abstract class BaseUi implements UI {
         mNavigationBar = mTitleBar.getNavigationBar();
         mUrlBarAutoShowManager = new UrlBarAutoShowManager(this);
         mBottomMenuPopup.init(this, mUiController);
+        mHomePagerController.initial((Controller) controller, mHomePagerContainer);
     }
 
     private void cancelStopToast() {
@@ -190,15 +178,6 @@ public abstract class BaseUi implements UI {
         } else {
             mBottomMenuPopup.showPopMenu(View.VISIBLE);
         }
-    }
-
-    public void switchHomePage() {
-        if(mHomePagerContainer.getChildCount() == 0) {
-            mHomePagerContainer.addView(mHomePagerController.getHomePageView());
-        }
-        mCustomViewContainer.setVisibility(View.GONE);
-        mHomePagerContainer.setVisibility(View.VISIBLE);
-        mHomePagerContainer.bringToFront();
     }
 
     public Activity getActivity() {
@@ -548,14 +527,14 @@ public abstract class BaseUi implements UI {
         decor.addView(mFullscreenContainer, COVER_SCREEN_PARAMS);
         mCustomView = view;
         setFullscreen(true);
-        ((BrowserWebView) getWebView()).setVisibility(View.INVISIBLE);
+        getWebView().setVisibility(View.INVISIBLE);
         mCustomViewCallback = callback;
         mActivity.setRequestedOrientation(requestedOrientation);
     }
 
     @Override
     public void onHideCustomView() {
-        ((BrowserWebView) getWebView()).setVisibility(View.VISIBLE);
+        getWebView().setVisibility(View.VISIBLE);
         if (mCustomView == null)
             return;
         setFullscreen(false);
@@ -564,7 +543,6 @@ public abstract class BaseUi implements UI {
         mFullscreenContainer = null;
         mCustomView = null;
         mCustomViewCallback.onCustomViewHidden();
-        // Show the content view.
         mActivity.setRequestedOrientation(mOriginalOrientation);
     }
 
@@ -643,54 +621,13 @@ public abstract class BaseUi implements UI {
     public void onActionModeFinished(boolean inLoad) {
     }
 
-    // active tabs page
-
-    public void showActiveTabsPage() {
-    }
-
-    /**
-     * Remove the active tabs page.
-     */
-    public void removeActiveTabsPage() {
-    }
-
-    // menu handling callbacks
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        return true;
-    }
-
-    @Override
-    public void updateMenuState(Tab tab, Menu menu) {
-    }
-
-    @Override
-    public void onOptionsMenuOpened() {
-    }
-
-    @Override
-    public void onExtendedMenuOpened() {
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return false;
     }
 
     @Override
-    public void onOptionsMenuClosed(boolean inLoad) {
-    }
-
-    @Override
-    public void onExtendedMenuClosed(boolean inLoad) {
-    }
-
-    @Override
     public void onContextMenuCreated(Menu menu) {
-    }
-
-    @Override
-    public void onContextMenuClosed(Menu menu, boolean inLoad) {
     }
 
     // error console
@@ -716,9 +653,6 @@ public abstract class BaseUi implements UI {
         }
     }
 
-    // -------------------------------------------------------------------------
-    // Helper function for WebChromeClient
-    // -------------------------------------------------------------------------
     @Override
     public Bitmap getDefaultVideoPoster() {
         if (mDefaultVideoPoster == null) {
@@ -747,12 +681,6 @@ public abstract class BaseUi implements UI {
         } else {
             return null;
         }
-    }
-
-    protected Menu getMenu() {
-        MenuBuilder menu = new MenuBuilder(mActivity);
-        mActivity.getMenuInflater().inflate(R.menu.browser, menu);
-        return menu;
     }
 
     public void setFullscreen(boolean enabled) {

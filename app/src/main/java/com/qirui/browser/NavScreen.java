@@ -28,21 +28,20 @@ import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import com.luooh.stackoverview.views.Overview;
 import java.util.HashMap;
 
 public class NavScreen extends RelativeLayout implements OnClickListener, TabControl.OnThumbnailUpdatedListener {
 
-    private UiController mUiController;
     private PhoneUi mUi;
     private Activity mActivity;
+    private UiController mUiController;
 
     private ImageButton mBack;
     private ImageButton mNewTab;
-
     public NavTabScroller mScroller;
-    private TabAdapter mAdapter;
+
     private int mOrientation;
+    private TabAdapter mAdapter;
     private HashMap<Tab, View> mTabViews;
 
     public NavScreen(Activity activity, UiController ctl, PhoneUi ui) {
@@ -58,10 +57,6 @@ public class NavScreen extends RelativeLayout implements OnClickListener, TabCon
         Tab currentTab = mUi.getActiveTab();
         int pos = mUiController.getTabControl().getTabPosition(currentTab);
         close(pos);
-    }
-
-    protected float getToolbarHeight() {
-        return mActivity.getResources().getDimension(R.dimen.toolbar_height);
     }
 
     @Override
@@ -143,12 +138,6 @@ public class NavScreen extends RelativeLayout implements OnClickListener, TabCon
         }
     }
 
-    private void switchToTab(Tab tab) {
-        if (tab != mUi.getActiveTab()) {
-            mUiController.setActiveTab(tab);
-        }
-    }
-
     protected void close(int position) {
         close(position, true);
     }
@@ -196,14 +185,12 @@ public class NavScreen extends RelativeLayout implements OnClickListener, TabCon
                 public void onClick(View v) {
                     if (tabview.isClose(v)) {
                         mScroller.animateOut(tabview);
-                    } else if (tabview.isTitle(v)) {
-                        switchToTab(tab);
-                        mUi.getTitleBar().setSkipTitleBarAnimations(true);
-                        close(position, false);
-                        mUi.editUrl(false, true);
-                        mUi.getTitleBar().setSkipTitleBarAnimations(false);
-                    } else if (tabview.isWebView(v)) {
+                    } else if (tabview.isTitle(v) || tabview.isWebView(v)) {
                         close(position);
+                        if(mUiController.getTabControl().getCurrentTab().isNativePager()) {
+                            mUiController.getHomeController().switchNativeHome(tab);
+                            mUiController.getTabControl().setCurrentTab(tab);
+                        }
                     }
                 }
             });

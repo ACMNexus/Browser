@@ -25,12 +25,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical" />
 
-    <com.luooh.stackoverview.views.Overview
-        android:id="@+id/tab_scroller"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:visibility="gone" />
-
     <RelativeLayout
         android:id="@+id/tabbar"
         android:layout_width="match_parent"

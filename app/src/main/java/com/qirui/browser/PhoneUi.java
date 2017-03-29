@@ -149,16 +149,6 @@ public class PhoneUi extends BaseUi {
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        updateMenuState(mActiveTab, menu);
-        return true;
-    }
-
-    @Override
-    public void updateMenuState(Tab tab, Menu menu) {
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (showingNavScreen()
                 && (item.getItemId() != R.id.history_menu_id)
@@ -171,13 +161,6 @@ public class PhoneUi extends BaseUi {
     @Override
     public void onContextMenuCreated(Menu menu) {
         hideTitleBar();
-    }
-
-    @Override
-    public void onContextMenuClosed(Menu menu, boolean inLoad) {
-        if (inLoad) {
-            showTitleBar();
-        }
     }
 
     // action mode callbacks
@@ -214,21 +197,10 @@ public class PhoneUi extends BaseUi {
         hideNavScreen(mUiController.getTabControl().getCurrentPosition(), animate);
     }
 
-    public void panelSwitch(Tab tab) {
-    }
-
     public void switchNativePage(Tab homeTab) {
-        if(homeTab != null && homeTab.getWebView() != null) {
-            homeTab.getWebView().stopLoading();
-            homeTab.getWebView().clearFocus();
-        }
-
         int tix = mTabControl.getTabPosition(homeTab);
-        //隐藏面板
         hideNavScreen(tix, true);
-        //显示主页信息
-        switchHomePage();
-        mTabControl.setCurrentTab(homeTab);
+        mHomePagerController.switchNativeHome(homeTab);
     }
 
     public void showNavScreen() {
@@ -242,6 +214,7 @@ public class PhoneUi extends BaseUi {
             mNavScreen.setAlpha(1f);
             mNavScreen.refreshAdapter();
         }
+
         mActiveTab.capture();
         if (mAnimScreen == null) {
             mAnimScreen = new AnimScreen(mActivity);
@@ -273,11 +246,10 @@ public class PhoneUi extends BaseUi {
         int toBottom = toTop + height;
         float scaleFactor = width / (float) mContentView.getWidth();
         detachTab(mActiveTab);
-        mContentView.setVisibility(View.GONE);
 
         finishAnimationIn();
         mUiController.setBlockEvents(false);
-        if(mAnimScreen.mMain != null) {
+        if (mAnimScreen.mMain != null) {
             mCustomViewContainer.removeView(mAnimScreen.mMain);
         }
 
@@ -311,38 +283,44 @@ public class PhoneUi extends BaseUi {
         }
     }
 
-    void hideNavScreen(int position, boolean animate) {
+    public void hideNavScreen(int position, boolean animate) {
         mShowNav = false;
         if (!showingNavScreen()) {
             return;
         }
 
         final Tab tab = mUiController.getTabControl().getTab(position);
+
+        mContentParent.setVisibility(View.VISIBLE);
+        mHomePagerContainer.setVisibility(View.GONE);
+        mCustomViewContainer.setVisibility(View.GONE);
+
         if ((tab == null) || !animate) {
-            if (tab != null) {
+            if (tab != null && !tab.isNativePager()) {
                 setActiveTab(tab);
             } else if (mTabControl.getTabCount() > 0) {
-                // use a fallback tab
-                setActiveTab(mTabControl.getCurrentTab());
+                Tab tempTab = mTabControl.getCurrentTab();
+                if(tempTab != null && !tempTab.isNativePager()) {
+                    setActiveTab(mTabControl.getCurrentTab());
+                }
             }
-            mContentView.setVisibility(View.VISIBLE);
             finishAnimateOut();
             return;
         }
+
         NavTabView tabview = mNavScreen.getTabView(position);
         if (tabview == null) {
+            Log.i("LOH", "tabview is null....");
             if (mTabControl.getTabCount() > 0) {
-                // use a fallback tab
                 setActiveTab(mTabControl.getCurrentTab());
             }
-            mContentView.setVisibility(View.VISIBLE);
             finishAnimateOut();
             return;
         }
 
         mUiController.setBlockEvents(true);
         mUiController.setActiveTab(tab);
-        mContentView.setVisibility(View.VISIBLE);
+
         if (mAnimScreen == null) {
             mAnimScreen = new AnimScreen(mActivity);
         }

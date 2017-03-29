@@ -11,9 +11,9 @@ import com.qirui.browser.BaseUi;
 import com.qirui.browser.Controller;
 import com.qirui.browser.R;
 import com.qirui.browser.Tab;
+import com.qirui.browser.TabControl;
 import com.qirui.browser.adapter.HomePagerAdapter;
 import com.qirui.browser.bean.WebSiteInfo;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,17 +27,23 @@ public class HomePagerController implements AbsListView.OnItemClickListener {
     private EditText mEditUrl;
     private View mHomePagerView;
     private BaseUi mBaseUi;
+    private TabControl mTabControl;
     private FrameLayout mHomeParent;
     private Controller mController;
     private HomePagerAdapter mAdapter;
 
-    public HomePagerController(Context context, Controller controller) {
+    public HomePagerController(Context context) {
         this.mContext = context;
-        this.mController = controller;
-        this.mBaseUi = (BaseUi) controller.getUi();
 
         initHomeView();
         initData();
+    }
+
+    public void initial(Controller controller, FrameLayout homeParent) {
+        this.mController = controller;
+        this.mHomeParent = homeParent;
+        this.mBaseUi = (BaseUi) controller.getUi();
+        this.mTabControl = controller.getTabControl();
     }
 
     private void initHomeView() {
@@ -62,6 +68,21 @@ public class HomePagerController implements AbsListView.OnItemClickListener {
         mAdapter.setItems(list);
     }
 
+    public void switchNativeHome(Tab tab) {
+        this.mCurrentTab = tab;
+        if (mCurrentTab != null && mCurrentTab.getWebView() != null) {
+            mCurrentTab.getWebView().stopLoading();
+            mCurrentTab.getWebView().clearFocus();
+        }
+        //显示主页信息
+        if(mHomeParent.getChildCount() == 0) {
+            mHomeParent.addView(getHomePageView());
+        }
+        mHomeParent.setVisibility(View.VISIBLE);
+        mHomeParent.bringToFront();
+        mTabControl.setCurrentTab(mCurrentTab);
+    }
+
     public View getHomePageView() {
         return mHomePagerView;
     }
@@ -69,6 +90,6 @@ public class HomePagerController implements AbsListView.OnItemClickListener {
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         WebSiteInfo info = mAdapter.getItem(position);
-        mController.openTab(info.getUrl(), false, false, false);
+        mController.openTab(info.getUrl(), mCurrentTab, true, false);
     }
 }

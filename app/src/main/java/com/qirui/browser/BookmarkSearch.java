@@ -19,7 +19,6 @@ package com.qirui.browser;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-
 import com.qirui.browser.activitys.BrowserActivity;
 
 /**

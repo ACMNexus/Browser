@@ -91,8 +91,7 @@ public class ComboViewActivity extends FragmentActivity implements CombinedBookm
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt(STATE_SELECTED_TAB,
-                getActionBar().getSelectedNavigationIndex());
+        outState.putInt(STATE_SELECTED_TAB, getActionBar().getSelectedNavigationIndex());
     }
 
     @Override

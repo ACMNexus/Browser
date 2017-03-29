@@ -163,6 +163,7 @@ public class Tab implements PictureListener {
     private Bitmap mCapture;
     private Handler mHandler;
     private boolean mUpdateThumbnail;
+    private boolean mIsNativePage = true;
     private Pattern mClearHistoryUrlPattern;
 
     private static synchronized Bitmap getDefaultFavicon(Context context) {
@@ -298,6 +299,14 @@ public class Tab implements PictureListener {
             builder.setOnDismissListener(mDialogListener);
             builder.show();
         }
+    }
+
+    public boolean isNativePager() {
+        return mIsNativePage;
+    }
+
+    public void setNativePager(boolean isNativePage) {
+        mIsNativePage = isNativePage;
     }
 
     // -------------------------------------------------------------------------

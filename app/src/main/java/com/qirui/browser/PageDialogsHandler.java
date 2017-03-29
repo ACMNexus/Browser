@@ -37,7 +37,6 @@ import com.qirui.browser.util.ReflectUtils;
 
 /**
  * Displays page info
- *
  */
 public class PageDialogsHandler {
 

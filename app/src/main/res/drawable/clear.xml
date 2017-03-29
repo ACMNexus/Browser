@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2010 The Android Open Source Project
+<?xml version="1.0" encoding="utf-8"?><!-- Copyright (C) 2010 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -17,7 +16,12 @@
 <!-- Used by browserbarbutton to show a clear background for the non pressed
         state -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="#00000000"/>
-    <padding android:left="4dp" android:top="4dp"
-        android:right="4dp" android:bottom="4dp" />
+
+    <solid android:color="#00000000" />
+    <padding
+        android:bottom="4dp"
+        android:left="4dp"
+        android:right="4dp"
+        android:top="4dp" />
+
 </shape>

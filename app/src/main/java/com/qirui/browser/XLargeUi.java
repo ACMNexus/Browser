@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.qirui.browser;
 
 import android.app.ActionBar;
@@ -29,10 +28,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.webkit.WebView;
-
 import java.util.List;
 
 /**
@@ -117,18 +113,6 @@ public class XLargeUi extends BaseUi {
     void stopWebViewScrolling() {
         BrowserWebView web = (BrowserWebView) mUiController.getCurrentWebView();
     }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        MenuItem bm = menu.findItem(R.id.bookmarks_menu_id);
-        if (bm != null) {
-            bm.setVisible(false);
-        }
-        return true;
-    }
-
-
-    // WebView callbacks
 
     @Override
     public void addTab(Tab tab) {

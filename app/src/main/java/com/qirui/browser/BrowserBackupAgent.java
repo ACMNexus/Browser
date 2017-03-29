@@ -23,6 +23,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.ParcelFileDescriptor;
 import com.qirui.browser.provider.BrowserContract.Bookmarks;
+import com.qirui.browser.util.IOUtils;
 import android.util.Log;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -43,7 +44,8 @@ import java.util.zip.CRC32;
  * @hide
  */
 public class BrowserBackupAgent extends BackupAgent {
-    static final String TAG = "BrowserBackupAgent";
+
+    static final String TAG = BrowserBackupAgent.class.getSimpleName();
     static final boolean DEBUG = false;
 
     static final String BOOKMARK_KEY = "_bookmarks_";
@@ -55,11 +57,9 @@ public class BrowserBackupAgent extends BackupAgent {
      * to handle bookmark backup.
      */
     @Override
-    public void onBackup(ParcelFileDescriptor oldState, BackupDataOutput data,
-            ParcelFileDescriptor newState) throws IOException {
+    public void onBackup(ParcelFileDescriptor oldState, BackupDataOutput data, ParcelFileDescriptor newState) throws IOException {
         long savedFileSize = -1;
         long savedCrc = -1;
-        int savedVersion = -1;
 
         // Extract the previous bookmark file size & CRC from the saved state
         DataInputStream in = new DataInputStream(
@@ -67,14 +67,11 @@ public class BrowserBackupAgent extends BackupAgent {
         try {
             savedFileSize = in.readLong();
             savedCrc = in.readLong();
-            savedVersion = in.readInt();
         } catch (EOFException e) {
             // It means we had no previous state; that's fine
             return;
         } finally {
-            if (in != null) {
-                in.close();
-            }
+            IOUtils.closeStream(in);
         }
         // Write the existing state
         writeBackupState(savedFileSize, savedCrc, newState);
@@ -131,25 +128,19 @@ public class BrowserBackupAgent extends BackupAgent {
                                     new String[] { mark.url }, null);
                             // if not, insert it
                             if (cursor.getCount() <= 0) {
-                                if (DEBUG) Log.v(TAG, "Did not see url: " + mark.url);
                                 addBookmark(mark);
                                 nUnique++;
                             } else {
                                 if (DEBUG) Log.v(TAG, "Skipping extant url: " + mark.url);
                             }
-                            cursor.close();
+                            IOUtils.closeCursor(cursor);
                         }
-                        Log.i(TAG, "Restored " + nUnique + " of " + N + " bookmarks");
                     } catch (IOException ioe) {
-                        Log.w(TAG, "Bad backup data; not restoring");
                         crc = -1;
                     } finally {
-                        if (in != null) {
-                            in.close();
-                        }
+                        IOUtils.closeStream(in);
                     }
                 }
-
                 // Last, write the state we just restored from so we can discern
                 // changes whenever we get invoked for backup in the future
                 writeBackupState(tmpfile.length(), crc, newState);
@@ -177,18 +168,13 @@ public class BrowserBackupAgent extends BackupAgent {
         public long created;
         public String title;
     }
-    /*
-     * Utility functions
-     */
 
     // Read the given file from backup to a file, calculating a CRC32 along the way
-    private long copyBackupToFile(BackupDataInput data, File file, int toRead)
-            throws IOException {
+    private long copyBackupToFile(BackupDataInput data, File file, int toRead) throws IOException {
         final int CHUNK = 8192;
         byte[] buf = new byte[CHUNK];
         CRC32 crc = new CRC32();
         FileOutputStream out = new FileOutputStream(file);
-
         try {
             while (toRead > 0) {
                 int numRead = data.readEntityData(buf, 0, CHUNK);
@@ -197,26 +183,20 @@ public class BrowserBackupAgent extends BackupAgent {
                 toRead -= numRead;
             }
         } finally {
-            if (out != null) {
-                out.close();
-            }
+            IOUtils.closeStream(out);
         }
         return crc.getValue();
     }
 
     // Write the given metrics to the new state file
-    private void writeBackupState(long fileSize, long crc, ParcelFileDescriptor stateFile)
-            throws IOException {
-        DataOutputStream out = new DataOutputStream(
-                new FileOutputStream(stateFile.getFileDescriptor()));
+    private void writeBackupState(long fileSize, long crc, ParcelFileDescriptor stateFile) throws IOException {
+        DataOutputStream out = new DataOutputStream(new FileOutputStream(stateFile.getFileDescriptor()));
         try {
             out.writeLong(fileSize);
             out.writeLong(crc);
             out.writeInt(BACKUP_AGENT_VERSION);
         } finally {
-            if (out != null) {
-                out.close();
-            }
+            IOUtils.closeStream(out);
         }
     }
 }
