@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.qirui.browser;
 
 import android.animation.Animator;
@@ -22,22 +21,17 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Matrix;
 import android.os.Build;
 import android.os.Message;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.accessibility.AccessibilityEvent;
-import android.webkit.WebView;
 import android.widget.ImageView;
+import com.qirui.browser.bean.AnimScreen;
 import com.qirui.browser.view.UrlInputView.StateListener;
 import com.qirui.browser.util.DisplayUtils;
 import com.qirui.browser.util.ReflectUtils;
@@ -47,14 +41,13 @@ import com.qirui.browser.util.ReflectUtils;
  */
 public class PhoneUi extends BaseUi {
 
-    private static final String LOGTAG = PhoneUi.class.getSimpleName();
+    private static final String TAG = PhoneUi.class.getSimpleName();
     private static final int MSG_INIT_NAVSCREEN = 100;
 
     private NavScreen mNavScreen;
     private AnimScreen mAnimScreen;
     private NavigationBarPhone mNavigationBar;
-
-    boolean mShowNav = false;
+    private boolean mShowNav = false;
 
     /**
      * @param browser
@@ -139,7 +132,7 @@ public class PhoneUi extends BaseUi {
         // TabControl.setCurrentTab has been called before this,
         // so the tab is guaranteed to have a webview
         if (view == null) {
-            Log.e(LOGTAG, "active tab with no webview detected");
+            Log.e(TAG, "active tab with no webview detected");
             return;
         }
         // Request focus on the top window.
@@ -156,50 +149,6 @@ public class PhoneUi extends BaseUi {
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        updateMenuState(mActiveTab, menu);
-        return true;
-    }
-
-    @Override
-    public void updateMenuState(Tab tab, Menu menu) {
-        MenuItem bm = menu.findItem(R.id.bookmarks_menu_id);
-        if (bm != null) {
-            bm.setVisible(!showingNavScreen());
-        }
-        MenuItem abm = menu.findItem(R.id.add_bookmark_menu_id);
-        if (abm != null) {
-            abm.setVisible((tab != null) && !tab.isSnapshot() && !showingNavScreen());
-        }
-        MenuItem info = menu.findItem(R.id.page_info_menu_id);
-        if (info != null) {
-            info.setVisible(false);
-        }
-        MenuItem newtab = menu.findItem(R.id.new_tab_menu_id);
-        if (newtab != null && !mUseQuickControls) {
-            newtab.setVisible(false);
-        }
-        MenuItem incognito = menu.findItem(R.id.incognito_menu_id);
-        if (incognito != null) {
-            incognito.setVisible(showingNavScreen() || mUseQuickControls);
-        }
-        MenuItem closeOthers = menu.findItem(R.id.close_other_tabs_id);
-        if (closeOthers != null) {
-            boolean isLastTab = true;
-            if (tab != null) {
-                isLastTab = (mTabControl.getTabCount() <= 1);
-            }
-            closeOthers.setEnabled(!isLastTab);
-        }
-        if (showingNavScreen()) {
-            menu.setGroupVisible(R.id.LIVE_MENU, false);
-            menu.setGroupVisible(R.id.SNAPSHOT_MENU, false);
-            menu.setGroupVisible(R.id.NAV_MENU, false);
-            menu.setGroupVisible(R.id.COMBO_MENU, true);
-        }
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (showingNavScreen()
                 && (item.getItemId() != R.id.history_menu_id)
@@ -213,13 +162,6 @@ public class PhoneUi extends BaseUi {
 //    public void onContextMenuCreated(Menu menu) {
 //        hideTitleBar();
 //    }
-
-    @Override
-    public void onContextMenuClosed(Menu menu, boolean inLoad) {
-        if (inLoad) {
-            showTitleBar();
-        }
-    }
 
     // action mode callbacks
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
@@ -255,7 +197,13 @@ public class PhoneUi extends BaseUi {
         hideNavScreen(mUiController.getTabControl().getCurrentPosition(), animate);
     }
 
-    void showNavScreen() {
+    public void switchNativePage(Tab homeTab) {
+        int tix = mTabControl.getTabPosition(homeTab);
+        hideNavScreen(tix, true);
+        mHomePagerController.switchNativeHome(homeTab);
+    }
+
+    public void showNavScreen() {
         mShowNav = true;
         mUiController.setBlockEvents(true);
         if (mNavScreen == null) {
@@ -266,6 +214,7 @@ public class PhoneUi extends BaseUi {
             mNavScreen.setAlpha(1f);
             mNavScreen.refreshAdapter();
         }
+
         mActiveTab.capture();
         if (mAnimScreen == null) {
             mAnimScreen = new AnimScreen(mActivity);
@@ -274,14 +223,16 @@ public class PhoneUi extends BaseUi {
             mAnimScreen.mTitle.setAlpha(1f);
             mAnimScreen.setScaleFactor(1f);
         }
+
         mAnimScreen.set(getTitleBar(), getWebView());
         if (mAnimScreen.mMain.getParent() == null) {
             mCustomViewContainer.addView(mAnimScreen.mMain, COVER_SCREEN_PARAMS);
         }
+
         mCustomViewContainer.setVisibility(View.VISIBLE);
         mCustomViewContainer.bringToFront();
-        mAnimScreen.mMain.layout(0, 0, mContentView.getWidth(),
-                mContentView.getHeight());
+        mAnimScreen.mMain.layout(0, 0, mContentView.getWidth(), mContentView.getHeight());
+
         int fromLeft = 0;
         int fromTop = getTitleBar().getHeight();
         int fromRight = mContentView.getWidth();
@@ -295,7 +246,13 @@ public class PhoneUi extends BaseUi {
         int toBottom = toTop + height;
         float scaleFactor = width / (float) mContentView.getWidth();
         detachTab(mActiveTab);
-        mContentView.setVisibility(View.GONE);
+
+        finishAnimationIn();
+        mUiController.setBlockEvents(false);
+        if (mAnimScreen.mMain != null) {
+            mCustomViewContainer.removeView(mAnimScreen.mMain);
+        }
+
         AnimatorSet set1 = new AnimatorSet();
         AnimatorSet inanim = new AnimatorSet();
         ObjectAnimator tx = ObjectAnimator.ofInt(mAnimScreen.mContent, "left", fromLeft, toLeft);
@@ -313,8 +270,6 @@ public class PhoneUi extends BaseUi {
             @Override
             public void onAnimationEnd(Animator anim) {
                 mCustomViewContainer.removeView(mAnimScreen.mMain);
-                finishAnimationIn();
-                mUiController.setBlockEvents(false);
             }
         });
         set1.playSequentially(inanim, blend1);
@@ -323,40 +278,49 @@ public class PhoneUi extends BaseUi {
 
     private void finishAnimationIn() {
         if (showingNavScreen()) {
-            // notify accessibility manager about the screen change
             mNavScreen.sendAccessibilityEvent(AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED);
             mTabControl.setOnThumbnailUpdatedListener(mNavScreen);
         }
     }
 
-    void hideNavScreen(int position, boolean animate) {
+    public void hideNavScreen(int position, boolean animate) {
         mShowNav = false;
-        if (!showingNavScreen()) return;
+        if (!showingNavScreen()) {
+            return;
+        }
+
         final Tab tab = mUiController.getTabControl().getTab(position);
+
+        mContentParent.setVisibility(View.VISIBLE);
+        mHomePagerContainer.setVisibility(View.GONE);
+        mCustomViewContainer.setVisibility(View.GONE);
+
         if ((tab == null) || !animate) {
-            if (tab != null) {
+            if (tab != null && !tab.isNativePager()) {
                 setActiveTab(tab);
             } else if (mTabControl.getTabCount() > 0) {
-                // use a fallback tab
-                setActiveTab(mTabControl.getCurrentTab());
+                Tab tempTab = mTabControl.getCurrentTab();
+                if(tempTab != null && !tempTab.isNativePager()) {
+                    setActiveTab(mTabControl.getCurrentTab());
+                }
             }
-            mContentView.setVisibility(View.VISIBLE);
             finishAnimateOut();
             return;
         }
-        NavTabView tabview = (NavTabView) mNavScreen.getTabView(position);
+
+        NavTabView tabview = mNavScreen.getTabView(position);
         if (tabview == null) {
+            Log.i("LOH", "tabview is null....");
             if (mTabControl.getTabCount() > 0) {
-                // use a fallback tab
                 setActiveTab(mTabControl.getCurrentTab());
             }
-            mContentView.setVisibility(View.VISIBLE);
             finishAnimateOut();
             return;
         }
+
         mUiController.setBlockEvents(true);
         mUiController.setActiveTab(tab);
-        mContentView.setVisibility(View.VISIBLE);
+
         if (mAnimScreen == null) {
             mAnimScreen = new AnimScreen(mActivity);
         }
@@ -434,86 +398,5 @@ public class PhoneUi extends BaseUi {
     @Override
     public boolean shouldCaptureThumbnails() {
         return true;
-    }
-
-    static class AnimScreen {
-
-        private View mMain;
-        private ImageView mTitle;
-        private ImageView mContent;
-        private float mScale;
-        private Bitmap mTitleBarBitmap;
-        private Bitmap mContentBitmap;
-
-        public AnimScreen(Context ctx) {
-            mMain = LayoutInflater.from(ctx).inflate(R.layout.anim_screen, null);
-            mTitle = (ImageView) mMain.findViewById(R.id.title);
-            mContent = (ImageView) mMain.findViewById(R.id.content);
-            mContent.setScaleType(ImageView.ScaleType.MATRIX);
-            mContent.setImageMatrix(new Matrix());
-            mScale = 1.0f;
-            setScaleFactor(getScaleFactor());
-        }
-
-        public void set(TitleBar tbar, WebView web) {
-            if (tbar == null || web == null) {
-                return;
-            }
-            if (tbar.getWidth() > 0 && tbar.getEmbeddedHeight() > 0) {
-                if (mTitleBarBitmap == null
-                        || mTitleBarBitmap.getWidth() != tbar.getWidth()
-                        || mTitleBarBitmap.getHeight() != tbar.getEmbeddedHeight()) {
-                    mTitleBarBitmap = safeCreateBitmap(tbar.getWidth(), tbar.getEmbeddedHeight());
-                }
-                if (mTitleBarBitmap != null) {
-                    Canvas c = new Canvas(mTitleBarBitmap);
-                    tbar.draw(c);
-                    c.setBitmap(null);
-                }
-            } else {
-                mTitleBarBitmap = null;
-            }
-            mTitle.setImageBitmap(mTitleBarBitmap);
-            mTitle.setVisibility(View.VISIBLE);
-            int h = web.getHeight() - tbar.getEmbeddedHeight();
-            if (mContentBitmap == null
-                    || mContentBitmap.getWidth() != web.getWidth()
-                    || mContentBitmap.getHeight() != h) {
-                mContentBitmap = safeCreateBitmap(web.getWidth(), h);
-            }
-            if (mContentBitmap != null) {
-                Canvas c = new Canvas(mContentBitmap);
-                int tx = web.getScrollX();
-                int ty = web.getScrollY();
-                c.translate(-tx, -ty - tbar.getEmbeddedHeight());
-                web.draw(c);
-                c.setBitmap(null);
-            }
-            mContent.setImageBitmap(mContentBitmap);
-        }
-
-        private Bitmap safeCreateBitmap(int width, int height) {
-            if (width <= 0 || height <= 0) {
-                Log.w(LOGTAG, "safeCreateBitmap failed! width: " + width + ", height: " + height);
-                return null;
-            }
-            return Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
-        }
-
-        public void set(Bitmap image) {
-            mTitle.setVisibility(View.GONE);
-            mContent.setImageBitmap(image);
-        }
-
-        private void setScaleFactor(float sf) {
-            mScale = sf;
-            Matrix m = new Matrix();
-            m.postScale(sf, sf);
-            mContent.setImageMatrix(m);
-        }
-
-        private float getScaleFactor() {
-            return mScale;
-        }
     }
 }

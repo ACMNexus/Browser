@@ -13,26 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.qirui.browser;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.nfc.NfcEvent;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-
 import java.util.concurrent.CountDownLatch;
 
-/** This class implements sharing the URL of the currently
-  * shown browser page over NFC. Sharing is only active
-  * when the activity is in the foreground and resumed.
-  * Incognito tabs will not be shared over NFC.
-  */
+/**
+ * This class implements sharing the URL of the currently
+ * shown browser page over NFC. Sharing is only active
+ * when the activity is in the foreground and resumed.
+ * Incognito tabs will not be shared over NFC.
+ */
+@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 public class NfcHandler implements NfcAdapter.CreateNdefMessageCallback {
+
     static final String TAG = "BrowserNfcHandler";
     static final int GET_PRIVATE_BROWSING_STATE_MSG = 100;
 
@@ -75,6 +78,7 @@ public class NfcHandler implements NfcAdapter.CreateNdefMessageCallback {
         }
     };
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public NdefMessage createNdefMessage(NfcEvent event) {
         mCurrentTab = mController.getCurrentTab();

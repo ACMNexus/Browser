@@ -87,5 +87,4 @@ public class WebViewTimersControl {
         mPrerenderActive = false;
         maybePauseTimers(wv);
     }
-
 }

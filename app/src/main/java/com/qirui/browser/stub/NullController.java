@@ -6,14 +6,11 @@ import android.os.Bundle;
 import android.view.ActionMode;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
-
 import com.qirui.browser.ActivityController;
-
 
 public class NullController implements ActivityController {
 
@@ -38,19 +35,6 @@ public class NullController implements ActivityController {
     }
 
     @Override
-    public boolean onMenuOpened(int featureId, Menu menu) {
-        return false;
-    }
-
-    @Override
-    public void onOptionsMenuClosed(Menu menu) {
-    }
-
-    @Override
-    public void onContextMenuClosed(Menu menu) {
-    }
-
-    @Override
     public void onPause() {
     }
 
@@ -64,16 +48,6 @@ public class NullController implements ActivityController {
 
     @Override
     public void onLowMemory() {
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return false;
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        return false;
     }
 
     @Override

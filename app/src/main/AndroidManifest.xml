@@ -312,7 +312,7 @@
             android:name="com.google.android.partnersetup.RLZ_ACCESS_POINT"
             android:value="@string/rlz_access_point" />
 
-        <receiver android:name="com.qirui.browser.OpenDownloadReceiver">
+        <receiver android:name=".receiver.OpenDownloadReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.DOWNLOAD_NOTIFICATION_CLICKED" />
             </intent-filter>

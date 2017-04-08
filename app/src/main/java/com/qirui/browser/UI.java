@@ -26,7 +26,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebChromeClient.CustomViewCallback;
 import android.webkit.WebView;
-
+import android.widget.FrameLayout;
 import java.util.List;
 
 /**
@@ -34,91 +34,81 @@ import java.util.List;
  */
 public interface UI {
 
-    public static enum ComboViews {
+    FrameLayout.LayoutParams COVER_SCREEN_PARAMS =
+            new FrameLayout.LayoutParams(-1, -1);
+
+    int MSG_HIDE_TITLEBAR = 1;
+    int HIDE_TITLEBAR_DELAY = 1500; // in ms
+
+    enum ComboViews {
         History,
         Bookmarks,
         Snapshots,
     }
 
-    public void onPause();
+    void onPause();
 
-    public void onResume();
+    void onResume();
 
-    public void onDestroy();
+    void onDestroy();
 
-    public void onConfigurationChanged(Configuration config);
+    void onConfigurationChanged(Configuration config);
 
-    public boolean onBackKey();
+    boolean onBackKey();
 
-    public boolean onMenuKey();
+    boolean onMenuKey();
 
-    public boolean needsRestoreAllTabs();
+    boolean needsRestoreAllTabs();
 
-    public void addTab(Tab tab);
+    void addTab(Tab tab);
 
-    public void removeTab(Tab tab);
+    void removeTab(Tab tab);
 
-    public void setActiveTab(Tab tab);
+    void setActiveTab(Tab tab);
 
-    public void updateTabs(List<Tab> tabs);
+    void updateTabs(List<Tab> tabs);
 
-    public void detachTab(Tab tab);
+    void detachTab(Tab tab);
 
-    public void attachTab(Tab tab);
+    void attachTab(Tab tab);
 
-    public void onSetWebView(Tab tab, WebView view);
+    void onSetWebView(Tab tab, WebView view);
 
-    public void createSubWindow(Tab tab, WebView subWebView);
+    void createSubWindow(Tab tab, WebView subWebView);
 
-    public void attachSubWindow(View subContainer);
+    void attachSubWindow(View subContainer);
 
-    public void removeSubWindow(View subContainer);
+    void removeSubWindow(View subContainer);
 
-    public void onTabDataChanged(Tab tab);
+    void onTabDataChanged(Tab tab);
 
-    public void onPageStopped(Tab tab);
+    void onPageStopped(Tab tab);
 
-    public void onProgressChanged(Tab tab);
+    void onProgressChanged(Tab tab);
 
-    public void showActiveTabsPage();
+    void showComboView(ComboViews startingView, Bundle extra);
 
-    public void removeActiveTabsPage();
-
-    public void showComboView(ComboViews startingView, Bundle extra);
-
-    public void showCustomView(View view, int requestedOrientation,
+    void showCustomView(View view, int requestedOrientation,
             CustomViewCallback callback);
 
-    public void onHideCustomView();
+    void onHideCustomView();
 
-    public boolean isCustomViewShowing();
+    boolean isCustomViewShowing();
 
-    public boolean onPrepareOptionsMenu(Menu menu);
+    boolean onOptionsItemSelected(MenuItem item);
 
-    public void updateMenuState(Tab tab, Menu menu);
+    void onContextMenuCreated(Menu menu);
 
-    public void onOptionsMenuOpened();
+    void onActionModeStarted(ActionMode mode);
 
-    public void onExtendedMenuOpened();
+    void onActionModeFinished(boolean inLoad);
 
-    public boolean onOptionsItemSelected(MenuItem item);
-
-    public void onOptionsMenuClosed(boolean inLoad);
-
-    public void onExtendedMenuClosed(boolean inLoad);
-
-    public void onContextMenuClosed(Menu menu, boolean inLoad);
-
-    public void onActionModeStarted(ActionMode mode);
-
-    public void onActionModeFinished(boolean inLoad);
-
-    public void setShouldShowErrorConsole(Tab tab, boolean show);
+    void setShouldShowErrorConsole(Tab tab, boolean show);
 
     // returns if the web page is clear of any overlays (not including sub windows)
-    public boolean isWebShowing();
+    boolean isWebShowing();
 
-    public void showWeb(boolean animate);
+    void showWeb(boolean animate);
 
     Bitmap getDefaultVideoPoster();
 

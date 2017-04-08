@@ -13,29 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.qirui.browser;
 
 import android.os.Bundle;
 import android.util.Log;
 import android.webkit.WebView;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 
 public class TabControl {
-    // Log Tag
-    private static final String LOGTAG = "TabControl";
 
+    private static final String LOG = TabControl.class.getSimpleName();
     // next Tab ID, starting at 1
     private static long sNextId = 1;
 
     private static final String POSITIONS = "positions";
     private static final String CURRENT = "current";
 
-    public static interface OnThumbnailUpdatedListener {
+    public interface OnThumbnailUpdatedListener {
         void onThumbnailUpdated(Tab t);
     }
 
@@ -58,11 +55,11 @@ public class TabControl {
     public TabControl(Controller controller) {
         mController = controller;
         mMaxTabs = mController.getMaxTabs();
-        mTabs = new ArrayList<Tab>(mMaxTabs);
-        mTabQueue = new ArrayList<Tab>(mMaxTabs);
+        mTabs = new ArrayList(mMaxTabs);
+        mTabQueue = new ArrayList(mMaxTabs);
     }
 
-    synchronized static long getNextId() {
+    public synchronized static long getNextId() {
         return sNextId++;
     }
 
@@ -286,9 +283,8 @@ public class TabControl {
      * position sorted array of tab ids
      * for each tab id, save the tab state
      * @param outState
-     * @param saveImages
      */
-    void saveState(Bundle outState) {
+    public void saveState(Bundle outState) {
         final int numTabs = getTabCount();
         if (numTabs == 0) {
             return;
@@ -303,7 +299,7 @@ public class TabControl {
                 if (outState.containsKey(key)) {
                     // Dump the tab state for debugging purposes
                     for (Tab dt : mTabs) {
-                        Log.e(LOGTAG, dt.toString());
+                        Log.e(LOG, dt.toString());
                     }
                     throw new IllegalStateException(
                             "Error saving state, duplicate tab ids!");
@@ -454,7 +450,7 @@ public class TabControl {
         // free the least frequently used background tabs
         Vector<Tab> tabs = getHalfLeastUsedTabs(getCurrentTab());
         if (tabs.size() > 0) {
-            Log.w(LOGTAG, "Free " + tabs.size() + " tabs in the browser");
+            Log.w(LOG, "Free " + tabs.size() + " tabs in the browser");
             for (Tab t : tabs) {
                 // store the WebView's state.
                 t.saveState();
@@ -465,7 +461,7 @@ public class TabControl {
         }
 
         // free the WebView's unused memory (this includes the cache)
-        Log.w(LOGTAG, "Free WebView's unused memory and cache");
+        Log.w(LOG, "Free WebView's unused memory and cache");
         WebView view = getCurrentWebView();
         if (view != null) {
             view.freeMemory();
@@ -631,10 +627,9 @@ public class TabControl {
 
     /**
      * Put the current tab in the background and set newTab as the current tab.
-     * @param newTab The new tab. If newTab is null, the current tab is not
-     *               set.
+     * @param newTab The new tab. If newTab is null, the current tab is not set.
      */
-    boolean setCurrentTab(Tab newTab) {
+    public boolean setCurrentTab(Tab newTab) {
         return setCurrentTab(newTab, false);
     }
 
@@ -687,5 +682,4 @@ public class TabControl {
     public OnThumbnailUpdatedListener getOnThumbnailUpdatedListener() {
         return mOnThumbnailUpdatedListener;
     }
-
 }

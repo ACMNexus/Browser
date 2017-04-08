@@ -14,6 +14,35 @@ import android.view.View;
 
 public interface ActivityController {
 
+    String INCOGNITO_URI = "browser:incognito";
+
+    // public message ids
+    int LOAD_URL = 1001;
+    int STOP_LOAD = 1002;
+
+    // Message Ids
+    int EMPTY_MENU = -1;
+    int OPEN_BOOKMARKS = 201;
+    int FOCUS_NODE_HREF = 102;
+    int RELEASE_WAKELOCK = 107;
+    int UPDATE_BOOKMARK_THUMBNAIL = 108;
+
+    // activity requestCode
+    int COMBO_VIEW = 1;
+    int VOICE_RESULT = 6;
+    int FILE_SELECTED = 4;
+    int PREFERENCES_PAGE = 3;
+    int WAKELOCK_TIMEOUT = 5 * 60 * 1000; // 5 minutes
+
+    // As the ids are dynamically created, we can't guarantee that they will
+    // be in sequence, so this static array maps ids to a window number.
+    int[] WINDOW_SHORTCUT_ID_ARRAY = {
+                                        R.id.window_one_menu_id, R.id.window_two_menu_id,
+                                        R.id.window_three_menu_id, R.id.window_four_menu_id,
+                                        R.id.window_five_menu_id, R.id.window_six_menu_id,
+                                        R.id.window_seven_menu_id, R.id.window_eight_menu_id
+                                     };
+
     void start(Intent intent);
 
     void onSaveInstanceState(Bundle outState);
@@ -22,12 +51,6 @@ public interface ActivityController {
 
     void onResume();
 
-    boolean onMenuOpened(int featureId, Menu menu);
-
-    void onOptionsMenuClosed(Menu menu);
-
-    void onContextMenuClosed(Menu menu);
-
     void onPause();
 
     void onDestroy();
@@ -35,10 +58,6 @@ public interface ActivityController {
     void onConfgurationChanged(Configuration newConfig);
 
     void onLowMemory();
-
-    boolean onCreateOptionsMenu(Menu menu);
-
-    boolean onPrepareOptionsMenu(Menu menu);
 
     boolean onOptionsItemSelected(MenuItem item);
 

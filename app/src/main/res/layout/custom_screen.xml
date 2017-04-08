@@ -12,7 +12,6 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
 
     <FrameLayout
@@ -23,35 +22,42 @@
         android:visibility="gone" />
 
     <FrameLayout
-        android:id="@+id/homepage_container"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="@color/white" />
+        android:layout_marginBottom="48.5dip">
 
-    <com.qirui.browser.view.CustomScreenLinearLayout
-        android:id="@+id/vertical_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:id="@+id/error_console"
+        <com.qirui.browser.view.CustomScreenLinearLayout
+            android:id="@+id/vertical_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" />
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:id="@+id/error_console"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+            <FrameLayout
+                android:id="@+id/fixed_titlebar_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <FrameLayout
+                android:id="@+id/main_content"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent" />
+
+        </com.qirui.browser.view.CustomScreenLinearLayout>
 
         <FrameLayout
-            android:id="@+id/fixed_titlebar_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <FrameLayout
-            android:id="@+id/main_content"
-            android:layout_width="match_parent"
+            android:id="@+id/homepage_container"
+            android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_marginBottom="48.5dip" />
+            android:background="@color/white" />
 
-    </com.qirui.browser.view.CustomScreenLinearLayout>
+    </FrameLayout>
 
     <com.qirui.browser.view.MenuToolBar
         android:id="@+id/bottom_pop_tool"

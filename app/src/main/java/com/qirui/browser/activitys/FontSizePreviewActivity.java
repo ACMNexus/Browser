@@ -4,7 +4,7 @@ import android.os.Bundle;
 import com.qirui.browser.R;
 
 /**
- * Created by lenvo on 2017/2/21.
+ * Created by Luooh on 2017/2/21.
  */
 public class FontSizePreviewActivity extends BaseActivity {
 

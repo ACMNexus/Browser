@@ -44,12 +44,12 @@ public class NavTabScroller extends ScrollerView {
     static final int INVALID_POSITION = -1;
     static final float[] PULL_FACTOR = { 2.5f, 0.9f };
 
-    interface OnRemoveListener {
-        public void onRemovePosition(int position);
+    public interface OnRemoveListener {
+        void onRemovePosition(int position);
     }
 
-    interface OnLayoutListener {
-        public void onLayout(int l, int t, int r, int b);
+    public interface OnLayoutListener {
+        void onLayout(int l, int t, int r, int b);
     }
 
     private ContentLayout mContentView;
@@ -121,8 +121,7 @@ public class NavTabScroller extends ScrollerView {
     public void setOrientation(int orientation) {
         mContentView.setOrientation(orientation);
         if (orientation == LinearLayout.HORIZONTAL) {
-            mContentView.setLayoutParams(
-                    new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
+            mContentView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
         } else {
             mContentView.setLayoutParams(
                     new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));

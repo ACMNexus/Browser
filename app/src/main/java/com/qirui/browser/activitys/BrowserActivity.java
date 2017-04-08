@@ -54,7 +54,7 @@ public class BrowserActivity extends Activity {
     private static final String EXTRA_STATE = "state";
     public static final String EXTRA_DISABLE_URL_OVERRIDE = "disable_url_override";
 
-    private final static String LOGTAG = "browser";
+    private final static String TAG = "browser";
     private float mTouchX, mTouchY;
     private final static boolean LOGV_ENABLED = Browser.LOGV_ENABLED;
     private ActivityController mController = NullController.INSTANCE;
@@ -135,7 +135,7 @@ public class BrowserActivity extends Activity {
         boolean ignore = !mPowerManager.isScreenOn();
         ignore |= mKeyguardManager.inKeyguardRestrictedInputMode();
         if (LOGV_ENABLED) {
-            Log.v(LOGTAG, "ignore intents: " + ignore);
+            Log.v(TAG, "ignore intents: " + ignore);
         }
         return ignore;
     }
@@ -146,25 +146,6 @@ public class BrowserActivity extends Activity {
         mController.onResume();
     }
 
-    @Override
-    public boolean onMenuOpened(int featureId, Menu menu) {
-        if (Window.FEATURE_OPTIONS_PANEL == featureId) {
-            mController.onMenuOpened(featureId, menu);
-        }
-        return true;
-    }
-
-    @Override
-    public void onOptionsMenuClosed(Menu menu) {
-        mController.onOptionsMenuClosed(menu);
-    }
-
-    @Override
-    public void onContextMenuClosed(Menu menu) {
-        super.onContextMenuClosed(menu);
-        mController.onContextMenuClosed(menu);
-    }
-
     /**
      *  onSaveInstanceState(Bundle map)
      *  onSaveInstanceState is called right before onStop(). The map contains
@@ -173,7 +154,7 @@ public class BrowserActivity extends Activity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         if (LOGV_ENABLED) {
-            Log.v(LOGTAG, "BrowserActivity.onSaveInstanceState: this=" + this);
+            Log.v(TAG, "BrowserActivity.onSaveInstanceState: this=" + this);
         }
         mController.onSaveInstanceState(outState);
     }
@@ -187,7 +168,7 @@ public class BrowserActivity extends Activity {
     @Override
     protected void onDestroy() {
         if (LOGV_ENABLED) {
-            Log.v(LOGTAG, "BrowserActivity.onDestroy: this=" + this);
+            Log.v(TAG, "BrowserActivity.onDestroy: this=" + this);
         }
         super.onDestroy();
         mController.onDestroy();
@@ -204,18 +185,6 @@ public class BrowserActivity extends Activity {
     public void onLowMemory() {
         super.onLowMemory();
         mController.onLowMemory();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        return mController.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-        return mController.onPrepareOptionsMenu(menu);
     }
 
     @Override

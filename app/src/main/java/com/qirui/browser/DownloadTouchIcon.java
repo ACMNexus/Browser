@@ -45,8 +45,8 @@ public class DownloadTouchIcon extends AsyncTask<String, Void, Void> {
     private final String mUserAgent; // Sites may serve a different icon to different UAs
     private Message mMessage;
 
-    private final Context mContext;
-    /* package */ Tab mTab;
+    private Context mContext;
+    public Tab mTab;
 
     /**
      * Use this ctor to store the touch icon in the bookmarks database for

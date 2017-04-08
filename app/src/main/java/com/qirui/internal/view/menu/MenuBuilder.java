@@ -51,7 +51,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * standard menu UI.
  */
 public class MenuBuilder implements Menu {
-    private static final String TAG = "MenuBuilder";
 
     private static final int CATEGORY_SHIFT = 16;
     private static final int USER_MASK = 0x0000ffff;

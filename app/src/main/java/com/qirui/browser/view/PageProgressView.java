@@ -1,4 +1,3 @@
-
 /*
  * Copyright (C) 2010 The Android Open Source Project
  *
@@ -14,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.qirui.browser;
+package com.qirui.browser.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -25,9 +24,6 @@ import android.os.Message;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
-/**
- *
- */
 public class PageProgressView extends ImageView {
 
     public static final int MAX_PROGRESS = 10000;
@@ -86,7 +82,6 @@ public class PageProgressView extends ImageView {
                     }
                 }
             }
-
         };
     }
 
@@ -98,7 +93,7 @@ public class PageProgressView extends ImageView {
         mBounds.bottom = b-t;
     }
 
-    void setProgress(int progress) {
+    public void setProgress(int progress) {
         mCurrentProgress = mTargetProgress;
         mTargetProgress = progress;
         mIncrement = (mTargetProgress - mCurrentProgress) / STEPS;
@@ -113,5 +108,4 @@ public class PageProgressView extends ImageView {
         d.setBounds(mBounds);
         d.draw(canvas);
     }
-
 }

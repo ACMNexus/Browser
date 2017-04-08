@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.qirui.browser;
+package com.qirui.browser.receiver;
 
 import android.app.DownloadManager;
 import android.content.ActivityNotFoundException;
@@ -32,12 +32,15 @@ import android.os.HandlerThread;
  * a complete, successful download will open the file.
  */
 public class OpenDownloadReceiver extends BroadcastReceiver {
+
     private static Handler sAsyncHandler;
+
     static {
         HandlerThread thr = new HandlerThread("Open browser download async");
         thr.start();
         sAsyncHandler = new Handler(thr.getLooper());
     }
+
     @Override
     public void onReceive(final Context context, Intent intent) {
         String action = intent.getAction();
@@ -84,6 +87,7 @@ public class OpenDownloadReceiver extends BroadcastReceiver {
 
     /**
      * Open the Activity which shows a list of all downloads.
+     *
      * @param context
      */
     private void openDownloadsPage(Context context) {

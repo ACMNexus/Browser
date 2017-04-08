@@ -10,6 +10,8 @@ public class Constants {
 
     public static final String EXTRA_SHARE_SCREENSHOT = "share_screenshot";
 
+    public static final String NATIVE_PAGE_URL = "qirui-native://homepage";
+
     // TODO: Do something with this UserAgent stuff
     public static final String DESKTOP_USERAGENT = "Mozilla/5.0 (X11; " +
             "Linux x86_64) AppleWebKit/534.24 (KHTML, like Gecko) " +

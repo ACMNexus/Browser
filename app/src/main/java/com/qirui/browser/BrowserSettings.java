@@ -108,8 +108,8 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
         mContext = context.getApplicationContext();
         mPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
         mSettingValues = new SettingValues(mContext, mPrefs, this);
-        mManagedSettings = new LinkedList<WeakReference<WebSettings>>();
-        mCustomUserAgents = new WeakHashMap<WebSettings, String>();
+        mManagedSettings = new LinkedList();
+        mCustomUserAgents = new WeakHashMap();
         BackgroundHandler.execute(mSetup);
     }
 
@@ -129,7 +129,7 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
         synchronized (mManagedSettings) {
             syncStaticSettings(settings);
             syncSetting(settings);
-            mManagedSettings.add(new WeakReference<WebSettings>(settings));
+            mManagedSettings.add(new WeakReference(settings));
         }
     }
 
@@ -192,7 +192,8 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
                 mPrefs.edit().remove(PREF_TEXT_SIZE).apply();
             }
 
-            sFactoryResetUrl = mContext.getResources().getString(R.string.homepage_base);
+            sFactoryResetUrl = Constants.NATIVE_PAGE_URL;
+//            mContext.getResources().getString(R.string.homepage_base);
             if (sFactoryResetUrl.indexOf("{CID}") != -1) {
                 sFactoryResetUrl = sFactoryResetUrl.replace("{CID}", BrowserProvider.getClientId(mContext.getContentResolver()));
             }

@@ -31,6 +31,7 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
 import com.qirui.browser.util.ReflectUtils;
+import com.qirui.browser.view.PageProgressView;
 
 /**
  * Base class for a title bar used by the browser.
