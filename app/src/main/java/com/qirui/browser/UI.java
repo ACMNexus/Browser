@@ -107,8 +107,6 @@ public interface UI {
 
     public void onExtendedMenuClosed(boolean inLoad);
 
-    public void onContextMenuCreated(Menu menu);
-
     public void onContextMenuClosed(Menu menu, boolean inLoad);
 
     public void onActionModeStarted(ActionMode mode);

@@ -680,10 +680,6 @@ public abstract class BaseUi implements UI {
     }
 
     @Override
-    public void onContextMenuCreated(Menu menu) {
-    }
-
-    @Override
     public void onContextMenuClosed(Menu menu, boolean inLoad) {
     }
 

@@ -209,10 +209,10 @@ public class PhoneUi extends BaseUi {
         return false;
     }
 
-    @Override
-    public void onContextMenuCreated(Menu menu) {
-        hideTitleBar();
-    }
+//    @Override
+//    public void onContextMenuCreated(Menu menu) {
+//        hideTitleBar();
+//    }
 
     @Override
     public void onContextMenuClosed(Menu menu, boolean inLoad) {

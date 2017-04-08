@@ -1199,49 +1199,6 @@ public class Controller implements WebViewController, UiController, ActivityCont
         if (extra == null) return;
 
         ContextMenuManager.getInstance().show(result, (int) touchX, (int) touchY);
-
-        /*switch (type) {
-            case WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE:
-                menu.setHeaderTitle(extra);
-                // decide whether to show the open link in new tab option
-                MenuItem newTabItem = menu.findItem(R.id.open_newtab_context_menu_id);
-                newTabItem.setTitle(getSettings().openInBackground() ? R.string.contextmenu_openlink_newwindow_background : R.string.contextmenu_openlink_newwindow);
-                newTabItem.setVisible(showNewTab);
-                if (showNewTab) {
-                    if (WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE == type) {
-                        newTabItem.setOnMenuItemClickListener(
-                                new MenuItem.OnMenuItemClickListener() {
-                                    @Override
-                                    public boolean onMenuItemClick(MenuItem item) {
-                                        final HashMap<String, WebView> hrefMap = new HashMap<String, WebView>();
-                                        hrefMap.put("webview", webview);
-                                        final Message msg = mHandler.obtainMessage(
-                                                FOCUS_NODE_HREF,
-                                                R.id.open_newtab_context_menu_id,
-                                                0, hrefMap);
-                                        webview.requestFocusNodeHref(msg);
-                                        return true;
-                                    }
-                                });
-                    } else {
-                        newTabItem.setOnMenuItemClickListener(
-                                new MenuItem.OnMenuItemClickListener() {
-                                    @Override
-                                    public boolean onMenuItemClick(MenuItem item) {
-                                        final Tab parent = mTabControl.getCurrentTab();
-                                        openTab(extra, parent, !mSettings.openInBackground(), true);
-                                        return true;
-                                    }
-                                });
-                    }
-                }
-                if (type == WebView.HitTestResult.SRC_ANCHOR_TYPE) {
-                    break;
-                }
-        }*/
-
-        //update the ui
-        mUi.onContextMenuCreated(menu);
     }
 
     /**
