@@ -9,7 +9,7 @@
     the specific language governing permissions and limitations under the
     License.
 -->
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+<resources>
     <dimen name="widgetColumnWidth">110dip</dimen>
     <dimen name="widgetThumbnailHeight">84dip</dimen>
     <dimen name="combo_horizontalSpacing">4dip</dimen>

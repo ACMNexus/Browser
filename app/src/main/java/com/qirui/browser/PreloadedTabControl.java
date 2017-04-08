@@ -18,13 +18,13 @@ package com.qirui.browser;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
-
 import java.util.Map;
 
 /**
  * Class to manage the controlling of preloaded tab.
  */
 public class PreloadedTabControl {
+
     private static final boolean LOGD_ENABLED = Browser.LOGD_ENABLED;
     private static final String LOGTAG = "PreloadedTabControl";
 

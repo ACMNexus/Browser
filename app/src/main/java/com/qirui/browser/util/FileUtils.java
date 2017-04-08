@@ -68,7 +68,7 @@ public class FileUtils {
             try {
                 result = copyToFile(in, destFile);
             } finally  {
-                in.close();
+                IOUtils.closeStream(in);
             }
         } catch (IOException e) {
             result = false;
@@ -98,7 +98,7 @@ public class FileUtils {
                     out.getFD().sync();
                 } catch (IOException e) {
                 }
-                out.close();
+                IOUtils.closeStream(out);
             }
             return true;
         } catch (IOException e) {
@@ -173,8 +173,8 @@ public class FileUtils {
                 return contents.toString();
             }
         } finally {
-            bis.close();
-            input.close();
+            IOUtils.closeStream(bis);
+            IOUtils.closeStream(input);
         }
     }
 
@@ -213,12 +213,7 @@ public class FileUtils {
             }
             return checkSummer.getValue();
         } finally {
-            if (cis != null) {
-                try {
-                    cis.close();
-                } catch (IOException e) {
-                }
-            }
+            IOUtils.closeStream(cis);
         }
     }
 
@@ -274,7 +269,6 @@ public class FileUtils {
             }
             out.write(buffer);
             out.flush();
-            out.close();
             return true;
         } catch (Exception e) {
             return false;

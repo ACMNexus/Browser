@@ -124,7 +124,6 @@ public class ComboViewActivity extends FragmentActivity implements CombinedBookm
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.combined, menu);
         return super.onCreateOptionsMenu(menu);
     }
 

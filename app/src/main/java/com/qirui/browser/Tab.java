@@ -66,6 +66,7 @@ import com.qirui.browser.controller.DataController;
 import com.qirui.browser.controller.SubWindowChromeClient;
 import com.qirui.browser.controller.SubWindowClient;
 import com.qirui.browser.homepages.HomeProvider;
+import com.qirui.browser.task.DownloadTouchIcon;
 import com.qirui.browser.util.ReflectUtils;
 import com.qirui.browser.util.UrlUtils;
 import com.qirui.browser.view.ErrorConsoleView;
@@ -155,7 +156,7 @@ public class Tab implements PictureListener {
     private DataController mDataController;
 
     // AsyncTask for downloading touch icons
-    DownloadTouchIcon mTouchIconLoader;
+    public DownloadTouchIcon mTouchIconLoader;
 
     private BrowserSettings mSettings;
     private int mCaptureWidth;
@@ -355,7 +356,7 @@ public class Tab implements PictureListener {
         public void onPageFinished(WebView view, String url) {
             mDisableOverrideUrlLoading = false;
             if (!isPrivateBrowsingEnabled()) {
-                LogTag.logPageFinishedLoading(url, SystemClock.uptimeMillis() - mLoadStartTime);
+//                LogTag.logPageFinishedLoading(url, SystemClock.uptimeMillis() - mLoadStartTime);
             }
             syncCurrentState(view, url);
             mWebViewController.onPageFinished(Tab.this);

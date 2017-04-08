@@ -21,7 +21,6 @@
     android:padding="@dimen/combo_horizontalSpacing">
     <ImageView
         android:id="@+id/thumb"
-        android:src="@drawable/thumbnail_bookmarks_widget_no_bookmark_holo"
         android:layout_width="@dimen/bookmarkThumbnailWidth"
         android:layout_height="@dimen/bookmarkThumbnailHeight"
         android:scaleType="centerCrop"

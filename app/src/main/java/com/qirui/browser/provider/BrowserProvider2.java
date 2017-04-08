@@ -18,6 +18,7 @@ package com.qirui.browser.provider;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.annotation.TargetApi;
 import android.app.SearchManager;
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -36,6 +37,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.BaseColumns;
 import android.provider.Browser;
 import android.provider.Browser.BookmarkColumns;
@@ -46,8 +48,6 @@ import android.text.TextUtils;
 
 import com.qirui.browser.R;
 import com.qirui.browser.util.UrlUtils;
-import com.qirui.browser.widget.BookmarkThumbnailWidgetProvider;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -378,6 +378,7 @@ public class BrowserProvider2 extends SQLiteContentProvider {
         static final String DATABASE_NAME = "browser2.db";
         static final int DATABASE_VERSION = 32;
 
+        @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
         public DatabaseHelper(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
             setWriteAheadLoggingEnabled(true);
@@ -796,7 +797,7 @@ public class BrowserProvider2 extends SQLiteContentProvider {
         super.onEndTransaction(callerIsSyncAdapter);
         if (mUpdateWidgets) {
             if (mWidgetObserver == null) {
-                BookmarkThumbnailWidgetProvider.refreshWidgets(getContext());
+//                BookmarkThumbnailWidgetProvider.refreshWidgets(getContext());
             } else {
                 mWidgetObserver.dispatchChange(false);
             }

@@ -34,6 +34,7 @@ import android.webkit.URLUtil;
 import android.widget.Toast;
 
 import com.qirui.browser.http.WebAddress;
+import com.qirui.browser.task.FetchUrlMimeType;
 
 /**
  * Handle download requests

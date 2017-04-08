@@ -49,8 +49,6 @@ public class IntentHandler {
     // "source" parameter for Google search from unknown source
     final static String GOOGLE_SEARCH_SOURCE_UNKNOWN = "unknown";
 
-    /* package */ static final UrlData EMPTY_URL_DATA = new UrlData(null);
-
     private Activity mActivity;
     private Controller mController;
     private TabControl mTabControl;

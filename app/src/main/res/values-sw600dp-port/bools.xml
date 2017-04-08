@@ -10,6 +10,7 @@
     License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
     <!-- hide the title bar -->
     <bool name="hide_title">false</bool>
 

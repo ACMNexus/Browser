@@ -35,7 +35,7 @@ import java.util.Map;
  */
 public class PreloadRequestReceiver extends BroadcastReceiver {
 
-    private final static String LOGTAG = "browser.preloader";
+    private final static String TAG = "browser.preloader";
     private final static boolean LOGD_ENABLED = com.qirui.browser.Browser.LOGD_ENABLED;
 
     private static final String ACTION_PRELOAD = "android.intent.action.PRELOAD";
@@ -48,7 +48,7 @@ public class PreloadRequestReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (LOGD_ENABLED) Log.d(LOGTAG, "received intent " + intent);
+        if (LOGD_ENABLED) Log.d(TAG, "received intent " + intent);
         if (isPreloadEnabledOnCurrentNetwork(context) &&
                 intent.getAction().equals(ACTION_PRELOAD)) {
             handlePreload(context, intent);
@@ -57,12 +57,12 @@ public class PreloadRequestReceiver extends BroadcastReceiver {
 
     private boolean isPreloadEnabledOnCurrentNetwork(Context context) {
         String preload = BrowserSettings.getInstance().getPreloadEnabled();
-        if (LOGD_ENABLED) Log.d(LOGTAG, "Preload setting: " + preload);
+        if (LOGD_ENABLED) Log.d(TAG, "Preload setting: " + preload);
         if (BrowserSettings.getPreloadAlwaysPreferenceString(context).equals(preload)) {
             return true;
         } else if (BrowserSettings.getPreloadOnWifiOnlyPreferenceString(context).equals(preload)) {
             boolean onWifi = isOnWifi(context);
-            if (LOGD_ENABLED) Log.d(LOGTAG, "on wifi:" + onWifi);
+            if (LOGD_ENABLED) Log.d(TAG, "on wifi:" + onWifi);
             return onWifi;
         } else {
             return false;
@@ -100,17 +100,17 @@ public class PreloadRequestReceiver extends BroadcastReceiver {
         String id = i.getStringExtra(EXTRA_PRELOAD_ID);
         Map<String, String> headers = null;
         if (id == null) {
-            if (LOGD_ENABLED) Log.d(LOGTAG, "Preload request has no " + EXTRA_PRELOAD_ID);
+            if (LOGD_ENABLED) Log.d(TAG, "Preload request has no " + EXTRA_PRELOAD_ID);
             return;
         }
         if (i.getBooleanExtra(EXTRA_PRELOAD_DISCARD, false)) {
-            if (LOGD_ENABLED) Log.d(LOGTAG, "Got " + id + " preload discard request");
+            if (LOGD_ENABLED) Log.d(TAG, "Got " + id + " preload discard request");
             Preloader.getInstance().discardPreload(id);
         } else if (i.getBooleanExtra(EXTRA_SEARCHBOX_CANCEL, false)) {
-            if (LOGD_ENABLED) Log.d(LOGTAG, "Got " + id + " searchbox cancel request");
+            if (LOGD_ENABLED) Log.d(TAG, "Got " + id + " searchbox cancel request");
             Preloader.getInstance().cancelSearchBoxPreload(id);
         } else {
-            if (LOGD_ENABLED) Log.d(LOGTAG, "Got " + id + " preload request for " + url);
+            if (LOGD_ENABLED) Log.d(TAG, "Got " + id + " preload request for " + url);
             if (url != null && url.startsWith("http")) {
                 final Bundle pairs = i.getBundleExtra(Browser.EXTRA_HEADERS);
                 if (pairs != null && !pairs.isEmpty()) {
@@ -125,7 +125,7 @@ public class PreloadRequestReceiver extends BroadcastReceiver {
             String sbQuery = i.getStringExtra(EXTRA_SEARCHBOX_SETQUERY);
             if (url != null) {
                 if (LOGD_ENABLED){
-                    Log.d(LOGTAG, "Preload request(" + id + ", " + url + ", " +
+                    Log.d(TAG, "Preload request(" + id + ", " + url + ", " +
                             headers + ", " + sbQuery + ")");
                 }
                 Preloader.getInstance().handlePreloadRequest(id, url, headers, sbQuery);

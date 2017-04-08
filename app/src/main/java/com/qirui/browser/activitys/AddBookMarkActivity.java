@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 import com.qirui.browser.util.BookmarkUtils;
 import com.qirui.browser.Bookmarks;
-import com.qirui.browser.DownloadTouchIcon;
+import com.qirui.browser.task.DownloadTouchIcon;
 import com.qirui.browser.R;
 import com.qirui.browser.util.UrlUtils;
 import com.qirui.browser.provider.BrowserContract;

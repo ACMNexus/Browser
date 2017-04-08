@@ -89,7 +89,7 @@ public class BrowserBookmarksAdapter extends
         tv.setText(item.title);
         if (item.is_folder) {
             // folder
-            thumb.setImageResource(R.drawable.thumb_bookmark_widget_folder_holo);
+//            thumb.setImageResource(R.drawable.thumb_bookmark_widget_folder_holo);
             thumb.setScaleType(ScaleType.FIT_END);
             thumb.setBackground(null);
         } else {

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.qirui.browser;
+package com.qirui.browser.task;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -27,6 +27,10 @@ import android.os.Bundle;
 import android.os.Message;
 import android.util.Log;
 import android.webkit.WebView;
+
+import com.qirui.browser.Bookmarks;
+import com.qirui.browser.Browser;
+import com.qirui.browser.Tab;
 import com.qirui.browser.provider.BrowserContract;
 import com.qirui.browser.provider.BrowserContract.Images;
 import com.qirui.browser.util.IOUtils;
@@ -148,9 +152,7 @@ public class DownloadTouchIcon extends AsyncTask<String, Void, Void> {
 
     @Override
     protected void onCancelled() {
-        if (mCursor != null) {
-            mCursor.close();
-        }
+        IOUtils.closeCursor(mCursor);
     }
 
     private void storeIcon(Bitmap icon) {

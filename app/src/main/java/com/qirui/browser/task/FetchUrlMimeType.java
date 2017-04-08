@@ -14,23 +14,14 @@
  * limitations under the License.
  */
 
-package com.qirui.browser;
-
-import org.apache.http.Header;
-import org.apache.http.HttpHost;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpHead;
-import org.apache.http.conn.params.ConnRouteParams;
+package com.qirui.browser.task;
 
 import android.app.DownloadManager;
 import android.content.Context;
-import android.net.Proxy;
-import android.net.http.AndroidHttpClient;
 import android.os.Environment;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
 import android.webkit.URLUtil;
-
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -44,9 +35,9 @@ import java.net.URL;
  * do the same steps of correcting the mimetype down in
  * android.os.webkit.LoadListener rather than handling it here.
  */
-class FetchUrlMimeType extends Thread {
+public class FetchUrlMimeType extends Thread {
 
-    private final static String LOGTAG = "FetchUrlMimeType";
+    private final static String TAG = FetchUrlMimeType.class.getSimpleName();
 
     private Context mContext;
     private DownloadManager.Request mRequest;
@@ -91,7 +82,7 @@ class FetchUrlMimeType extends Thread {
                 contentDisposition = connection.getHeaderField("Content-Disposition");
             }
         } catch (IOException ioe) {
-            Log.e(LOGTAG, "Download failed: " + ioe);
+            Log.e(TAG, "Download failed: " + ioe);
         } finally {
             if (connection != null) {
                 connection.disconnect();
@@ -109,15 +100,12 @@ class FetchUrlMimeType extends Thread {
                     mRequest.setMimeType(newMimeType);
                 }
             }
-            String filename = URLUtil.guessFileName(mUri, contentDisposition,
-                    mimeType);
+            String filename = URLUtil.guessFileName(mUri, contentDisposition, mimeType);
             mRequest.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
         }
 
         // Start the download
-        DownloadManager manager = (DownloadManager) mContext.getSystemService(
-                Context.DOWNLOAD_SERVICE);
+        DownloadManager manager = (DownloadManager) mContext.getSystemService(Context.DOWNLOAD_SERVICE);
         manager.enqueue(mRequest);
     }
-
 }

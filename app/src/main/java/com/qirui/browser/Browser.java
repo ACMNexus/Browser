@@ -17,18 +17,15 @@
 package com.qirui.browser;
 
 import android.app.Application;
-import android.util.Log;
 import android.webkit.CookieSyncManager;
 
 public class Browser extends Application { 
 
-    private final static String LOGTAG = "browser";
-    
     // Set to true to enable verbose logging.
     public final static boolean LOGV_ENABLED = false;
 
     // Set to true to enable extra debug logging.
-    final static boolean LOGD_ENABLED = true;
+    public final static boolean LOGD_ENABLED = true;
 
     public static Browser mInstance;
 
@@ -36,9 +33,6 @@ public class Browser extends Application {
     public void onCreate() {
         super.onCreate();
         mInstance = this;
-
-        if (LOGV_ENABLED)
-            Log.v(LOGTAG, "Browser.onCreate: this=" + this);
 
         // create CookieSyncManager with current Context
         CookieSyncManager.createInstance(this);

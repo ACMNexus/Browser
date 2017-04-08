@@ -21,6 +21,7 @@ import com.qirui.browser.addbookmark.FolderSpinnerAdapter;
 import com.qirui.browser.http.WebAddress;
 import com.qirui.browser.provider.BrowserContract;
 import com.qirui.browser.provider.BrowserContract.Accounts;
+import com.qirui.browser.task.DownloadTouchIcon;
 import com.qirui.browser.util.BookmarkUtils;
 import com.qirui.browser.util.UrlUtils;
 
@@ -955,7 +956,6 @@ public class AddBookmarkPage extends Activity
                 t.start();
             }
             setResult(RESULT_OK);
-            LogTag.logBookmarkAdded(url, "bookmarkview");
         }
         return true;
     }

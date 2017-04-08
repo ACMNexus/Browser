@@ -220,19 +220,6 @@
             android:theme="@style/swipe_style" />
 
         <activity
-            android:name="com.qirui.browser.ShortcutActivity"
-            android:icon="@drawable/ic_launcher_shortcut_browser_bookmark"
-            android:label="@string/shortcut_bookmark"
-            android:theme="@style/ShortcutTheme">
-
-            <intent-filter>
-                <action android:name="android.intent.action.CREATE_SHORTCUT" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-
-        </activity>
-
-        <activity
             android:name="com.qirui.browser.BrowserPreferencesPage"
             android:label="@string/menu_preferences">
             <intent-filter>
@@ -269,34 +256,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.qirui.browser.ComboViewActivity"></activity>
-
-        <!-- Bookmark thumbnail homescreen widget -->
-        <receiver
-            android:name="com.qirui.browser.widget.BookmarkThumbnailWidgetProvider"
-            android:label="@string/bookmarks">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="com.android.browser.BOOKMARK_APPWIDGET_UPDATE" />
-            </intent-filter>
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/bookmarkthumbnailwidget_info" />
-        </receiver>
-        <service
-            android:name="com.qirui.browser.widget.BookmarkThumbnailWidgetService"
-            android:exported="false"
-            android:permission="android.permission.BIND_REMOTEVIEWS" />
-        <receiver
-            android:name="com.qirui.browser.widget.BookmarkWidgetProxy"
-            android:exported="false" />
-        <activity
-            android:name="com.qirui.browser.widget.BookmarkWidgetConfigure"
-            android:theme="@android:style/Theme.Holo.DialogWhenLarge">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
-            </intent-filter>
-        </activity>
 
         <!-- Makes .BrowserActivity the search target for any activity in Browser -->
         <meta-data
@@ -306,7 +265,6 @@
         <!-- Application code for RLZ tracking.  RLZ assigns non-unique, non-personally identifiable
              tracking labels to client products; these labels sometimes appear in Google search
              queries.  See http://code.google.com/p/rlz for more info.
-
              This value signifies to the RLZ client that this application uses RLZ tracking. -->
         <meta-data
             android:name="com.google.android.partnersetup.RLZ_ACCESS_POINT"
@@ -315,12 +273,6 @@
         <receiver android:name=".receiver.OpenDownloadReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.DOWNLOAD_NOTIFICATION_CLICKED" />
-            </intent-filter>
-        </receiver>
-
-        <receiver android:name="com.qirui.browser.receiver.AccountsChangedReceiver">
-            <intent-filter>
-                <action android:name="android.accounts.LOGIN_ACCOUNTS_CHANGED" />
             </intent-filter>
         </receiver>
 
