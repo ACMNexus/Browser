@@ -40,6 +40,8 @@ public interface UI {
     int MSG_HIDE_TITLEBAR = 1;
     int HIDE_TITLEBAR_DELAY = 1500; // in ms
 
+    String TYPED = "browser-type";
+
     enum ComboViews {
         History,
         Bookmarks,
@@ -88,8 +90,7 @@ public interface UI {
 
     void showComboView(ComboViews startingView, Bundle extra);
 
-    void showCustomView(View view, int requestedOrientation,
-            CustomViewCallback callback);
+    void showCustomView(View view, int requestedOrientation, CustomViewCallback callback);
 
     void onHideCustomView();
 
@@ -132,7 +133,7 @@ public interface UI {
 
     void setUseQuickControls(boolean enabled);
 
-    public boolean shouldCaptureThumbnails();
+    boolean shouldCaptureThumbnails();
 
     boolean blockFocusAnimations();
 

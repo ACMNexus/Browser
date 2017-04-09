@@ -14,6 +14,8 @@ import com.qirui.browser.Tab;
 import com.qirui.browser.TabControl;
 import com.qirui.browser.adapter.HomePagerAdapter;
 import com.qirui.browser.bean.WebSiteInfo;
+import com.qirui.browser.view.UrlInputView;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +33,7 @@ public class HomePagerController implements AbsListView.OnItemClickListener {
     private FrameLayout mHomeParent;
     private Controller mController;
     private HomePagerAdapter mAdapter;
+    private UrlInputView.OnSearchUrl mOnSearchUrlListener;
 
     public HomePagerController(Context context) {
         this.mContext = context;
@@ -83,6 +86,12 @@ public class HomePagerController implements AbsListView.OnItemClickListener {
         mTabControl.setCurrentTab(mCurrentTab);
     }
 
+    public void setOnSearchListener(UrlInputView.OnSearchUrl listener) {
+        if(listener != null) {
+            mOnSearchUrlListener = listener;
+        }
+    }
+
     public View getHomePageView() {
         return mHomePagerView;
     }
@@ -90,6 +99,6 @@ public class HomePagerController implements AbsListView.OnItemClickListener {
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         WebSiteInfo info = mAdapter.getItem(position);
-        mController.openTab(info.getUrl(), mCurrentTab, true, false);
+        mOnSearchUrlListener.onSelect(info.getUrl(), false);
     }
 }

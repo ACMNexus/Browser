@@ -198,16 +198,6 @@ public class UrlInputView extends EditText implements OnEditorActionListener, On
 //        onSelect(SuggestionsAdapter.getSuggestionUrl(item), item.type, item.extra);
     }
 
-    public interface UrlInputListener {
-
-        public void onDismiss();
-
-        public void onAction(String text, String extra, String source);
-
-        public void onCopySuggestion(String text);
-
-    }
-
     public void setIncognitoMode(boolean incognito) {
         mIncognitoMode = incognito;
 //        mAdapter.setIncognitoMode(mIncognitoMode);
@@ -229,7 +219,7 @@ public class UrlInputView extends EditText implements OnEditorActionListener, On
     /*
      * no-op to prevent scrolling of webview when embedded titlebar
      * gets edited
-     */
+    */
     @Override
     public boolean requestRectangleOnScreen(Rect rect, boolean immediate) {
         return false;
@@ -252,5 +242,25 @@ public class UrlInputView extends EditText implements OnEditorActionListener, On
 
     @Override
     public void afterTextChanged(Editable s) {
+    }
+
+    public interface OnSearchUrl {
+        /**
+         * 打开指定url链接，入口可能是推荐，或者输入，以及历史记录／收藏中的长按打开
+         * @param url
+         * @param isInputUrl 　区分是否是手动输入
+         */
+        void onSelect(String url, boolean isInputUrl);
+
+        void onSelect(String url, boolean isInputUrl, String inputWord);
+    }
+
+    public interface UrlInputListener {
+
+        void onDismiss();
+
+        void onAction(String text, String extra, String source);
+
+        void onCopySuggestion(String text);
     }
 }

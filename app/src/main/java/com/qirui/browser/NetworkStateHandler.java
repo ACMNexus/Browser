@@ -42,8 +42,7 @@ public class NetworkStateHandler {
         mActivity = activity;
         mController = controller;
         // Find out if the network is currently up.
-        ConnectivityManager cm = (ConnectivityManager) mActivity
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager cm = (ConnectivityManager) mActivity.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo info = cm.getActiveNetworkInfo();
         if (info != null) {
             mIsNetworkUp = info.isAvailable();
@@ -53,13 +52,11 @@ public class NetworkStateHandler {
          * enables registration for changes in network status from http stack
          */
         mNetworkStateChangedFilter = new IntentFilter();
-        mNetworkStateChangedFilter.addAction(
-                ConnectivityManager.CONNECTIVITY_ACTION);
+        mNetworkStateChangedFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
         mNetworkStateIntentReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                if (intent.getAction().equals(
-                        ConnectivityManager.CONNECTIVITY_ACTION)) {
+                if (intent.getAction().equals( ConnectivityManager.CONNECTIVITY_ACTION)) {
 
                     NetworkInfo info = intent.getParcelableExtra(
                             ConnectivityManager.EXTRA_NETWORK_INFO);
@@ -69,8 +66,7 @@ public class NetworkStateHandler {
                             (subtypeName != null ? subtypeName.toLowerCase() : ""));
                     BrowserSettings.getInstance().updateConnectionType();
 
-                    boolean noConnection = intent.getBooleanExtra(
-                            ConnectivityManager.EXTRA_NO_CONNECTIVITY, false);
+                    boolean noConnection = intent.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, false);
 
                     onNetworkToggle(!noConnection);
                 }

@@ -910,7 +910,6 @@ public class Controller implements WebViewController, UiController, ActivityCont
                 return;
             }
             mUi.showCustomView(view, requestedOrientation, callback);
-            mActivity.invalidateOptionsMenu();
         }
     }
 
@@ -918,7 +917,6 @@ public class Controller implements WebViewController, UiController, ActivityCont
     public void hideCustomView() {
         if (mUi.isCustomViewShowing()) {
             mUi.onHideCustomView();
-            mActivity.invalidateOptionsMenu();
         }
     }
 
@@ -1722,8 +1720,8 @@ public class Controller implements WebViewController, UiController, ActivityCont
                 ((PhoneUi) mUi).switchNativePage(tab);
             } else {
                 tab.setNativePager(false);
-//                mUi.hideNavScreen(tix, true);
-                switchToTab(tab);
+                ((PhoneUi) mUi).paneSwitch(mTabControl.getCurrentPosition(), false);
+//                switchToTab(tab);
                 tab.loadUrl(url, headers);
                 mUi.onProgressChanged(tab);
             }

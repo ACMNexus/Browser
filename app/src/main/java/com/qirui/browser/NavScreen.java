@@ -57,10 +57,15 @@ public class NavScreen extends RelativeLayout implements OnClickListener, TabCon
         Tab currentTab = mUi.getActiveTab();
         int pos = mUiController.getTabControl().getTabPosition(currentTab);
         close(pos);
+        if(mUiController.getTabControl().getCurrentTab().isNativePager()) {
+            mUiController.getHomeController().switchNativeHome(currentTab);
+            mUiController.getTabControl().setCurrentTab(currentTab);
+        }
     }
 
     @Override
     protected void onConfigurationChanged(Configuration newconfig) {
+
         if (newconfig.orientation != mOrientation) {
             int sv = mScroller.getScrollValue();
             removeAllViews();

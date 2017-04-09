@@ -30,11 +30,9 @@ import android.provider.Browser;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Patterns;
-
 import com.qirui.browser.activitys.BrowserActivity;
 import com.qirui.browser.search.SearchEngine;
 import com.qirui.browser.util.UrlUtils;
-
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -61,7 +59,7 @@ public class IntentHandler {
         mSettings = controller.getSettings();
     }
 
-    void onNewIntent(Intent intent) {
+    public void onNewIntent(Intent intent) {
         Tab current = mTabControl.getCurrentTab();
         // When a tab is closed on exit, the current tab index is set to -1.
         // Reset before proceed as Browser requires the current tab to be set.
@@ -87,8 +85,7 @@ public class IntentHandler {
         }
 
         // In case the SearchDialog is open.
-        ((SearchManager) mActivity.getSystemService(Context.SEARCH_SERVICE))
-                .stopSearch();
+        ((SearchManager) mActivity.getSystemService(Context.SEARCH_SERVICE)).stopSearch();
         if (Intent.ACTION_VIEW.equals(action)
                 || NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action)
                 || Intent.ACTION_SEARCH.equals(action)
@@ -105,9 +102,7 @@ public class IntentHandler {
                 urlData = new UrlData(mSettings.getHomePage());
             }
 
-            if (intent.getBooleanExtra(Browser.EXTRA_CREATE_NEW_TAB, false)
-                  || urlData.isPreloaded()) {
-                Tab t = mController.openTab(urlData);
+            if (intent.getBooleanExtra(Browser.EXTRA_CREATE_NEW_TAB, false) || urlData.isPreloaded()) {
                 return;
             }
             /*
@@ -117,16 +112,14 @@ public class IntentHandler {
              * 2-phone) Reuse tab with same appId
              * 2-tablet) Open new tab
              */
-            final String appId = intent
-                    .getStringExtra(Browser.EXTRA_APPLICATION_ID);
+            final String appId = intent.getStringExtra(Browser.EXTRA_APPLICATION_ID);
             if (!TextUtils.isEmpty(urlData.mUrl) &&
                     urlData.mUrl.startsWith("javascript:")) {
                 // Always open javascript: URIs in new tabs
                 mController.openTab(urlData);
                 return;
             }
-            if (Intent.ACTION_VIEW.equals(action)
-                    && (appId != null)
+            if (Intent.ACTION_VIEW.equals(action) && (appId != null)
                     && appId.startsWith(mActivity.getPackageName())) {
                 Tab appTab = mTabControl.getTabFromAppId(appId);
                 if ((appTab != null) && (appTab == mController.getCurrentTab())) {
@@ -135,10 +128,8 @@ public class IntentHandler {
                     return;
                 }
             }
-            if (Intent.ACTION_VIEW.equals(action)
-                     && !mActivity.getPackageName().equals(appId)) {
-                if (!BrowserActivity.isTablet(mActivity)
-                        && !mSettings.allowAppTabs()) {
+            if (Intent.ACTION_VIEW.equals(action) && !mActivity.getPackageName().equals(appId)) {
+                if (!BrowserActivity.isTablet(mActivity) && !mSettings.allowAppTabs()) {
                     Tab appTab = mTabControl.getTabFromAppId(appId);
                     if (appTab != null) {
                         mController.reuseTab(appTab, urlData);
@@ -153,6 +144,9 @@ public class IntentHandler {
                     appTab.setAppId(appId);
                     if (current != appTab) {
                         mController.switchToTab(appTab);
+                    }
+                    if(mController.getUi() instanceof PhoneUi) {
+                        ((PhoneUi)mController.getUi()).hideHomePager();
                     }
                     // Otherwise, we are already viewing the correct tab.
                 } else {
@@ -241,8 +235,7 @@ public class IntentHandler {
      * are identified as plain search terms and not URLs/shortcuts.
      * @return true if the intent was handled and web search activity was launched, false if not.
      */
-    public static boolean handleWebSearchIntent(Activity activity,
-            Controller controller, Intent intent) {
+    public static boolean handleWebSearchIntent(Activity activity, Controller controller, Intent intent) {
         if (intent == null) return false;
 
         String url = null;
@@ -321,10 +314,6 @@ public class IntentHandler {
             this.mPreloadedTab = null;
             this.mSearchBoxQueryToSubmit = null;
             this.mDisableUrlOverride = false;
-        }
-
-        UrlData(String url, Map<String, String> headers, Intent intent) {
-            this(url, headers, intent, null, null);
         }
 
         UrlData(String url, Map<String, String> headers, Intent intent,

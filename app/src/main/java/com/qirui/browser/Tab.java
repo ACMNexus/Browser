@@ -355,9 +355,6 @@ public class Tab implements PictureListener {
         @Override
         public void onPageFinished(WebView view, String url) {
             mDisableOverrideUrlLoading = false;
-            if (!isPrivateBrowsingEnabled()) {
-//                LogTag.logPageFinishedLoading(url, SystemClock.uptimeMillis() - mLoadStartTime);
-            }
             syncCurrentState(view, url);
             mWebViewController.onPageFinished(Tab.this);
         }
@@ -724,27 +721,27 @@ public class Tab implements PictureListener {
         }
 
         @Override
-        public void onShowCustomView(View view, int requestedOrientation,
-                                     WebChromeClient.CustomViewCallback callback) {
-            if (mInForeground) mWebViewController.showCustomView(Tab.this, view,
-                    requestedOrientation, callback);
+        public void onShowCustomView(View view, int requestedOrientation, WebChromeClient.CustomViewCallback callback) {
+            if (mInForeground) {
+                mWebViewController.showCustomView(Tab.this, view, requestedOrientation, callback);
+            }
         }
 
         @Override
         public void onHideCustomView() {
-            if (mInForeground) mWebViewController.hideCustomView();
+            if (mInForeground) {
+                mWebViewController.hideCustomView();
+            }
         }
 
         /**
          * The origin has exceeded its database quota.
          * @param url the URL that exceeded the quota
-         * @param databaseIdentifier the identifier of the database on which the
-         *            transaction that caused the quota overflow was run
+         * @param databaseIdentifier the identifier of the database on which the transaction that caused the quota overflow was run
          * @param currentQuota the current quota for the origin.
          * @param estimatedSize the estimated size of the database.
          * @param totalUsedQuota is the sum of all origins' quota.
-         * @param quotaUpdater The callback to run when a decision to allow or
-         *            deny quota has been made. Don't forget to call this!
+         * @param quotaUpdater The callback to run when a decision to allow or deny quota has been made. Don't forget to call this!
          */
         @Override
         public void onExceededDatabaseQuota(String url,
@@ -1351,11 +1348,11 @@ public class Tab implements PictureListener {
      * This is only non-null when the security state is
      * SECURITY_STATE_BAD_CERTIFICATE.
      */
-    SslError getSslCertificateError() {
+    public SslError getSslCertificateError() {
         return mCurrentState.mSslCertificateError;
     }
 
-    int getLoadProgress() {
+    public int getLoadProgress() {
         if (mInPageLoad) {
             return mPageLoadProgress;
         }
@@ -1366,7 +1363,7 @@ public class Tab implements PictureListener {
      * @return TRUE if onPageStarted is called while onPageFinished is not
      * called yet.
      */
-    boolean inPageLoad() {
+    public boolean inPageLoad() {
         return mInPageLoad;
     }
 
@@ -1477,20 +1474,6 @@ public class Tab implements PictureListener {
         }
     }
 
-    /**
-     * Must be called on the UI thread
-     */
-    public ContentValues createSnapshotValues() {
-        return null;
-    }
-
-    /**
-     * Probably want to call this on a background thread
-     */
-    public boolean saveViewState(ContentValues values) {
-        return false;
-    }
-
     public void loadUrl(String url, Map<String, String> headers) {
         if (mMainView != null) {
             mPageLoadProgress = INITIAL_PROGRESS;
@@ -1506,8 +1489,10 @@ public class Tab implements PictureListener {
     }
 
     protected void capture() {
+        if (mMainView == null || mCapture == null) {
+            return;
+        }
 
-        if (mMainView == null || mCapture == null) return;
         if (ReflectUtils.getContentWidth(mMainView) <= 0 || mMainView.getContentHeight() <= 0) {
             return;
         }

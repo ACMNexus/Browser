@@ -21,17 +21,20 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.SearchManager;
+import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Message;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.KeyEvent;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.accessibility.AccessibilityEvent;
 import android.widget.ImageView;
 import com.qirui.browser.bean.AnimScreen;
+import com.qirui.browser.view.UrlInputView;
 import com.qirui.browser.view.UrlInputView.StateListener;
 import com.qirui.browser.util.DisplayUtils;
 import com.qirui.browser.util.ReflectUtils;
@@ -39,7 +42,7 @@ import com.qirui.browser.util.ReflectUtils;
 /**
  * Ui for regular phone screen sizes
  */
-public class PhoneUi extends BaseUi {
+public class PhoneUi extends BaseUi implements UrlInputView.OnSearchUrl {
 
     private static final String TAG = PhoneUi.class.getSimpleName();
     private static final int MSG_INIT_NAVSCREEN = 100;
@@ -49,14 +52,11 @@ public class PhoneUi extends BaseUi {
     private NavigationBarPhone mNavigationBar;
     private boolean mShowNav = false;
 
-    /**
-     * @param browser
-     * @param controller
-     */
     public PhoneUi(Activity browser, UiController controller) {
         super(browser, controller);
         setUseQuickControls(BrowserSettings.getInstance().useQuickControls());
         mNavigationBar = (NavigationBarPhone) mTitleBar.getNavigationBar();
+        mHomePagerController.setOnSearchListener(this);
     }
 
     @Override
@@ -77,7 +77,12 @@ public class PhoneUi extends BaseUi {
     @Override
     public boolean onBackKey() {
         if (showingNavScreen()) {
+            Tab currentTab = mUiController.getTabControl().getCurrentTab();
             mNavScreen.close(mUiController.getTabControl().getCurrentPosition());
+            if(mUiController.getTabControl().getCurrentTab().isNativePager()) {
+                mUiController.getHomeController().switchNativeHome(currentTab);
+                mUiController.getTabControl().setCurrentTab(currentTab);
+            }
             return true;
         }
         return super.onBackKey();
@@ -158,11 +163,6 @@ public class PhoneUi extends BaseUi {
         return false;
     }
 
-//    @Override
-//    public void onContextMenuCreated(Menu menu) {
-//        hideTitleBar();
-//    }
-
     // action mode callbacks
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
     @Override
@@ -188,7 +188,7 @@ public class PhoneUi extends BaseUi {
 
     @Override
     public boolean isWebShowing() {
-        return super.isWebShowing() && !showingNavScreen();
+        return super.isWebShowing() /*&& !showingNavScreen()*/;
     }
 
     @Override
@@ -198,9 +198,22 @@ public class PhoneUi extends BaseUi {
     }
 
     public void switchNativePage(Tab homeTab) {
-        int tix = mTabControl.getTabPosition(homeTab);
-        hideNavScreen(tix, true);
+        int position = mTabControl.getTabPosition(homeTab);
+        hideNavScreen(position, true);
         mHomePagerController.switchNativeHome(homeTab);
+    }
+
+    public void paneSwitch(int position, boolean animate) {
+        Tab tab = mUiController.getCurrentTab();
+        hideHomePager();
+        hideNavScreen(position, animate);
+        attachTab(tab);
+        mUiController.getCurrentTab().setNativePager(false);
+        if(tab != null) {
+            tab.resume();
+        }
+        mTitleBar.onResume();
+
     }
 
     public void showNavScreen() {
@@ -375,6 +388,11 @@ public class PhoneUi extends BaseUi {
         combo.start();
     }
 
+    public void hideHomePager() {
+        mContentParent.setVisibility(View.VISIBLE);
+        mHomePagerContainer.setVisibility(View.GONE);
+    }
+
     private void finishAnimateOut() {
         mTabControl.setOnThumbnailUpdatedListener(null);
         mNavScreen.setVisibility(View.GONE);
@@ -398,5 +416,34 @@ public class PhoneUi extends BaseUi {
     @Override
     public boolean shouldCaptureThumbnails() {
         return true;
+    }
+
+    @Override
+    public void onSelect(String text, boolean isInputUrl) {
+        onSelect(text, isInputUrl, null);
+    }
+
+    @Override
+    public void onSelect(String text, boolean isInputUrl, String inputWord) {
+        Tab tab = mTabControl.getCurrentTab();
+        if(tab == null) {
+            return;
+        }
+
+        /*if(tab.isNativePager()) {
+            mTabControl.recreateWebView(tab);
+        }*/
+
+        tab.setNativePager(false);
+        Intent intent = new Intent();
+        String action = Intent.ACTION_SEARCH;
+        intent.setAction(action);
+        intent.putExtra(SearchManager.QUERY, text);
+        if (TYPED != null) {
+            Bundle appData = new Bundle();
+            appData.putString("source", TYPED);
+            intent.putExtra(SearchManager.APP_DATA, appData);
+        }
+        mUiController.handleNewIntent(intent);
     }
 }
