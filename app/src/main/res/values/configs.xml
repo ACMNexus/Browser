@@ -26,6 +26,17 @@
         <item>google</item>
         <item>search_360</item>
         <item>sougou</item>
+        <item>weibo</item>
+        <item>zhihu</item>
+        <item>qidianBooks</item>
+        <item>csdn</item>
+        <item>douban</item>
+        <item>huaban</item>
+        <item>bilibili</item>
+        <item>aol</item>
+        <item>ask</item>
+        <item>duckduckgo</item>
+        <item>academic_bing</item>
         <item>yahoo</item>
         <item>bing</item>
     </string-array>

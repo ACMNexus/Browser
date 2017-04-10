@@ -139,6 +139,94 @@ http://www.opensearch.org/Specifications/OpenSearch/1.1/Draft_4#OpenSearch_1.1_p
         <item>UTF-8</item>
         <item />
     </string-array>
+    <string-array name="weibo">
+        <item>微博</item>
+        <item>m.weibo.cn</item>
+        <item />
+        <item>http://m.weibo.cn/main/pages/index?containerid=100103type%3D2%26q%3D{searchTerms}&amp;queryVal={searchTerms}</item>
+        <item>UTF-8</item>
+        <item />
+    </string-array>
+    <string-array name="zhihu">
+        <item>知乎</item>
+        <item>zhihu.com</item>
+        <item />
+        <item>http://www.zhihu.com/search?q={searchTerms}</item>
+        <item>UTF-8</item>
+        <item />
+    </string-array>
+    <string-array name="academic_bing">
+        <item>学术搜索</item>
+        <item>cn.bing.com</item>
+        <item />
+        <item>http://cn.bing.com/academic/search?q={searchTerms}</item>
+        <item>UTF-8</item>
+        <item />
+    </string-array>
+    <string-array name="qidianBooks">
+        <item>小说搜索</item>
+        <item>m.qidian.com</item>
+        <item />
+        <item>http://m.qidian.com/search?kw={searchTerms}</item>
+        <item>UTF-8</item>
+        <item />
+    </string-array>
+    <string-array name="ask">
+        <item>Ask</item>
+        <item>ask.com</item>
+        <item />
+        <item>http://www.ask.com/web?q={searchTerms}</item>
+        <item>UTF-8</item>
+        <item />
+    </string-array>
+    <string-array name="aol">
+        <item>AoL</item>
+        <item>m.search.aol.com</item>
+        <item />
+        <item>http://m.search.aol.com/search?q={searchTerms}</item>
+        <item>UTF-8</item>
+        <item />
+    </string-array>
+    <string-array name="duckduckgo">
+        <item>duckGo</item>
+        <item>duckduckgo.com</item>
+        <item />
+        <item>http://www.duckduckgo.com/?q={searchTerms}</item>
+        <item>UTF-8</item>
+        <item />
+    </string-array>
+    <string-array name="bilibili">
+        <item>哔哩哔哩</item>
+        <item>m.bilibili.com</item>
+        <item />
+        <item>http://m.bilibili.com/search.html?keyword={searchTerms}</item>
+        <item>UTF-8</item>
+        <item />
+    </string-array>
+    <string-array name="huaban">
+        <item>花瓣</item>
+        <item>huaban.com</item>
+        <item />
+        <item>http://huaban.com/search/?q={searchTerms}</item>
+        <item>UTF-8</item>
+        <item />
+    </string-array>
+    <string-array name="douban">
+        <item>豆瓣</item>
+        <item>m.douban.com</item>
+        <item />
+        <item>https://m.douban.com/search/?query={searchTerms}</item>
+        <item>UTF-8</item>
+        <item />
+    </string-array>
+    <string-array name="csdn">
+        <item>CSDN</item>
+        <item>m.csdn.net</item>
+        <item />
+        <item>http://m.csdn.net/search.html?s_name={searchTerms}</item>
+        <item>UTF-8</item>
+        <item />
+    </string-array>
     <string-array name="yahoo_ch" translatable="false">
         <item>Yahoo! Suche</item>
         <item>ch.yahoo.com</item>
