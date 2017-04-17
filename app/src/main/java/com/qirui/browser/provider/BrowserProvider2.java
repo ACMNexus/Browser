@@ -13,22 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License
  */
-
 package com.qirui.browser.provider;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
-import android.annotation.TargetApi;
-import android.app.SearchManager;
-import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
-import android.content.UriMatcher;
-import android.content.res.Resources;
-import android.content.res.TypedArray;
-import android.database.AbstractCursor;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
@@ -37,741 +28,25 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
-import android.os.Build;
-import android.provider.BaseColumns;
 import android.provider.Browser;
 import android.provider.Browser.BookmarkColumns;
-
 import android.provider.ContactsContract.RawContacts;
 import android.provider.SyncStateContract;
 import android.text.TextUtils;
-
-import com.qirui.browser.R;
-import com.qirui.browser.util.UrlUtils;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import com.qirui.browser.adapter.SuggestionsCursor;
+import com.qirui.browser.util.IOUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 public class BrowserProvider2 extends SQLiteContentProvider {
 
-    public static final String PARAM_GROUP_BY = "groupBy";
-    public static final String PARAM_ALLOW_EMPTY_ACCOUNTS = "allowEmptyAccounts";
-
-    public static final String LEGACY_AUTHORITY = "browser";
-    static final Uri LEGACY_AUTHORITY_URI = new Uri.Builder().authority(LEGACY_AUTHORITY).scheme("content").build();
-
-    public static interface Thumbnails {
-        public static final Uri CONTENT_URI = Uri.withAppendedPath(BrowserContract.AUTHORITY_URI, "thumbnails");
-        public static final String _ID = "_id";
-        public static final String THUMBNAIL = "thumbnail";
-    }
-
-    public static interface OmniboxSuggestions {
-        public static final Uri CONTENT_URI = Uri.withAppendedPath(
-                BrowserContract.AUTHORITY_URI, "omnibox_suggestions");
-        public static final String _ID = "_id";
-        public static final String URL = "url";
-        public static final String TITLE = "title";
-        public static final String IS_BOOKMARK = "bookmark";
-    }
-
-    static final String TABLE_BOOKMARKS = "bookmarks";
-    static final String TABLE_HISTORY = "history";
-    static final String TABLE_IMAGES = "images";
-    static final String TABLE_SEARCHES = "searches";
-    static final String TABLE_SYNC_STATE = "syncstate";
-    static final String TABLE_SETTINGS = "settings";
-    static final String TABLE_SNAPSHOTS = "snapshots";
-    static final String TABLE_THUMBNAILS = "thumbnails";
-
-    static final String TABLE_BOOKMARKS_JOIN_IMAGES = "bookmarks LEFT OUTER JOIN images " +
-            "ON bookmarks.url = images." + BrowserContract.Images.URL;
-    static final String TABLE_HISTORY_JOIN_IMAGES = "history LEFT OUTER JOIN images " +
-            "ON history.url = images." + BrowserContract.Images.URL;
-
-    static final String VIEW_ACCOUNTS = "v_accounts";
-    static final String VIEW_SNAPSHOTS_COMBINED = "v_snapshots_combined";
-    static final String VIEW_OMNIBOX_SUGGESTIONS = "v_omnibox_suggestions";
-
-    static final String FORMAT_COMBINED_JOIN_SUBQUERY_JOIN_IMAGES =
-            "history LEFT OUTER JOIN (%s) bookmarks " +
-                    "ON history.url = bookmarks.url LEFT OUTER JOIN images " +
-                    "ON history.url = images.url_key";
-
-    static final String DEFAULT_SORT_HISTORY = BrowserContract.History.DATE_LAST_VISITED + " DESC";
-    static final String DEFAULT_SORT_ACCOUNTS =
-            BrowserContract.Accounts.ACCOUNT_NAME + " IS NOT NULL DESC, "
-                    + BrowserContract.Accounts.ACCOUNT_NAME + " ASC";
-
-    private static final String TABLE_BOOKMARKS_JOIN_HISTORY =
-            "history LEFT OUTER JOIN bookmarks ON history.url = bookmarks.url";
-
-    private static final String[] SUGGEST_PROJECTION = new String[]{
-            qualifyColumn(TABLE_HISTORY, BrowserContract.History._ID),
-            qualifyColumn(TABLE_HISTORY, BrowserContract.History.URL),
-            bookmarkOrHistoryColumn(BrowserContract.Combined.TITLE),
-            bookmarkOrHistoryLiteral(BrowserContract.Combined.URL,
-                    Integer.toString(R.drawable.ic_bookmark_off_holo_dark),
-                    Integer.toString(R.drawable.ic_history_holo_dark)),
-            qualifyColumn(TABLE_HISTORY, BrowserContract.History.DATE_LAST_VISITED)};
-
-    private static final String SUGGEST_SELECTION =
-            "history.url LIKE ? OR history.url LIKE ? OR history.url LIKE ? OR history.url LIKE ?"
-                    + " OR history.title LIKE ? OR bookmarks.title LIKE ?";
-
-    private static final String ZERO_QUERY_SUGGEST_SELECTION =
-            TABLE_HISTORY + "." + BrowserContract.History.DATE_LAST_VISITED + " != 0";
-
-    private static final String IMAGE_PRUNE =
-            "url_key NOT IN (SELECT url FROM bookmarks " +
-                    "WHERE url IS NOT NULL AND deleted == 0) AND url_key NOT IN " +
-                    "(SELECT url FROM history WHERE url IS NOT NULL)";
-
-    static final int THUMBNAILS = 10;
-    static final int THUMBNAILS_ID = 11;
-    static final int OMNIBOX_SUGGESTIONS = 20;
-
-    static final int BOOKMARKS = 1000;
-    static final int BOOKMARKS_ID = 1001;
-    static final int BOOKMARKS_FOLDER = 1002;
-    static final int BOOKMARKS_FOLDER_ID = 1003;
-    static final int BOOKMARKS_SUGGESTIONS = 1004;
-    static final int BOOKMARKS_DEFAULT_FOLDER_ID = 1005;
-
-    static final int HISTORY = 2000;
-    static final int HISTORY_ID = 2001;
-
-    static final int SEARCHES = 3000;
-    static final int SEARCHES_ID = 3001;
-
-    static final int SYNCSTATE = 4000;
-    static final int SYNCSTATE_ID = 4001;
-
-    static final int IMAGES = 5000;
-
-    static final int COMBINED = 6000;
-    static final int COMBINED_ID = 6001;
-
-    static final int ACCOUNTS = 7000;
-
-    static final int SETTINGS = 8000;
-
-    static final int LEGACY = 9000;
-    static final int LEGACY_ID = 9001;
-
-    public static final long FIXED_ID_ROOT = 1;
-
-    // Default sort order for unsync'd bookmarks
-    static final String DEFAULT_BOOKMARKS_SORT_ORDER =
-            BrowserContract.Bookmarks.IS_FOLDER + " DESC, position ASC, _id ASC";
-
-    // Default sort order for sync'd bookmarks
-    static final String DEFAULT_BOOKMARKS_SORT_ORDER_SYNC = "position ASC, _id ASC";
-
-    static final UriMatcher URI_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
-
-    static final HashMap<String, String> ACCOUNTS_PROJECTION_MAP = new HashMap<String, String>();
-    static final HashMap<String, String> BOOKMARKS_PROJECTION_MAP = new HashMap<String, String>();
-    static final HashMap<String, String> OTHER_BOOKMARKS_PROJECTION_MAP =
-            new HashMap<String, String>();
-    static final HashMap<String, String> HISTORY_PROJECTION_MAP = new HashMap<String, String>();
-    static final HashMap<String, String> SYNC_STATE_PROJECTION_MAP = new HashMap<String, String>();
-    static final HashMap<String, String> IMAGES_PROJECTION_MAP = new HashMap<String, String>();
-    static final HashMap<String, String> COMBINED_HISTORY_PROJECTION_MAP = new HashMap<String, String>();
-    static final HashMap<String, String> COMBINED_BOOKMARK_PROJECTION_MAP = new HashMap<String, String>();
-    static final HashMap<String, String> SEARCHES_PROJECTION_MAP = new HashMap<String, String>();
-    static final HashMap<String, String> SETTINGS_PROJECTION_MAP = new HashMap<String, String>();
-
-    static {
-        final UriMatcher matcher = URI_MATCHER;
-        final String authority = BrowserContract.AUTHORITY;
-        matcher.addURI(authority, "accounts", ACCOUNTS);
-        matcher.addURI(authority, "bookmarks", BOOKMARKS);
-        matcher.addURI(authority, "bookmarks/#", BOOKMARKS_ID);
-        matcher.addURI(authority, "bookmarks/folder", BOOKMARKS_FOLDER);
-        matcher.addURI(authority, "bookmarks/folder/#", BOOKMARKS_FOLDER_ID);
-        matcher.addURI(authority, "bookmarks/folder/id", BOOKMARKS_DEFAULT_FOLDER_ID);
-        matcher.addURI(authority, SearchManager.SUGGEST_URI_PATH_QUERY, BOOKMARKS_SUGGESTIONS);
-        matcher.addURI(authority, "bookmarks/" + SearchManager.SUGGEST_URI_PATH_QUERY, BOOKMARKS_SUGGESTIONS);
-        matcher.addURI(authority, "history", HISTORY);
-        matcher.addURI(authority, "history/#", HISTORY_ID);
-        matcher.addURI(authority, "searches", SEARCHES);
-        matcher.addURI(authority, "searches/#", SEARCHES_ID);
-        matcher.addURI(authority, "syncstate", SYNCSTATE);
-        matcher.addURI(authority, "syncstate/#", SYNCSTATE_ID);
-        matcher.addURI(authority, "images", IMAGES);
-        matcher.addURI(authority, "combined", COMBINED);
-        matcher.addURI(authority, "combined/#", COMBINED_ID);
-        matcher.addURI(authority, "settings", SETTINGS);
-        matcher.addURI(authority, "thumbnails", THUMBNAILS);
-        matcher.addURI(authority, "thumbnails/#", THUMBNAILS_ID);
-        matcher.addURI(authority, "omnibox_suggestions", OMNIBOX_SUGGESTIONS);
-
-        // Legacy
-        matcher.addURI(LEGACY_AUTHORITY, "searches", SEARCHES);
-        matcher.addURI(LEGACY_AUTHORITY, "searches/#", SEARCHES_ID);
-        matcher.addURI(LEGACY_AUTHORITY, "bookmarks", LEGACY);
-        matcher.addURI(LEGACY_AUTHORITY, "bookmarks/#", LEGACY_ID);
-        matcher.addURI(LEGACY_AUTHORITY,
-                SearchManager.SUGGEST_URI_PATH_QUERY,
-                BOOKMARKS_SUGGESTIONS);
-        matcher.addURI(LEGACY_AUTHORITY,
-                "bookmarks/" + SearchManager.SUGGEST_URI_PATH_QUERY,
-                BOOKMARKS_SUGGESTIONS);
-
-        // Projection maps
-        HashMap<String, String> map;
-
-        // Accounts
-        map = ACCOUNTS_PROJECTION_MAP;
-        map.put(BrowserContract.Accounts.ACCOUNT_TYPE, BrowserContract.Accounts.ACCOUNT_TYPE);
-        map.put(BrowserContract.Accounts.ACCOUNT_NAME, BrowserContract.Accounts.ACCOUNT_NAME);
-        map.put(BrowserContract.Accounts.ROOT_ID, BrowserContract.Accounts.ROOT_ID);
-
-        // Bookmarks
-        map = BOOKMARKS_PROJECTION_MAP;
-        map.put(BrowserContract.Bookmarks._ID, qualifyColumn(TABLE_BOOKMARKS, BrowserContract.Bookmarks._ID));
-        map.put(BrowserContract.Bookmarks.TITLE, BrowserContract.Bookmarks.TITLE);
-        map.put(BrowserContract.Bookmarks.URL, BrowserContract.Bookmarks.URL);
-        map.put(BrowserContract.Bookmarks.FAVICON, BrowserContract.Bookmarks.FAVICON);
-        map.put(BrowserContract.Bookmarks.THUMBNAIL, BrowserContract.Bookmarks.THUMBNAIL);
-        map.put(BrowserContract.Bookmarks.TOUCH_ICON, BrowserContract.Bookmarks.TOUCH_ICON);
-        map.put(BrowserContract.Bookmarks.IS_FOLDER, BrowserContract.Bookmarks.IS_FOLDER);
-        map.put(BrowserContract.Bookmarks.PARENT, BrowserContract.Bookmarks.PARENT);
-        map.put(BrowserContract.Bookmarks.POSITION, BrowserContract.Bookmarks.POSITION);
-        map.put(BrowserContract.Bookmarks.INSERT_AFTER, BrowserContract.Bookmarks.INSERT_AFTER);
-        map.put(BrowserContract.Bookmarks.IS_DELETED, BrowserContract.Bookmarks.IS_DELETED);
-        map.put(BrowserContract.Bookmarks.ACCOUNT_NAME, BrowserContract.Bookmarks.ACCOUNT_NAME);
-        map.put(BrowserContract.Bookmarks.ACCOUNT_TYPE, BrowserContract.Bookmarks.ACCOUNT_TYPE);
-        map.put(BrowserContract.Bookmarks.SOURCE_ID, BrowserContract.Bookmarks.SOURCE_ID);
-        map.put(BrowserContract.Bookmarks.VERSION, BrowserContract.Bookmarks.VERSION);
-        map.put(BrowserContract.Bookmarks.DATE_CREATED, BrowserContract.Bookmarks.DATE_CREATED);
-        map.put(BrowserContract.Bookmarks.DATE_MODIFIED, BrowserContract.Bookmarks.DATE_MODIFIED);
-        map.put(BrowserContract.Bookmarks.DIRTY, BrowserContract.Bookmarks.DIRTY);
-        map.put(BrowserContract.Bookmarks.SYNC1, BrowserContract.Bookmarks.SYNC1);
-        map.put(BrowserContract.Bookmarks.SYNC2, BrowserContract.Bookmarks.SYNC2);
-        map.put(BrowserContract.Bookmarks.SYNC3, BrowserContract.Bookmarks.SYNC3);
-        map.put(BrowserContract.Bookmarks.SYNC4, BrowserContract.Bookmarks.SYNC4);
-        map.put(BrowserContract.Bookmarks.SYNC5, BrowserContract.Bookmarks.SYNC5);
-        map.put(BrowserContract.Bookmarks.PARENT_SOURCE_ID, "(SELECT " + BrowserContract.Bookmarks.SOURCE_ID +
-                " FROM " + TABLE_BOOKMARKS + " A WHERE " +
-                "A." + BrowserContract.Bookmarks._ID + "=" + TABLE_BOOKMARKS + "." + BrowserContract.Bookmarks.PARENT +
-                ") AS " + BrowserContract.Bookmarks.PARENT_SOURCE_ID);
-        map.put(BrowserContract.Bookmarks.INSERT_AFTER_SOURCE_ID, "(SELECT " + BrowserContract.Bookmarks.SOURCE_ID +
-                " FROM " + TABLE_BOOKMARKS + " A WHERE " +
-                "A." + BrowserContract.Bookmarks._ID + "=" + TABLE_BOOKMARKS + "." + BrowserContract.Bookmarks.INSERT_AFTER +
-                ") AS " + BrowserContract.Bookmarks.INSERT_AFTER_SOURCE_ID);
-        map.put(BrowserContract.Bookmarks.TYPE, "CASE "
-                + " WHEN " + BrowserContract.Bookmarks.IS_FOLDER + "=0 THEN "
-                + BrowserContract.Bookmarks.BOOKMARK_TYPE_BOOKMARK
-                + " WHEN " + BrowserContract.ChromeSyncColumns.SERVER_UNIQUE + "='"
-                + BrowserContract.ChromeSyncColumns.FOLDER_NAME_BOOKMARKS_BAR + "' THEN "
-                + BrowserContract.Bookmarks.BOOKMARK_TYPE_BOOKMARK_BAR_FOLDER
-                + " WHEN " + BrowserContract.ChromeSyncColumns.SERVER_UNIQUE + "='"
-                + BrowserContract.ChromeSyncColumns.FOLDER_NAME_OTHER_BOOKMARKS + "' THEN "
-                + BrowserContract.Bookmarks.BOOKMARK_TYPE_OTHER_FOLDER
-                + " ELSE " + BrowserContract.Bookmarks.BOOKMARK_TYPE_FOLDER
-                + " END AS " + BrowserContract.Bookmarks.TYPE);
-
-        // Other bookmarks
-        OTHER_BOOKMARKS_PROJECTION_MAP.putAll(BOOKMARKS_PROJECTION_MAP);
-        OTHER_BOOKMARKS_PROJECTION_MAP.put(BrowserContract.Bookmarks.POSITION,
-                Long.toString(Long.MAX_VALUE) + " AS " + BrowserContract.Bookmarks.POSITION);
-
-        // History
-        map = HISTORY_PROJECTION_MAP;
-        map.put(BrowserContract.History._ID, qualifyColumn(TABLE_HISTORY, BrowserContract.History._ID));
-        map.put(BrowserContract.History.TITLE, BrowserContract.History.TITLE);
-        map.put(BrowserContract.History.URL, BrowserContract.History.URL);
-        map.put(BrowserContract.History.FAVICON, BrowserContract.History.FAVICON);
-        map.put(BrowserContract.History.THUMBNAIL, BrowserContract.History.THUMBNAIL);
-        map.put(BrowserContract.History.TOUCH_ICON, BrowserContract.History.TOUCH_ICON);
-        map.put(BrowserContract.History.DATE_CREATED, BrowserContract.History.DATE_CREATED);
-        map.put(BrowserContract.History.DATE_LAST_VISITED, BrowserContract.History.DATE_LAST_VISITED);
-        map.put(BrowserContract.History.VISITS, BrowserContract.History.VISITS);
-        map.put(BrowserContract.History.USER_ENTERED, BrowserContract.History.USER_ENTERED);
-
-        // Sync state
-        map = SYNC_STATE_PROJECTION_MAP;
-        map.put(BrowserContract.SyncState._ID, BrowserContract.SyncState._ID);
-        map.put(BrowserContract.SyncState.ACCOUNT_NAME, BrowserContract.SyncState.ACCOUNT_NAME);
-        map.put(BrowserContract.SyncState.ACCOUNT_TYPE, BrowserContract.SyncState.ACCOUNT_TYPE);
-        map.put(BrowserContract.SyncState.DATA, BrowserContract.SyncState.DATA);
-
-        // Images
-        map = IMAGES_PROJECTION_MAP;
-        map.put(BrowserContract.Images.URL, BrowserContract.Images.URL);
-        map.put(BrowserContract.Images.FAVICON, BrowserContract.Images.FAVICON);
-        map.put(BrowserContract.Images.THUMBNAIL, BrowserContract.Images.THUMBNAIL);
-        map.put(BrowserContract.Images.TOUCH_ICON, BrowserContract.Images.TOUCH_ICON);
-
-        // Combined history half
-        map = COMBINED_HISTORY_PROJECTION_MAP;
-        map.put(BrowserContract.Combined._ID, bookmarkOrHistoryColumn(BrowserContract.Combined._ID));
-        map.put(BrowserContract.Combined.TITLE, bookmarkOrHistoryColumn(BrowserContract.Combined.TITLE));
-        map.put(BrowserContract.Combined.URL, qualifyColumn(TABLE_HISTORY, BrowserContract.Combined.URL));
-        map.put(BrowserContract.Combined.DATE_CREATED, qualifyColumn(TABLE_HISTORY, BrowserContract.Combined.DATE_CREATED));
-        map.put(BrowserContract.Combined.DATE_LAST_VISITED, BrowserContract.Combined.DATE_LAST_VISITED);
-        map.put(BrowserContract.Combined.IS_BOOKMARK, "CASE WHEN " +
-                TABLE_BOOKMARKS + "." + BrowserContract.Bookmarks._ID +
-                " IS NOT NULL THEN 1 ELSE 0 END AS " + BrowserContract.Combined.IS_BOOKMARK);
-        map.put(BrowserContract.Combined.VISITS, BrowserContract.Combined.VISITS);
-        map.put(BrowserContract.Combined.FAVICON, BrowserContract.Combined.FAVICON);
-        map.put(BrowserContract.Combined.THUMBNAIL, BrowserContract.Combined.THUMBNAIL);
-        map.put(BrowserContract.Combined.TOUCH_ICON, BrowserContract.Combined.TOUCH_ICON);
-        map.put(BrowserContract.Combined.USER_ENTERED, "NULL AS " + BrowserContract.Combined.USER_ENTERED);
-
-        // Combined bookmark half
-        map = COMBINED_BOOKMARK_PROJECTION_MAP;
-        map.put(BrowserContract.Combined._ID, BrowserContract.Combined._ID);
-        map.put(BrowserContract.Combined.TITLE, BrowserContract.Combined.TITLE);
-        map.put(BrowserContract.Combined.URL, BrowserContract.Combined.URL);
-        map.put(BrowserContract.Combined.DATE_CREATED, BrowserContract.Combined.DATE_CREATED);
-        map.put(BrowserContract.Combined.DATE_LAST_VISITED, "NULL AS " + BrowserContract.Combined.DATE_LAST_VISITED);
-        map.put(BrowserContract.Combined.IS_BOOKMARK, "1 AS " + BrowserContract.Combined.IS_BOOKMARK);
-        map.put(BrowserContract.Combined.VISITS, "0 AS " + BrowserContract.Combined.VISITS);
-        map.put(BrowserContract.Combined.FAVICON, BrowserContract.Combined.FAVICON);
-        map.put(BrowserContract.Combined.THUMBNAIL, BrowserContract.Combined.THUMBNAIL);
-        map.put(BrowserContract.Combined.TOUCH_ICON, BrowserContract.Combined.TOUCH_ICON);
-        map.put(BrowserContract.Combined.USER_ENTERED, "NULL AS " + BrowserContract.Combined.USER_ENTERED);
-
-        // Searches
-        map = SEARCHES_PROJECTION_MAP;
-        map.put(BrowserContract.Searches._ID, BrowserContract.Searches._ID);
-        map.put(BrowserContract.Searches.SEARCH, BrowserContract.Searches.SEARCH);
-        map.put(BrowserContract.Searches.DATE, BrowserContract.Searches.DATE);
-
-        // Settings
-        map = SETTINGS_PROJECTION_MAP;
-        map.put(BrowserContract.Settings.KEY, BrowserContract.Settings.KEY);
-        map.put(BrowserContract.Settings.VALUE, BrowserContract.Settings.VALUE);
-    }
-
-    static final String bookmarkOrHistoryColumn(String column) {
-        return "CASE WHEN bookmarks." + column + " IS NOT NULL THEN " +
-                "bookmarks." + column + " ELSE history." + column + " END AS " + column;
-    }
-
-    static final String bookmarkOrHistoryLiteral(String column, String bookmarkValue,
-                                                 String historyValue) {
-        return "CASE WHEN bookmarks." + column + " IS NOT NULL THEN \"" + bookmarkValue +
-                "\" ELSE \"" + historyValue + "\" END";
-    }
-
-    static final String qualifyColumn(String table, String column) {
-        return table + "." + column + " AS " + column;
-    }
-
     DatabaseHelper mOpenHelper;
-    SyncStateContentProviderHelper mSyncHelper = new SyncStateContentProviderHelper();
-    // This is so provider tests can intercept widget updating
-    ContentObserver mWidgetObserver = null;
     boolean mUpdateWidgets = false;
     boolean mSyncToNetwork = true;
-
-    final class DatabaseHelper extends SQLiteOpenHelper {
-        static final String DATABASE_NAME = "browser2.db";
-        static final int DATABASE_VERSION = 32;
-
-        @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-        public DatabaseHelper(Context context) {
-            super(context, DATABASE_NAME, null, DATABASE_VERSION);
-            setWriteAheadLoggingEnabled(true);
-        }
-
-        @Override
-        public void onCreate(SQLiteDatabase db) {
-            db.execSQL("CREATE TABLE " + TABLE_BOOKMARKS + "(" +
-                    BrowserContract.Bookmarks._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    BrowserContract.Bookmarks.TITLE + " TEXT," +
-                    BrowserContract.Bookmarks.URL + " TEXT," +
-                    BrowserContract.Bookmarks.IS_FOLDER + " INTEGER NOT NULL DEFAULT 0," +
-                    BrowserContract.Bookmarks.PARENT + " INTEGER," +
-                    BrowserContract.Bookmarks.POSITION + " INTEGER NOT NULL," +
-                    BrowserContract.Bookmarks.INSERT_AFTER + " INTEGER," +
-                    BrowserContract.Bookmarks.IS_DELETED + " INTEGER NOT NULL DEFAULT 0," +
-                    BrowserContract.Bookmarks.ACCOUNT_NAME + " TEXT," +
-                    BrowserContract.Bookmarks.ACCOUNT_TYPE + " TEXT," +
-                    BrowserContract.Bookmarks.SOURCE_ID + " TEXT," +
-                    BrowserContract.Bookmarks.VERSION + " INTEGER NOT NULL DEFAULT 1," +
-                    BrowserContract.Bookmarks.DATE_CREATED + " INTEGER," +
-                    BrowserContract.Bookmarks.DATE_MODIFIED + " INTEGER," +
-                    BrowserContract.Bookmarks.DIRTY + " INTEGER NOT NULL DEFAULT 0," +
-                    BrowserContract.Bookmarks.SYNC1 + " TEXT," +
-                    BrowserContract.Bookmarks.SYNC2 + " TEXT," +
-                    BrowserContract.Bookmarks.SYNC3 + " TEXT," +
-                    BrowserContract.Bookmarks.SYNC4 + " TEXT," +
-                    BrowserContract.Bookmarks.SYNC5 + " TEXT" +
-                    ");");
-
-            // TODO indices
-            db.execSQL("CREATE TABLE " + TABLE_HISTORY + "(" +
-                    BrowserContract.History._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    BrowserContract.History.TITLE + " TEXT," +
-                    BrowserContract.History.URL + " TEXT NOT NULL," +
-                    BrowserContract.History.DATE_CREATED + " INTEGER," +
-                    BrowserContract.History.DATE_LAST_VISITED + " INTEGER," +
-                    BrowserContract.History.VISITS + " INTEGER NOT NULL DEFAULT 0," +
-                    BrowserContract.History.USER_ENTERED + " INTEGER" +
-                    ");");
-
-            db.execSQL("CREATE TABLE " + TABLE_IMAGES + " (" +
-                    BrowserContract.Images.URL + " TEXT UNIQUE NOT NULL," +
-                    BrowserContract.Images.FAVICON + " BLOB," +
-                    BrowserContract.Images.THUMBNAIL + " BLOB," +
-                    BrowserContract.Images.TOUCH_ICON + " BLOB" +
-                    ");");
-            db.execSQL("CREATE INDEX imagesUrlIndex ON " + TABLE_IMAGES +
-                    "(" + BrowserContract.Images.URL + ")");
-
-            db.execSQL("CREATE TABLE " + TABLE_SEARCHES + " (" +
-                    BrowserContract.Searches._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    BrowserContract.Searches.SEARCH + " TEXT," +
-                    BrowserContract.Searches.DATE + " LONG" +
-                    ");");
-
-            db.execSQL("CREATE TABLE " + TABLE_SETTINGS + " (" +
-                    BrowserContract.Settings.KEY + " TEXT PRIMARY KEY," +
-                    BrowserContract.Settings.VALUE + " TEXT NOT NULL" +
-                    ");");
-
-            createAccountsView(db);
-            createThumbnails(db);
-
-            mSyncHelper.createDatabase(db);
-
-            if (!importFromBrowserProvider(db)) {
-                createDefaultBookmarks(db);
-            }
-
-            enableSync(db);
-            createOmniboxSuggestions(db);
-        }
-
-        void createOmniboxSuggestions(SQLiteDatabase db) {
-            db.execSQL(SQL_CREATE_VIEW_OMNIBOX_SUGGESTIONS);
-        }
-
-        void createThumbnails(SQLiteDatabase db) {
-            db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_THUMBNAILS + " (" +
-                    Thumbnails._ID + " INTEGER PRIMARY KEY," +
-                    Thumbnails.THUMBNAIL + " BLOB NOT NULL" +
-                    ");");
-        }
-
-        void enableSync(SQLiteDatabase db) {
-            ContentValues values = new ContentValues();
-            values.put(BrowserContract.Settings.KEY, BrowserContract.Settings.KEY_SYNC_ENABLED);
-            values.put(BrowserContract.Settings.VALUE, 1);
-            insertSettingsInTransaction(db, values);
-            // Enable bookmark sync on all accounts
-            AccountManager am = (AccountManager) getContext().getSystemService(
-                    Context.ACCOUNT_SERVICE);
-            if (am == null) {
-                return;
-            }
-            Account[] accounts = am.getAccountsByType("com.google");
-            if (accounts == null || accounts.length == 0) {
-                return;
-            }
-            for (Account account : accounts) {
-                if (ContentResolver.getIsSyncable(
-                        account, BrowserContract.AUTHORITY) == 0) {
-                    // Account wasn't syncable, enable it
-                    ContentResolver.setIsSyncable(
-                            account, BrowserContract.AUTHORITY, 1);
-                    ContentResolver.setSyncAutomatically(
-                            account, BrowserContract.AUTHORITY, true);
-                }
-            }
-        }
-
-        boolean importFromBrowserProvider(SQLiteDatabase db) {
-            Context context = getContext();
-            File oldDbFile = context.getDatabasePath(BrowserProvider.sDatabaseName);
-            if (oldDbFile.exists()) {
-                BrowserProvider.DatabaseHelper helper =
-                        new BrowserProvider.DatabaseHelper(context);
-                SQLiteDatabase oldDb = helper.getWritableDatabase();
-                Cursor c = null;
-                try {
-                    String table = BrowserProvider.TABLE_NAMES[BrowserProvider.URI_MATCH_BOOKMARKS];
-                    // Import bookmarks
-                    c = oldDb.query(table,
-                            new String[]{
-                                    BookmarkColumns.URL, // 0
-                                    BookmarkColumns.TITLE, // 1
-                                    BookmarkColumns.FAVICON, // 2
-                                    "touch_icon", // 3
-                                    BookmarkColumns.CREATED, // 4
-                            }, BookmarkColumns.BOOKMARK + "!=0", null,
-                            null, null, null);
-                    if (c != null) {
-                        while (c.moveToNext()) {
-                            String url = c.getString(0);
-                            if (TextUtils.isEmpty(url))
-                                continue; // We require a valid URL
-                            ContentValues values = new ContentValues();
-                            values.put(BrowserContract.Bookmarks.URL, url);
-                            values.put(BrowserContract.Bookmarks.TITLE, c.getString(1));
-                            values.put(BrowserContract.Bookmarks.DATE_CREATED, c.getInt(4));
-                            values.put(BrowserContract.Bookmarks.POSITION, 0);
-                            values.put(BrowserContract.Bookmarks.PARENT, FIXED_ID_ROOT);
-                            ContentValues imageValues = new ContentValues();
-                            imageValues.put(BrowserContract.Images.URL, url);
-                            imageValues.put(BrowserContract.Images.FAVICON, c.getBlob(2));
-                            imageValues.put(BrowserContract.Images.TOUCH_ICON, c.getBlob(3));
-                            db.insert(TABLE_IMAGES, BrowserContract.Images.THUMBNAIL, imageValues);
-                            db.insert(TABLE_BOOKMARKS, BrowserContract.Bookmarks.DIRTY, values);
-                        }
-                        c.close();
-                    }
-                    // Import history
-                    c = oldDb.query(table,
-                            new String[]{
-                                    BookmarkColumns.URL, // 0
-                                    BookmarkColumns.TITLE, // 1
-                                    BookmarkColumns.VISITS, // 2
-                                    BookmarkColumns.DATE, // 3
-                                    BookmarkColumns.CREATED, // 4
-                            }, BookmarkColumns.VISITS + " > 0 OR "
-                                    + BookmarkColumns.BOOKMARK + " = 0",
-                            null, null, null, null);
-                    if (c != null) {
-                        while (c.moveToNext()) {
-                            ContentValues values = new ContentValues();
-                            String url = c.getString(0);
-                            if (TextUtils.isEmpty(url))
-                                continue; // We require a valid URL
-                            values.put(BrowserContract.History.URL, url);
-                            values.put(BrowserContract.History.TITLE, c.getString(1));
-                            values.put(BrowserContract.History.VISITS, c.getInt(2));
-                            values.put(BrowserContract.History.DATE_LAST_VISITED, c.getLong(3));
-                            values.put(BrowserContract.History.DATE_CREATED, c.getLong(4));
-                            db.insert(TABLE_HISTORY, BrowserContract.History.FAVICON, values);
-                        }
-                        c.close();
-                    }
-                    // Wipe the old DB, in case the delete fails.
-                    oldDb.delete(table, null, null);
-                } finally {
-                    if (c != null) c.close();
-                    oldDb.close();
-                    helper.close();
-                }
-                if (!oldDbFile.delete()) {
-                    oldDbFile.deleteOnExit();
-                }
-                return true;
-            }
-            return false;
-        }
-
-        void createAccountsView(SQLiteDatabase db) {
-            db.execSQL("CREATE VIEW IF NOT EXISTS v_accounts AS "
-                    + "SELECT NULL AS " + BrowserContract.Accounts.ACCOUNT_NAME
-                    + ", NULL AS " + BrowserContract.Accounts.ACCOUNT_TYPE
-                    + ", " + FIXED_ID_ROOT + " AS " + BrowserContract.Accounts.ROOT_ID
-                    + " UNION ALL SELECT " + BrowserContract.Accounts.ACCOUNT_NAME
-                    + ", " + BrowserContract.Accounts.ACCOUNT_TYPE + ", "
-                    + BrowserContract.Bookmarks._ID + " AS " + BrowserContract.Accounts.ROOT_ID
-                    + " FROM " + TABLE_BOOKMARKS + " WHERE "
-                    + BrowserContract.ChromeSyncColumns.SERVER_UNIQUE + " = \""
-                    + BrowserContract.ChromeSyncColumns.FOLDER_NAME_BOOKMARKS_BAR + "\" AND "
-                    + BrowserContract.Bookmarks.IS_DELETED + " = 0");
-        }
-
-        @Override
-        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            if (oldVersion < 32) {
-                createOmniboxSuggestions(db);
-            }
-            if (oldVersion < 31) {
-                createThumbnails(db);
-            }
-            if (oldVersion < 30) {
-                db.execSQL("DROP VIEW IF EXISTS " + VIEW_SNAPSHOTS_COMBINED);
-                db.execSQL("DROP TABLE IF EXISTS " + TABLE_SNAPSHOTS);
-            }
-            if (oldVersion < 28) {
-                enableSync(db);
-            }
-            if (oldVersion < 27) {
-                createAccountsView(db);
-            }
-            if (oldVersion < 26) {
-                db.execSQL("DROP VIEW IF EXISTS combined");
-            }
-            if (oldVersion < 25) {
-                db.execSQL("DROP TABLE IF EXISTS " + TABLE_BOOKMARKS);
-                db.execSQL("DROP TABLE IF EXISTS " + TABLE_HISTORY);
-                db.execSQL("DROP TABLE IF EXISTS " + TABLE_SEARCHES);
-                db.execSQL("DROP TABLE IF EXISTS " + TABLE_IMAGES);
-                db.execSQL("DROP TABLE IF EXISTS " + TABLE_SETTINGS);
-                mSyncHelper.onAccountsChanged(db, new Account[]{}); // remove all sync info
-                onCreate(db);
-            }
-        }
-
-        public void onOpen(SQLiteDatabase db) {
-            mSyncHelper.onDatabaseOpened(db);
-        }
-
-        private void createDefaultBookmarks(SQLiteDatabase db) {
-            ContentValues values = new ContentValues();
-            // TODO figure out how to deal with localization for the defaults
-
-            // Bookmarks folder
-            values.put(BrowserContract.Bookmarks._ID, FIXED_ID_ROOT);
-            values.put(BrowserContract.ChromeSyncColumns.SERVER_UNIQUE, BrowserContract.ChromeSyncColumns.FOLDER_NAME_BOOKMARKS);
-            values.put(BrowserContract.Bookmarks.TITLE, "Bookmarks");
-            values.putNull(BrowserContract.Bookmarks.PARENT);
-            values.put(BrowserContract.Bookmarks.POSITION, 0);
-            values.put(BrowserContract.Bookmarks.IS_FOLDER, true);
-            values.put(BrowserContract.Bookmarks.DIRTY, true);
-            db.insertOrThrow(TABLE_BOOKMARKS, null, values);
-
-            addDefaultBookmarks(db, FIXED_ID_ROOT);
-        }
-
-        private void addDefaultBookmarks(SQLiteDatabase db, long parentId) {
-            Resources res = getContext().getResources();
-            final CharSequence[] bookmarks = res.getTextArray(
-                    R.array.bookmarks);
-            int size = bookmarks.length;
-            TypedArray preloads = null/*res.obtainTypedArray(R.array.bookmark_preloads)*/;
-            if (preloads == null) return;
-            try {
-                String parent = Long.toString(parentId);
-                String now = Long.toString(System.currentTimeMillis());
-                for (int i = 0; i < size; i = i + 2) {
-                    CharSequence bookmarkDestination = replaceSystemPropertyInString(getContext(),
-                            bookmarks[i + 1]);
-                    db.execSQL("INSERT INTO bookmarks (" +
-                            BrowserContract.Bookmarks.TITLE + ", " +
-                            BrowserContract.Bookmarks.URL + ", " +
-                            BrowserContract.Bookmarks.IS_FOLDER + "," +
-                            BrowserContract.Bookmarks.PARENT + "," +
-                            BrowserContract.Bookmarks.POSITION + "," +
-                            BrowserContract.Bookmarks.DATE_CREATED +
-                            ") VALUES (" +
-                            "'" + bookmarks[i] + "', " +
-                            "'" + bookmarkDestination + "', " +
-                            "0," +
-                            parent + "," +
-                            Integer.toString(i) + "," +
-                            now +
-                            ");");
-
-                    int faviconId = preloads.getResourceId(i, 0);
-                    int thumbId = preloads.getResourceId(i + 1, 0);
-                    byte[] thumb = null, favicon = null;
-                    try {
-                        thumb = readRaw(res, thumbId);
-                    } catch (IOException e) {
-                    }
-                    try {
-                        favicon = readRaw(res, faviconId);
-                    } catch (IOException e) {
-                    }
-                    if (thumb != null || favicon != null) {
-                        ContentValues imageValues = new ContentValues();
-                        imageValues.put(BrowserContract.Images.URL, bookmarkDestination.toString());
-                        if (favicon != null) {
-                            imageValues.put(BrowserContract.Images.FAVICON, favicon);
-                        }
-                        if (thumb != null) {
-                            imageValues.put(BrowserContract.Images.THUMBNAIL, thumb);
-                        }
-                        db.insert(TABLE_IMAGES, BrowserContract.Images.FAVICON, imageValues);
-                    }
-                }
-            } catch (ArrayIndexOutOfBoundsException e) {
-            } finally {
-                preloads.recycle();
-            }
-        }
-
-        private byte[] readRaw(Resources res, int id) throws IOException {
-            if (id == 0) {
-                return null;
-            }
-            InputStream is = res.openRawResource(id);
-            try {
-                ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                byte[] buf = new byte[4096];
-                int read;
-                while ((read = is.read(buf)) > 0) {
-                    bos.write(buf, 0, read);
-                }
-                bos.flush();
-                return bos.toByteArray();
-            } finally {
-                is.close();
-            }
-        }
-
-        // XXX: This is a major hack to remove our dependency on gsf constants and
-        // its content provider. http://b/issue?id=2425179
-        private String getClientId(ContentResolver cr) {
-            String ret = "android-google";
-            Cursor c = null;
-            try {
-                c = cr.query(Uri.parse("content://com.google.settings/partner"),
-                        new String[]{"value"}, "name='client_id'", null, null);
-                if (c != null && c.moveToNext()) {
-                    ret = c.getString(0);
-                }
-            } catch (RuntimeException ex) {
-                // fall through to return the default
-            } finally {
-                if (c != null) {
-                    c.close();
-                }
-            }
-            return ret;
-        }
-
-        private CharSequence replaceSystemPropertyInString(Context context, CharSequence srcString) {
-            StringBuffer sb = new StringBuffer();
-            int lastCharLoc = 0;
-
-            final String client_id = getClientId(context.getContentResolver());
-
-            for (int i = 0; i < srcString.length(); ++i) {
-                char c = srcString.charAt(i);
-                if (c == '{') {
-                    sb.append(srcString.subSequence(lastCharLoc, i));
-                    lastCharLoc = i;
-                    inner:
-                    for (int j = i; j < srcString.length(); ++j) {
-                        char k = srcString.charAt(j);
-                        if (k == '}') {
-                            String propertyKeyValue = srcString.subSequence(i + 1, j).toString();
-                            if (propertyKeyValue.equals("CLIENT_ID")) {
-                                sb.append(client_id);
-                            } else {
-                                sb.append("unknown");
-                            }
-                            lastCharLoc = j + 1;
-                            i = j;
-                            break inner;
-                        }
-                    }
-                }
-            }
-            if (srcString.length() - lastCharLoc > 0) {
-                // Put on the tail, if there is one
-                sb.append(srcString.subSequence(lastCharLoc, srcString.length()));
-            }
-            return sb;
-        }
-    }
+    // This is so provider tests can intercept widget updating
+    ContentObserver mWidgetObserver = null;
+    SyncStateContentProviderHelper mSyncHelper = new SyncStateContentProviderHelper();
 
     @Override
     public SQLiteOpenHelper getDatabaseHelper(Context context) {
@@ -779,6 +54,7 @@ public class BrowserProvider2 extends SQLiteContentProvider {
             if (mOpenHelper == null) {
                 mOpenHelper = new DatabaseHelper(context);
             }
+            mOpenHelper.setSyncStateHelper(mSyncHelper);
             return mOpenHelper;
         }
     }
@@ -1103,8 +379,7 @@ public class BrowserProvider2 extends SQLiteContentProvider {
             selectionArgs = null;
         } else {
             String like = selectionArgs[0] + "%";
-            if (selectionArgs[0].startsWith("http")
-                    || selectionArgs[0].startsWith("file")) {
+            if (selectionArgs[0].startsWith("http") || selectionArgs[0].startsWith("file")) {
                 selectionArgs[0] = like;
             } else {
                 selectionArgs = new String[6];
@@ -1128,8 +403,8 @@ public class BrowserProvider2 extends SQLiteContentProvider {
         return new SuggestionsCursor(c);
     }
 
-    private String[] createCombinedQuery(
-            Uri uri, String[] projection, SQLiteQueryBuilder qb) {
+    private String[] createCombinedQuery(Uri uri, String[] projection, SQLiteQueryBuilder qb) {
+
         String[] args = null;
         StringBuilder whereBuilder = new StringBuilder(128);
         whereBuilder.append(BrowserContract.Bookmarks.IS_DELETED);
@@ -1482,7 +757,7 @@ public class BrowserProvider2 extends SQLiteContentProvider {
 
             case SETTINGS: {
                 id = 0;
-                insertSettingsInTransaction(db, values);
+                mOpenHelper.insertSettingsInTransaction(db, values);
                 break;
             }
 
@@ -1593,38 +868,12 @@ public class BrowserProvider2 extends SQLiteContentProvider {
                 return db.insertOrThrow(TABLE_SEARCHES, BrowserContract.Searches.SEARCH, values);
             }
         } finally {
-            if (cursor != null) cursor.close();
-        }
-    }
-
-    /**
-     * Settings are unique, so perform an UPSERT manually since SQLite doesn't support them.
-     */
-    private long insertSettingsInTransaction(SQLiteDatabase db, ContentValues values) {
-        String key = values.getAsString(BrowserContract.Settings.KEY);
-        if (TextUtils.isEmpty(key)) {
-            throw new IllegalArgumentException("Must include the KEY field");
-        }
-        String[] keyArray = new String[]{key};
-        Cursor cursor = null;
-        try {
-            cursor = db.query(TABLE_SETTINGS, new String[]{BrowserContract.Settings.KEY},
-                    BrowserContract.Settings.KEY + "=?", keyArray, null, null, null);
-            if (cursor.moveToNext()) {
-                long id = cursor.getLong(0);
-                db.update(TABLE_SETTINGS, values, BrowserContract.Settings.KEY + "=?", keyArray);
-                return id;
-            } else {
-                return db.insertOrThrow(TABLE_SETTINGS, BrowserContract.Settings.VALUE, values);
-            }
-        } finally {
-            if (cursor != null) cursor.close();
+            IOUtils.closeCursor(cursor);
         }
     }
 
     @Override
-    public int updateInTransaction(Uri uri, ContentValues values, String selection,
-                                   String[] selectionArgs, boolean callerIsSyncAdapter) {
+    public int updateInTransaction(Uri uri, ContentValues values, String selection, String[] selectionArgs, boolean callerIsSyncAdapter) {
         int match = URI_MATCHER.match(uri);
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         if (match == LEGACY || match == LEGACY_ID) {
@@ -1810,14 +1059,14 @@ public class BrowserProvider2 extends SQLiteContentProvider {
                 }
             }
         } finally {
-            cursor.close();
+            IOUtils.closeCursor(cursor);
         }
         return false;
     }
 
     int getUrlCount(SQLiteDatabase db, String table, String url) {
-        Cursor c = db.query(table, new String[]{"COUNT(*)"},
-                "url = ?", new String[]{url}, null, null, null);
+
+        Cursor c = db.query(table, new String[]{"COUNT(*)"}, "url = ?", new String[]{url}, null, null, null);
         try {
             int count = 0;
             if (c.moveToFirst()) {
@@ -1825,15 +1074,15 @@ public class BrowserProvider2 extends SQLiteContentProvider {
             }
             return count;
         } finally {
-            c.close();
+            IOUtils.closeCursor(c);
         }
     }
 
     /**
      * Does a query to find the matching bookmarks and updates each one with the provided values.
      */
-    int updateBookmarksInTransaction(ContentValues values, String selection,
-                                     String[] selectionArgs, boolean callerIsSyncAdapter) {
+    int updateBookmarksInTransaction(ContentValues values, String selection, String[] selectionArgs, boolean callerIsSyncAdapter) {
+
         int count = 0;
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         final String[] bookmarksProjection = new String[]{
@@ -1939,7 +1188,7 @@ public class BrowserProvider2 extends SQLiteContentProvider {
                 }
             }
         } finally {
-            if (cursor != null) cursor.close();
+            IOUtils.closeCursor(cursor);
         }
         return count;
     }
@@ -2005,7 +1254,7 @@ public class BrowserProvider2 extends SQLiteContentProvider {
                 }
             }
         } finally {
-            if (cursor != null) cursor.close();
+            IOUtils.closeCursor(cursor);
         }
         return count;
     }
@@ -2017,8 +1266,7 @@ public class BrowserProvider2 extends SQLiteContentProvider {
         final boolean partialUri = TextUtils.isEmpty(accountName) ^ TextUtils.isEmpty(accountType);
         if (partialUri) {
             // Throw when either account is incomplete
-            throw new IllegalArgumentException(
-                    "Must specify both or neither of ACCOUNT_NAME and ACCOUNT_TYPE for " + uri);
+            throw new IllegalArgumentException("Must specify both or neither of ACCOUNT_NAME and ACCOUNT_TYPE for " + uri);
         }
 
         // Accounts are valid by only checking one parameter, since we've
@@ -2099,142 +1347,4 @@ public class BrowserProvider2 extends SQLiteContentProvider {
         }
         return false;
     }
-
-    static class SuggestionsCursor extends AbstractCursor {
-        private static final int ID_INDEX = 0;
-        private static final int URL_INDEX = 1;
-        private static final int TITLE_INDEX = 2;
-        private static final int ICON_INDEX = 3;
-        private static final int LAST_ACCESS_TIME_INDEX = 4;
-        // shared suggestion array index, make sure to match COLUMNS
-        private static final int SUGGEST_COLUMN_INTENT_ACTION_ID = 1;
-        private static final int SUGGEST_COLUMN_INTENT_DATA_ID = 2;
-        private static final int SUGGEST_COLUMN_TEXT_1_ID = 3;
-        private static final int SUGGEST_COLUMN_TEXT_2_TEXT_ID = 4;
-        private static final int SUGGEST_COLUMN_TEXT_2_URL_ID = 5;
-        private static final int SUGGEST_COLUMN_ICON_1_ID = 6;
-        private static final int SUGGEST_COLUMN_LAST_ACCESS_HINT_ID = 7;
-
-        // shared suggestion columns
-        private static final String[] COLUMNS = new String[]{
-                BaseColumns._ID,
-                SearchManager.SUGGEST_COLUMN_INTENT_ACTION,
-                SearchManager.SUGGEST_COLUMN_INTENT_DATA,
-                SearchManager.SUGGEST_COLUMN_TEXT_1,
-                SearchManager.SUGGEST_COLUMN_TEXT_2,
-                SearchManager.SUGGEST_COLUMN_TEXT_2_URL,
-                SearchManager.SUGGEST_COLUMN_ICON_1,
-                SearchManager.SUGGEST_COLUMN_LAST_ACCESS_HINT};
-
-        private final Cursor mSource;
-
-        public SuggestionsCursor(Cursor cursor) {
-            mSource = cursor;
-        }
-
-        @Override
-        public String[] getColumnNames() {
-            return COLUMNS;
-        }
-
-        @Override
-        public String getString(int columnIndex) {
-            switch (columnIndex) {
-                case ID_INDEX:
-                    return mSource.getString(columnIndex);
-                case SUGGEST_COLUMN_INTENT_ACTION_ID:
-                    return Intent.ACTION_VIEW;
-                case SUGGEST_COLUMN_INTENT_DATA_ID:
-                    return mSource.getString(URL_INDEX);
-                case SUGGEST_COLUMN_TEXT_2_TEXT_ID:
-                case SUGGEST_COLUMN_TEXT_2_URL_ID:
-                    return UrlUtils.stripUrl(mSource.getString(URL_INDEX));
-                case SUGGEST_COLUMN_TEXT_1_ID:
-                    return mSource.getString(TITLE_INDEX);
-                case SUGGEST_COLUMN_ICON_1_ID:
-                    return mSource.getString(ICON_INDEX);
-                case SUGGEST_COLUMN_LAST_ACCESS_HINT_ID:
-                    return mSource.getString(LAST_ACCESS_TIME_INDEX);
-            }
-            return null;
-        }
-
-        @Override
-        public int getCount() {
-            return mSource.getCount();
-        }
-
-        @Override
-        public double getDouble(int column) {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public float getFloat(int column) {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public int getInt(int column) {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public long getLong(int column) {
-            switch (column) {
-                case ID_INDEX:
-                    return mSource.getLong(ID_INDEX);
-                case SUGGEST_COLUMN_LAST_ACCESS_HINT_ID:
-                    return mSource.getLong(LAST_ACCESS_TIME_INDEX);
-            }
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public short getShort(int column) {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public boolean isNull(int column) {
-            return mSource.isNull(column);
-        }
-
-        @Override
-        public boolean onMove(int oldPosition, int newPosition) {
-            return mSource.moveToPosition(newPosition);
-        }
-    }
-
-    // ---------------------------------------------------
-    //  SQL below, be warned
-    // ---------------------------------------------------
-
-    private static final String SQL_CREATE_VIEW_OMNIBOX_SUGGESTIONS =
-            "CREATE VIEW IF NOT EXISTS v_omnibox_suggestions "
-                    + " AS "
-                    + "  SELECT _id, url, title, 1 AS bookmark, 0 AS visits, 0 AS date"
-                    + "  FROM bookmarks "
-                    + "  WHERE deleted = 0 AND folder = 0 "
-                    + "  UNION ALL "
-                    + "  SELECT _id, url, title, 0 AS bookmark, visits, date "
-                    + "  FROM history "
-                    + "  WHERE url NOT IN (SELECT url FROM bookmarks"
-                    + "    WHERE deleted = 0 AND folder = 0) "
-                    + "  ORDER BY bookmark DESC, visits DESC, date DESC ";
-
-    private static final String SQL_WHERE_ACCOUNT_HAS_BOOKMARKS =
-                    "0 < ( "
-                    + "SELECT count(*) "
-                    + "FROM bookmarks "
-                    + "WHERE deleted = 0 AND folder = 0 "
-                    + "  AND ( "
-                    + "    v_accounts.account_name = bookmarks.account_name "
-                    + "    OR (v_accounts.account_name IS NULL AND bookmarks.account_name IS NULL) "
-                    + "  ) "
-                    + "  AND ( "
-                    + "    v_accounts.account_type = bookmarks.account_type "
-                    + "    OR (v_accounts.account_type IS NULL AND bookmarks.account_type IS NULL) "
-                    + "  ) "
-                    + ")";
 }

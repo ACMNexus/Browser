@@ -30,6 +30,7 @@ import android.provider.SyncStateContract;
  * set of accounts.
  */
 public class SyncStateContentProviderHelper {
+
     private static final String SELECT_BY_ACCOUNT =
             SyncStateContract.Columns.ACCOUNT_NAME + "=? AND "
                     + SyncStateContract.Columns.ACCOUNT_TYPE + "=?";

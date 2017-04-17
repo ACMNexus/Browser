@@ -1,5 +1,6 @@
 package com.qirui.browser.fragments;
 
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -11,11 +12,12 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import com.qirui.browser.BookmarksLoader;
 import com.qirui.browser.R;
+import com.qirui.browser.activitys.AddBookMarkActivity;
+import com.qirui.browser.activitys.MarkHistoryActivity;
 import com.qirui.browser.adapter.BookMarkAdapter;
 import com.qirui.browser.bean.BookMarkInfo;
 import com.qirui.browser.util.IOUtils;
 import com.qirui.browser.provider.BrowserContract;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +30,7 @@ public class BookMarkFragment extends BaseFragment implements AbsListView.OnItem
     private ListView mListView;
     private BookMarkAdapter mAdapter;
     private boolean mIsEditMode = false;
+    private MarkHistoryActivity mMarkHistory;
     private static final int LOADER_BOOKMARKS = 100;
 
     public static BaseFragment newInstance() {
@@ -48,7 +51,8 @@ public class BookMarkFragment extends BaseFragment implements AbsListView.OnItem
     }
 
     private void initView() {
-        mAdapter = new BookMarkAdapter(mActivity);
+        mMarkHistory = (MarkHistoryActivity) getActivity();
+        mAdapter = new BookMarkAdapter(mMarkHistory);
         mEmptyView = mContentview.findViewById(R.id.empty);
         mContentview.findViewById(R.id.clear).setOnClickListener(this);
         mListView = (ListView) mContentview.findViewById(R.id.bookmarks);
@@ -108,6 +112,7 @@ public class BookMarkFragment extends BaseFragment implements AbsListView.OnItem
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        mMarkHistory.openUrl(mAdapter.getItem(position).getUrl());
     }
 
     @Override
@@ -121,5 +126,14 @@ public class BookMarkFragment extends BaseFragment implements AbsListView.OnItem
     public void onDestroy() {
         mLoaderManager.destroyLoader(LOADER_BOOKMARKS);
         super.onDestroy();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == AddBookMarkActivity.EDIT_BOOKMARK_REQUEST_CODE) {
+//            String title = data.getStringExtra(BrowserContract.Bookmarks.TITLE);
+
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

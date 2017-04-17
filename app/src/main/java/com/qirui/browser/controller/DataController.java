@@ -32,7 +32,7 @@ import android.util.Log;
 import com.qirui.browser.Tab;
 import com.qirui.browser.provider.BrowserContract;
 import com.qirui.browser.provider.BrowserContract.History;
-import com.qirui.browser.provider.BrowserProvider2.Thumbnails;
+import com.qirui.browser.provider.BrowserProvider2Key.Thumbnails;
 import com.qirui.browser.util.BookmarkUtils;
 import com.qirui.browser.util.IOUtils;
 import java.nio.ByteBuffer;

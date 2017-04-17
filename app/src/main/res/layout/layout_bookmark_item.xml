@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="50dip"
+    android:layout_height="54dip"
     android:background="@color/white"
-    android:minHeight="50dip">
+    android:minHeight="54dip">
 
     <CheckBox
         android:id="@+id/checked"
@@ -23,7 +23,7 @@
         android:layout_marginLeft="16dip"
         android:layout_marginRight="16dip"
         android:layout_toRightOf="@+id/checked"
-        android:src="@drawable/website_safe_icon" />
+        android:src="@drawable/common_icon_site" />
 
     <TextView
         android:id="@+id/title"

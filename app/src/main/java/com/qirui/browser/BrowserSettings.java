@@ -41,6 +41,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewDatabase;
 import com.qirui.browser.homepages.HomeProvider;
 import com.qirui.browser.provider.BrowserProvider;
+import com.qirui.browser.provider.BrowserProviderDataBaseHelper;
 import com.qirui.browser.search.SearchEngine;
 import com.qirui.browser.search.SearchEngines;
 import com.qirui.browser.util.Constants;
@@ -193,9 +194,8 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
             }
 
             sFactoryResetUrl = Constants.NATIVE_PAGE_URL;
-//            mContext.getResources().getString(R.string.homepage_base);
             if (sFactoryResetUrl.indexOf("{CID}") != -1) {
-                sFactoryResetUrl = sFactoryResetUrl.replace("{CID}", BrowserProvider.getClientId(mContext.getContentResolver()));
+                sFactoryResetUrl = sFactoryResetUrl.replace("{CID}", BrowserProviderDataBaseHelper.getClientId(mContext.getContentResolver()));
             }
 
             synchronized (BrowserSettings.class) {

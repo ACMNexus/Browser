@@ -37,7 +37,7 @@ import com.qirui.browser.BrowserSettings;
 import com.qirui.browser.R;
 import com.qirui.browser.util.UrlUtils;
 import com.qirui.browser.provider.BrowserContract;
-import com.qirui.browser.provider.BrowserProvider2.OmniboxSuggestions;
+import com.qirui.browser.provider.BrowserProvider2Key.OmniboxSuggestions;
 import com.qirui.browser.search.SearchEngine;
 
 import java.util.ArrayList;

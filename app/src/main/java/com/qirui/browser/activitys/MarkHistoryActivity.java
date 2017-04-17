@@ -7,6 +7,7 @@ import android.view.KeyEvent;
 import com.qirui.browser.CombinedBookmarksCallbacks;
 import com.qirui.browser.R;
 import com.qirui.browser.adapter.MarkHistoryAdapter;
+import com.qirui.browser.fragments.BookMarkFragment;
 import com.qirui.browser.view.PagerSlidingTabStrip;
 
 /**
@@ -79,6 +80,11 @@ public class MarkHistoryActivity extends BaseActivity implements CombinedBookmar
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK) {
+            BookMarkFragment bookMarkFragment = (BookMarkFragment) mHistoryAdapter.getItem(0);
+            bookMarkFragment.cancelEditMode();
+            return true;
+        }
         return super.onKeyDown(keyCode, event);
     }
 }

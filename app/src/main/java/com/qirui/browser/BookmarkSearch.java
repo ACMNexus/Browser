@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.qirui.browser;
 
 import android.app.Activity;
@@ -41,5 +40,4 @@ public class BookmarkSearch extends Activity {
         }
         finish();
     }
-
 }

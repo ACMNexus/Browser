@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.qirui.browser;
 
 import android.annotation.TargetApi;
@@ -21,7 +20,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,8 +31,7 @@ import com.qirui.browser.util.ThreadedCursorAdapter;
 import com.qirui.browser.view.BookmarkContainer;
 import com.qirui.browser.provider.BrowserContract;
 
-public class BrowserBookmarksAdapter extends
-        ThreadedCursorAdapter<BrowserBookmarksAdapterItem> {
+public class BrowserBookmarksAdapter extends ThreadedCursorAdapter<BrowserBookmarksAdapterItem> {
 
     LayoutInflater mInflater;
     Context mContext;

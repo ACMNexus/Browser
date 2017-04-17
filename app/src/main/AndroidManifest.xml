@@ -298,7 +298,7 @@
             android:exported="false" />
 
         <provider
-            android:name="com.qirui.browser.provider.BrowserProvider2"
+            android:name=".provider.BrowserProvider2"
             android:authorities="com.qirui.browser;qiruiBrowser"
             android:readPermission="com.android.browser.permission.READ_HISTORY_BOOKMARKS"
             android:writePermission="com.android.browser.permission.WRITE_HISTORY_BOOKMARKS"
