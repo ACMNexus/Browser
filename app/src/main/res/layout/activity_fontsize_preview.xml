@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipToPadding="true"
@@ -17,30 +16,21 @@
             android:id="@+id/text_zoom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dip"
+            android:layout_marginLeft="15dip"
+            android:layout_marginTop="15dip"
             android:text="@string/pref_text_zoom" />
 
-        <com.qirui.browser.view.RangeSeekBar
-            android:id="@+id/seekbar4"
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            app:cellMode="other"
-            app:cells="4"
-            app:hideProgressHint="true"
-            app:hintBGHeight="28dp"
-            app:lineColorEdge="@color/colorSeekBarDefault"
-            app:lineColorSelected="@color/colorAccent"
-            app:markTextArray="@array/wordsArray"
-            app:seekBarHeight="8dp"
-            app:seekBarMode="single"
-            app:textPadding="17dp"
-            app:textSize="12sp"
-            app:thumbSize="26dp" />
-
-        <TextView
-            android:id="@+id/min_font_size"
+        <com.qirui.browser.preferences.FontSizePreview
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/pref_min_font_size" />
+            />
+
+        <com.qirui.browser.preferences.SeekBarSummaryPreference
+            android:defaultValue="10"
+            android:key="text_zoom"
+            android:max="30"
+            android:title="@string/pref_text_zoom" />
 
     </LinearLayout>
 

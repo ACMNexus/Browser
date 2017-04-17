@@ -13,8 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-
 package com.qirui.browser;
 
 import android.app.Activity;
@@ -30,9 +28,11 @@ import android.provider.Browser;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Patterns;
+
 import com.qirui.browser.activitys.BrowserActivity;
 import com.qirui.browser.search.SearchEngine;
 import com.qirui.browser.util.UrlUtils;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -145,8 +145,8 @@ public class IntentHandler {
                     if (current != appTab) {
                         mController.switchToTab(appTab);
                     }
-                    if(mController.getUi() instanceof PhoneUi) {
-                        ((PhoneUi)mController.getUi()).hideHomePager();
+                    if (mController.getUi() instanceof PhoneUi) {
+                        ((PhoneUi) mController.getUi()).hideHomePager();
                     }
                     // Otherwise, we are already viewing the correct tab.
                 } else {
@@ -222,7 +222,7 @@ public class IntentHandler {
                         if (TextUtils.isEmpty(source)) {
                             source = GOOGLE_SEARCH_SOURCE_UNKNOWN;
                         }
-                        url = url.replace(searchSource, "&source=android-"+source+"&");
+                        url = url.replace(searchSource, "&source=android-" + source + "&");
                     }
                 }
             }
@@ -233,6 +233,7 @@ public class IntentHandler {
     /**
      * Launches the default web search activity with the query parameters if the given intent's data
      * are identified as plain search terms and not URLs/shortcuts.
+     *
      * @return true if the intent was handled and web search activity was launched, false if not.
      */
     public static boolean handleWebSearchIntent(Activity activity, Controller controller, Intent intent) {
@@ -256,11 +257,12 @@ public class IntentHandler {
     /**
      * Launches the default web search activity with the query parameters if the given url string
      * was identified as plain search terms and not URL/shortcut.
+     *
      * @return true if the request was handled and web search activity was launched, false if not.
      */
     private static boolean handleWebSearchRequest(Activity activity,
-            Controller controller, String inUrl, Bundle appData,
-            String extraData) {
+                                                  Controller controller, String inUrl, Bundle appData,
+                                                  String extraData) {
         if (inUrl == null) return false;
 
         // In general, we shouldn't modify URL from Intent.
@@ -284,7 +286,12 @@ public class IntentHandler {
             new AsyncTask<Void, Void, Void>() {
                 @Override
                 protected Void doInBackground(Void... unused) {
+                    try {
+                        //TODO this is where throw exception, next time solve it
                         Browser.addSearchUrl(cr, newUrl);
+                    } catch (IllegalArgumentException e) {
+                        e.printStackTrace();
+                    }
                     return null;
                 }
             }.execute();

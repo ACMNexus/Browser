@@ -30,8 +30,7 @@ public class SeekBarSummaryPreference extends SeekBarPreference {
     CharSequence mSummary;
     TextView mSummaryView;
 
-    public SeekBarSummaryPreference(
-            Context context, AttributeSet attrs, int defStyle) {
+    public SeekBarSummaryPreference(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init();
     }

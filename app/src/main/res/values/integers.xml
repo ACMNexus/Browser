@@ -34,11 +34,17 @@
         <item>@drawable/ic_browser_engine_google</item>
         <item>@drawable/ic_browser_engine_360</item>
         <item>@drawable/ic_browser_engine_sougou</item>
-        <item>@drawable/get_logo_weibo</item>
-        <item>@drawable/get_logo_zhihu</item>
-        <item>@drawable/get_logo_dushu</item>
-        <item>@drawable/get_logo_douban</item>
-
+        <item>@drawable/ic_browser_engine_weibo</item>
+        <item>@drawable/ic_browser_engine_zhihu</item>
+        <item>@drawable/ic_browser_engine_dushu</item>
+        <item>@drawable/ic_browser_engine_csdn</item>
+        <item>@drawable/ic_browser_engine_douban</item>
+        <item>@drawable/ic_browser_engine_huaban</item>
+        <item>@drawable/ic_browser_engine_bilibili</item>
+        <item>@drawable/ic_browser_engine_aol</item>
+        <item>@drawable/ic_browser_engine_ask</item>
+        <item>@drawable/ic_browser_engine_duckgo</item>
+        <item>@drawable/ic_browser_engine_xueshu</item>
         <item>@drawable/ic_browser_engine_yahoo</item>
         <item>@drawable/ic_browser_engine_bing</item>
     </integer-array>
@@ -49,4 +55,5 @@
         <item>@drawable/history_tab_icon_normal</item>
         <item>@drawable/history_tab_icon_press</item>
     </integer-array>
+
 </resources>

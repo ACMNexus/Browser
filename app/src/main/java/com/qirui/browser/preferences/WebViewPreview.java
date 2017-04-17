@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.qirui.browser.preferences;
 
 import android.content.Context;
@@ -25,11 +24,9 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
-
 import com.qirui.browser.R;
 
-public abstract class WebViewPreview extends Preference
-        implements OnSharedPreferenceChangeListener {
+public abstract class WebViewPreview extends Preference implements OnSharedPreferenceChangeListener {
 
     protected WebView mWebView;
 
@@ -54,7 +51,8 @@ public abstract class WebViewPreview extends Preference
 
     protected abstract void updatePreview(boolean forceReload);
 
-    protected void setupWebView(WebView view) {}
+    protected void setupWebView(WebView view) {
+    }
 
     @Override
     protected View onCreateView(ViewGroup parent) {
@@ -95,5 +93,4 @@ public abstract class WebViewPreview extends Preference
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         updatePreview(false);
     }
-
 }
