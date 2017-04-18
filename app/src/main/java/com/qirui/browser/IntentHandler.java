@@ -99,7 +99,7 @@ public class IntentHandler {
 
             UrlData urlData = getUrlDataFromIntent(intent);
             if (urlData.isEmpty()) {
-                urlData = new UrlData(mSettings.getHomePage());
+                urlData = new UrlData(mSettings.getSettingValues().getHomePageUrl());
             }
 
             if (intent.getBooleanExtra(Browser.EXTRA_CREATE_NEW_TAB, false) || urlData.isPreloaded()) {

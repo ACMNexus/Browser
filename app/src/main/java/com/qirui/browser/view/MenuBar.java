@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.qirui.browser.BaseUi;
+import com.qirui.browser.Controller;
 import com.qirui.browser.PhoneUi;
 import com.qirui.browser.R;
 import com.qirui.browser.UiController;
@@ -22,18 +23,18 @@ public class MenuBar extends LinearLayout implements View.OnClickListener {
 
     private BaseUi mBaseUi;
     private Context mContext;
-    private UiController mUiController;
     private ImageView mMenuTools;
     private ImageView mMenuBack;
     private ImageView mMenuForwards;
     private ImageView mMenuHome;
     private TextView mTabCounts;
+    private Controller mController;
 
     public MenuBar(Context context, UiController controller, BaseUi baseUi, ViewGroup contentView) {
         super(context, null);
         this.mContext = context;
         this.mBaseUi = baseUi;
-        this.mUiController = controller;
+        this.mController = (Controller) controller;
 
         initLayout();
         setFixBottomMenuTools();
@@ -89,17 +90,11 @@ public class MenuBar extends LinearLayout implements View.OnClickListener {
     }
 
     private void backPager() {
-        WebView webView = mBaseUi.getActivieWebView();
-        if(webView != null && webView.canGoBack()) {
-            webView.goBack();
-        }
+        mController.goBackOnePageOrQuit();
     }
 
     private void forwardPager() {
-        WebView webView = mBaseUi.getActivieWebView();
-        if(webView != null && webView.canGoForward()) {
-            webView.goForward();
-        }
+        mController.goForward();
     }
 
     private void switchTab() {

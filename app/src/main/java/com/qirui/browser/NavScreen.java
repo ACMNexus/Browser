@@ -125,7 +125,7 @@ public class NavScreen extends RelativeLayout implements OnClickListener, TabCon
     }
 
     private void openNewTab() {
-        final Tab tab = mUiController.openTab(BrowserSettings.getInstance().getHomePage(), false, false, false);
+        final Tab tab = mUiController.openTab(BrowserSettings.getInstance().getSettingValues().getHomePageUrl(), false, false, false);
         if (tab != null) {
             mUiController.setBlockEvents(true);
             final int tix = mUi.mTabControl.getTabPosition(tab);

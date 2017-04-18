@@ -1,6 +1,8 @@
 package com.qirui.browser.controller;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
@@ -61,10 +63,13 @@ public class HomePagerController implements AbsListView.OnItemClickListener {
     private void initData() {
         List<WebSiteInfo> list = new ArrayList();
         WebSiteInfo webSiteInfo;
-        for(int i = 0; i < 16; i++) {
+        Resources res = mContext.getResources();
+        String names[] = res.getStringArray(R.array.home_sites);
+        TypedArray typedArray = res.obtainTypedArray(R.array.homesite_icons);
+        for(int i = 0; i < names.length; i++) {
             webSiteInfo = new WebSiteInfo();
-            webSiteInfo.setIconResId(R.drawable.filesystem_icon_apk);
-            webSiteInfo.setName(mContext.getString(R.string.stop));
+            webSiteInfo.setIconResId(typedArray.getResourceId(i, 0));
+            webSiteInfo.setName(names[i]);
             webSiteInfo.setUrl("http://www.baidu.com");
             list.add(webSiteInfo);
         }

@@ -32,6 +32,7 @@ import android.graphics.Canvas;
 import android.net.Uri;
 import android.net.http.SslError;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -75,6 +76,8 @@ import com.qirui.browser.util.SettingValues;
 import com.qirui.browser.util.ToastUtils;
 import com.qirui.browser.util.UrlUtils;
 import com.qirui.browser.util.Utils;
+import com.qirui.browser.view.SystemBarTintManager;
+
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -444,6 +447,7 @@ public class Controller implements WebViewController, UiController, ActivityCont
 
     @Override
     public void handleNewIntent(Intent intent) {
+        setStatusBarColor();
         if (!mUi.isWebShowing()) {
             mUi.showWeb(false);
         }
@@ -1110,7 +1114,7 @@ public class Controller implements WebViewController, UiController, ActivityCont
                 break;
             case R.id.homepage_menu_id:
                 Tab current = mTabControl.getCurrentTab();
-                loadUrl(current, mSettings.getHomePage());
+                loadUrl(current, mSettingValues.getHomePageUrl());
                 break;
             case R.id.preferences_menu_id:
                 openPreferences();
@@ -1561,7 +1565,7 @@ public class Controller implements WebViewController, UiController, ActivityCont
 
     @Override
     public Tab openTabToHomePage() {
-        return openTab(mSettings.getHomePage(), false, true, false);
+        return openTab(mSettingValues.getHomePageUrl(), false, true, false);
     }
 
     @Override
@@ -1717,6 +1721,7 @@ public class Controller implements WebViewController, UiController, ActivityCont
         if (tab != null) {
             dismissSubWindow(tab);
             if (!TextUtils.isEmpty(url) && url.equals(Constants.NATIVE_PAGE_URL)) {
+                mTabControl.getCurrentTab().setNativePager(true);
                 ((PhoneUi) mUi).switchNativePage(tab);
             } else {
                 tab.setNativePager(false);
@@ -1754,11 +1759,26 @@ public class Controller implements WebViewController, UiController, ActivityCont
         if (tab.canGoBack()) {
             tab.goBack();
         } else {
-            tab.loadUrl(mSettings.getHomePage(), null);
+            tab.loadUrl(mSettingValues.getHomePageUrl(), null);
         }
     }
 
-    void goBackOnePageOrQuit() {
+    public void goForward() {
+        Tab currentTab = mTabControl.getCurrentTab();
+        if(currentTab == null) {
+            return;
+        }
+        if(currentTab.isNativePager()) {
+            currentTab.setNativePager(false);
+            if(currentTab.getWebView() != null) {
+                loadUrl(currentTab, currentTab.getUrl());
+            }
+        }else {
+            currentTab.goForward();
+        }
+    }
+
+    public void goBackOnePageOrQuit() {
         Tab current = mTabControl.getCurrentTab();
         if (current == null) {
             /*
@@ -1773,6 +1793,8 @@ public class Controller implements WebViewController, UiController, ActivityCont
         }
         if (current.canGoBack()) {
             current.goBack();
+        } else if(current.isNativePager()) {
+            //弹出退出提示框
         } else {
             // Check to see if we are closing a window that was created by
             // another window. If so, we switch back to that window.
@@ -1781,6 +1803,8 @@ public class Controller implements WebViewController, UiController, ActivityCont
                 switchToTab(parent);
                 // Now we close the other tab
                 closeTab(current);
+            } else if (mSettingValues.getHomePageUrl().equals(Constants.NATIVE_PAGE_URL)) {
+                loadUrl(current, Constants.NATIVE_PAGE_URL);
             } else {
                 if ((current.getAppId() != null) || current.closeOnBack()) {
                     closeCurrentTab(true);
@@ -1952,6 +1976,13 @@ public class Controller implements WebViewController, UiController, ActivityCont
     public boolean onSearchRequested() {
         mUi.editUrl(false, true);
         return true;
+    }
+
+    protected void setStatusBarColor() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            SystemBarTintManager tintManager = new SystemBarTintManager(mActivity);
+            tintManager.setStatusBarColor(mActivity.getResources().getColor(R.color.statusbar_bg));
+        }
     }
 
     @Override

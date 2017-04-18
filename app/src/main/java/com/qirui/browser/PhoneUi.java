@@ -430,10 +430,6 @@ public class PhoneUi extends BaseUi implements UrlInputView.OnSearchUrl {
             return;
         }
 
-        /*if(tab.isNativePager()) {
-            mTabControl.recreateWebView(tab);
-        }*/
-
         tab.setNativePager(false);
         Intent intent = new Intent();
         String action = Intent.ACTION_SEARCH;

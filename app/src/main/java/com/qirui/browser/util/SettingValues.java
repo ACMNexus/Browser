@@ -241,5 +241,13 @@ public class SettingValues implements PreferenceKeys {
     public boolean getBlockAdMode() {
         return mPrefs.getBoolean(PREF_BLOCK_AD, true);
     }
+
+    public String getHomePageUrl() {
+        return mPrefs.getString(PREF_HOMEPAGE, mBrowserSettings.getFactoryResetHomeUrl(mContext));
+    }
+
+    public void setHomePagerUrl(String url) {
+        mPrefs.edit().putString(PREF_HOMEPAGE, url).commit();
+    }
 }
 

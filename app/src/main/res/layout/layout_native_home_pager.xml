@@ -2,31 +2,48 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/content_divider"
-    android:gravity="center"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="48dip"
-        android:layout_marginLeft="10dip"
-        android:layout_marginRight="10dip"
-        android:background="@drawable/shape_homepage_search_background"
-        android:gravity="center_vertical">
+        android:layout_height="160dip"
+        android:background="@drawable/home_feeds_weather_bkg_sunny"
+        android:orientation="horizontal">
 
-        <ImageView
-            android:layout_width="48dip"
-            android:layout_height="fill_parent"
-            android:scaleType="center"
-            android:src="@drawable/ic_search" />
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="48dip"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="10dip"
+            android:layout_marginLeft="10dip"
+            android:layout_marginRight="10dip"
+            android:background="@drawable/shape_homepage_search_background"
+            android:gravity="center_vertical">
 
-        <EditText
-            android:id="@+id/et_website"
-            android:layout_width="0dip"
-            android:layout_height="40dip"
-            android:layout_weight="1"
-            android:background="@null"
-            android:hint="搜索或输入网址" />
+            <ImageView
+                android:layout_width="48dip"
+                android:layout_height="fill_parent"
+                android:scaleType="center"
+                android:src="@drawable/ic_browser_engine_baidu" />
+
+            <EditText
+                android:id="@+id/et_website"
+                android:layout_width="0dip"
+                android:layout_height="40dip"
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="搜索或输入网址"
+                android:singleLine="true"
+                android:textColor="@color/qcMenuBackground" />
+
+            <ImageView
+                android:layout_width="48dip"
+                android:layout_height="fill_parent"
+                android:scaleType="center"
+                android:src="@drawable/ic_search" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -34,7 +51,10 @@
         android:id="@+id/grid_website"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dip"
-        android:numColumns="4" />
+        android:layout_marginTop="20dip"
+        android:background="@color/white"
+        android:listSelector="@color/transparent"
+        android:numColumns="5"
+        android:verticalSpacing="20dip" />
 
 </LinearLayout>

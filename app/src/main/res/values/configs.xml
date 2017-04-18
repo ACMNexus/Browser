@@ -7,18 +7,22 @@
     <string name="font_family_regular">sans-serif</string>
 
     <string-array name="home_sites">
-        <item>网址导航</item>
-        <item>头条</item>
-        <item>小说 </item>
-        <item>视频</item>
-        <item>软件应用</item>
-        <item>百度地图</item>
         <item>百度</item>
-        <item>百度</item>
-        <item>百度</item>
-        <item>百度</item>
-        <item>百度</item>
-        <item>百度</item>
+        <item>新浪</item>
+        <item>天猫</item>
+        <item>京东</item>
+        <item>携程</item>
+        <item>QQ邮箱</item>
+        <item>QQ空间</item>
+        <item>QQ音乐</item>
+        <item>QQ阅读</item>
+        <item>QQ新闻</item>
+        <item>奇艺高清</item>
+        <item>天涯论坛</item>
+        <item>起点文学</item>
+        <item>淘宝购物</item>
+        <item>世纪佳缘</item>
+        <item>凡客诚品</item>
     </string-array>
 
     <string-array name="search_engines" translatable="false">

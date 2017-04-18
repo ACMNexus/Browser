@@ -40,7 +40,6 @@ import android.webkit.WebStorage;
 import android.webkit.WebView;
 import android.webkit.WebViewDatabase;
 import com.qirui.browser.homepages.HomeProvider;
-import com.qirui.browser.provider.BrowserProvider;
 import com.qirui.browser.provider.BrowserProviderDataBaseHelper;
 import com.qirui.browser.search.SearchEngine;
 import com.qirui.browser.search.SearchEngines;
@@ -584,12 +583,6 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
         return mPrefs.getBoolean(PREF_LOAD_PAGE, true);
     }
 
-    // getter/setters for general_preferences.xml
-    // -----------------------------
-    public String getHomePage() {
-        return mPrefs.getString(PREF_HOMEPAGE, getFactoryResetHomeUrl(mContext));
-    }
-
     public void setHomePage(String value) {
         mPrefs.edit().putString(PREF_HOMEPAGE, value).apply();
     }
@@ -683,7 +676,7 @@ public class BrowserSettings implements OnSharedPreferenceChangeListener, Prefer
     }
 
     public boolean useMostVisitedHomepage() {
-        return HomeProvider.MOST_VISITED.equals(getHomePage());
+        return HomeProvider.MOST_VISITED.equals(mSettingValues.getHomePageUrl());
     }
 
     public boolean useInvertedRendering() {

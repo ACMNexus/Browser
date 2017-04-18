@@ -49,6 +49,25 @@
         <item>@drawable/ic_browser_engine_bing</item>
     </integer-array>
 
+    <integer-array name="homesite_icons">
+        <item>@drawable/baidu</item>
+        <item>@drawable/sina</item>
+        <item>@drawable/tianmao</item>
+        <item>@drawable/jingdong</item>
+        <item>@drawable/xiecheng</item>
+        <item>@drawable/qq_email</item>
+        <item>@drawable/qq_zone</item>
+        <item>@drawable/qq_music</item>
+        <item>@drawable/qq_book</item>
+        <item>@drawable/tencent</item>
+        <item>@drawable/aiqiyi</item>
+        <item>@drawable/tianya</item>
+        <item>@drawable/qidian_book</item>
+        <item>@drawable/taobao</item>
+        <item>@drawable/jiayuan</item>
+        <item>@drawable/fanke</item>
+    </integer-array>
+
     <integer-array name="tab_images">
         <item>@drawable/bookmark_tab_icon_normal</item>
         <item>@drawable/bookmark_tab_icon_press</item>

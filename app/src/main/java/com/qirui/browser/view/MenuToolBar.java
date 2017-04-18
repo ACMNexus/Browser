@@ -77,7 +77,7 @@ public class MenuToolBar extends RelativeLayout implements View.OnClickListener 
         this.mContext = context;
         setVisibility(View.GONE);
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(-1, -1);
-        params.setMargins(0, DisplayUtils.dip2px(mContext, 48.5f), 0, 0);
+//        params.setMargins(0, DisplayUtils.dip2px(mContext, 48.5f), 0, 0);
         setLayoutParams(params);
         View contentView = inflate(mContext, R.layout.layout_menu_setting, this);
         mMenuNightMode = (ImageView) contentView.findViewById(R.id.menu_night_type);

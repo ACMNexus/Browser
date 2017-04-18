@@ -136,6 +136,7 @@ public abstract class BaseUi implements UI {
         mUrlBarAutoShowManager = new UrlBarAutoShowManager(this);
         mBottomMenuPopup.init(this, mUiController);
         mHomePagerController.initial((Controller) controller, mHomePagerContainer);
+        makeTransparentStatusBar();
     }
 
     private void cancelStopToast() {
@@ -698,6 +699,19 @@ public abstract class BaseUi implements UI {
             }
         }
         win.setAttributes(winParams);
+    }
+
+    public void makeTransparentStatusBar() {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = mActivity.getWindow();
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Color.TRANSPARENT);
+        }else if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            mActivity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+
+        }
     }
 
     public Drawable getFaviconDrawable(Bitmap icon) {
