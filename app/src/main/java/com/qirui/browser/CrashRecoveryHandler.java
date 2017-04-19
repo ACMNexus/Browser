@@ -114,13 +114,11 @@ public class CrashRecoveryHandler {
     }
 
     private Runnable mCreateState = new Runnable() {
-
         @Override
         public void run() {
             try {
                 final Bundle state = mController.createSaveState();
-                Message.obtain(mBackgroundHandler, MSG_WRITE_STATE, state)
-                        .sendToTarget();
+                Message.obtain(mBackgroundHandler, MSG_WRITE_STATE, state).sendToTarget();
                 // Remove any queued up saves
                 mForegroundHandler.removeCallbacks(mCreateState);
             } catch (Throwable t) {
@@ -128,7 +126,6 @@ public class CrashRecoveryHandler {
                 return;
             }
         }
-
     };
 
     public void clearState() {
@@ -140,8 +137,7 @@ public class CrashRecoveryHandler {
         BrowserSettings browserSettings = BrowserSettings.getInstance();
         long lastRecovered = browserSettings.getLastRecovered();
         long timeSinceLastRecover = System.currentTimeMillis() - lastRecovered;
-        return (timeSinceLastRecover > PROMPT_INTERVAL)
-                || browserSettings.wasLastRunPaused();
+        return (timeSinceLastRecover > PROMPT_INTERVAL) || browserSettings.wasLastRunPaused();
     }
 
     private void updateLastRecovered(long time) {
@@ -222,13 +218,11 @@ public class CrashRecoveryHandler {
         Parcel p = Parcel.obtain();
         try {
             state.writeToParcel(p, 0);
-            File stateJournal = new File(mContext.getCacheDir(),
-                    STATE_FILE + ".journal");
+            File stateJournal = new File(mContext.getCacheDir(), STATE_FILE + ".journal");
             FileOutputStream fout = new FileOutputStream(stateJournal);
             fout.write(p.marshall());
             fout.close();
-            File stateFile = new File(mContext.getCacheDir(),
-                    STATE_FILE);
+            File stateFile = new File(mContext.getCacheDir(), STATE_FILE);
             if (!stateJournal.renameTo(stateFile)) {
                 // Failed to rename, try deleting the existing
                 // file and try again

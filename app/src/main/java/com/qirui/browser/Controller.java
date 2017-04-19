@@ -181,7 +181,7 @@ public class Controller implements WebViewController, UiController, ActivityCont
         mCrashRecoveryHandler.startRecovery(intent);
     }
 
-    void doStart(final Bundle icicle, final Intent intent) {
+    public void doStart(final Bundle icicle, final Intent intent) {
         // Unless the last browser usage was within 24 hours, destroy any
         // remaining incognito tabs.
         Calendar lastActiveDate = icicle != null ? (Calendar) icicle.getSerializable("lastActiveDate") : null;
@@ -502,7 +502,7 @@ public class Controller implements WebViewController, UiController, ActivityCont
      *
      * @return Bundle containing the current state of all tabs.
      */
-    /* package */ Bundle createSaveState() {
+    public Bundle createSaveState() {
         Bundle saveState = new Bundle();
         mTabControl.saveState(saveState);
         if (!saveState.isEmpty()) {

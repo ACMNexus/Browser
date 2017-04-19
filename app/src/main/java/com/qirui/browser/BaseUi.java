@@ -58,6 +58,8 @@ import com.qirui.browser.util.ToastUtils;
 import com.qirui.browser.view.ErrorConsoleView;
 import com.qirui.browser.view.MenuBar;
 import com.qirui.browser.view.MenuToolBar;
+import com.qirui.browser.view.SystemBarTintManager;
+
 import java.util.List;
 
 /**
@@ -162,6 +164,17 @@ public abstract class BaseUi implements UI {
         final Tab ct = mTabControl.getCurrentTab();
         if (ct != null) {
             setActiveTab(ct);
+            /*if(ct.isNativePager()) {
+                makeTransparentStatusBar();
+            }else {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    Window window = mActivity.getWindow();
+                    window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                    window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+                    window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                    window.setStatusBarColor(mActivity.getResources().getColor(R.color.statusbar_bg));
+                }
+            }*/
         }
         mTitleBar.onResume();
     }
@@ -710,7 +723,6 @@ public abstract class BaseUi implements UI {
             window.setStatusBarColor(Color.TRANSPARENT);
         }else if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             mActivity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-
         }
     }
 

@@ -64,13 +64,14 @@ public class HomePagerController implements AbsListView.OnItemClickListener {
         List<WebSiteInfo> list = new ArrayList();
         WebSiteInfo webSiteInfo;
         Resources res = mContext.getResources();
-        String names[] = res.getStringArray(R.array.home_sites);
+        String urls[] = res.getStringArray(R.array.home_site_urls);
+        String names[] = res.getStringArray(R.array.home_site_names);
         TypedArray typedArray = res.obtainTypedArray(R.array.homesite_icons);
         for(int i = 0; i < names.length; i++) {
             webSiteInfo = new WebSiteInfo();
             webSiteInfo.setIconResId(typedArray.getResourceId(i, 0));
             webSiteInfo.setName(names[i]);
-            webSiteInfo.setUrl("http://www.baidu.com");
+            webSiteInfo.setUrl(urls[i]);
             list.add(webSiteInfo);
         }
         mAdapter.setItems(list);

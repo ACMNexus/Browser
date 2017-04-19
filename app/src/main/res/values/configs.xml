@@ -6,7 +6,7 @@
     <string name="font_family_thin">sans-serif-thin</string>
     <string name="font_family_regular">sans-serif</string>
 
-    <string-array name="home_sites">
+    <string-array name="home_site_names">
         <item>百度</item>
         <item>新浪</item>
         <item>天猫</item>
@@ -23,6 +23,25 @@
         <item>淘宝购物</item>
         <item>世纪佳缘</item>
         <item>凡客诚品</item>
+    </string-array>
+
+    <string-array name="home_site_urls">
+        <item>http://m.baidu.com</item>
+        <item>http://m.weibo.cn/</item>
+        <item>http://s.click.taobao.com/52B0o1y</item>
+        <item>https://union-click.jd.com</item>
+        <item>http://m.ctrip.com/html5</item>
+        <item>http://w.mail.qq.com</item>
+        <item>https://h5.qzone.qq.com/mqzone/index</item>
+        <item>http://m.y.qq.com</item>
+        <item>http://ubook.qq.com</item>
+        <item>http://info.3g.qq.com/g/s?aid=index</item>
+        <item>http://m.iqiyi.com</item>
+        <item>http://m.tianya.cn/touch</item>
+        <item>http://m.qidian.com</item>
+        <item>http://ai.m.taobao.com</item>
+        <item>http://3g.jiayuan.com</item>
+        <item>http://m.vancl.com/s/r/irz2qb</item>
     </string-array>
 
     <string-array name="search_engines" translatable="false">
